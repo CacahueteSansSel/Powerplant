@@ -25,7 +25,7 @@ public class ViewportBitmap
         
         Fill(PwColor.Transparent);
     }
-
+    
     public void Fill(PwColor color)
     {
         Array.Fill(_buffer, color);
@@ -46,7 +46,7 @@ public class ViewportBitmap
     {
         using var fb = _bitmap.Lock();
         uint* buffer = (uint*)fb.Address;
-
+        
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)

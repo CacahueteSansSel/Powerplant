@@ -1,14 +1,18 @@
 using System;
 using System.Globalization;
+using System.IO;
 using System.Numerics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Powerplant.Core;
+using Powerplant.FileFormats;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace Powerplant.Controls;
 
@@ -22,7 +26,8 @@ public class ViewportControl : Control
     private Point? _dragLastCursorPos;
     private Vector2? _dragLastOffset;
     
-    private float Zoom => MathF.Pow(1.1f, _zoom);
+    public float Zoom => MathF.Pow(1.1f, _zoom);
+    public ViewportBitmap Bitmap => _bitmap;
     
     public ViewportControl()
     {
@@ -46,6 +51,38 @@ public class ViewportControl : Control
         _bitmap.Sync();
 
         RegisterEvents();
+    }
+
+    public void CreateTexture(int width, int height)
+    {
+        _bitmap = new ViewportBitmap(width, height);
+        _bitmap.Sync();
+        
+        Center();
+    }
+
+    public void LoadTexture(string filename)
+    {
+        FileFormatBase? ff = FileFormatManager.GetByExtension(System.IO.Path.GetExtension(filename).TrimStart('.'));
+        if (ff == null) return;
+
+        _bitmap = ff.Load(filename)!;
+        _bitmap.Sync();
+        
+        Center();
+    }
+
+    public void Center()
+    {
+        float zoomX = (float)Bounds.Width / _bitmap.Width;
+        float zoomY = (float)Bounds.Height / _bitmap.Height;
+
+        _zoom = MathF.Log(MathF.Min(zoomX, zoomY), 1.1f);
+        
+        _offset = new Vector2((float)Bounds.Width / 2 - _bitmap.Width * Zoom / 2, 
+            (float)Bounds.Height / 2 - _bitmap.Height * Zoom / 2);
+        
+        InvalidateVisual();
     }
 
     private void RegisterEvents()

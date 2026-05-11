@@ -6,9 +6,22 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Powerplant.MainWindow"
         Title="Powerplant">
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="File">
+                <NativeMenu>
+                    <NativeMenuItem Header="New Texture" Gesture="Meta+N" Click="MenuNewTextureOptionClicked" />
+                    <NativeMenuItem Header="Open Texture" Gesture="Meta+O" Click="MenuOpenTextureOptionClicked" />
+                    <NativeMenuItem Header="Save Texture As..." Gesture="Meta+Shift+S" Click="MenuSaveTextureOptionClicked" />
+                    <NativeMenuItemSeparator />
+                </NativeMenu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
+    
     <DockPanel>
         <Grid>
-            <controls:ViewportControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></controls:ViewportControl>
+            <controls:ViewportControl x:Name="Viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></controls:ViewportControl>
         </Grid>
     </DockPanel>
 </Window>

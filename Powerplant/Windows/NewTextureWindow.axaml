@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:windows="clr-namespace:Powerplant.Windows"
+        mc:Ignorable="d" Width="300" Height="400"
+        x:Class="Powerplant.Windows.NewTextureWindow"
+        Foreground="Black"
+        x:DataType="windows:NewTextureWindow+Data"
+        Title="New Texture">
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Click="CancelButtonClicked">Cancel</Button>
+            <Button Click="CreateTextureButtonClicked">Create texture</Button>
+        </StackPanel>
+        <StackPanel Spacing="10">
+            <TextBlock FontWeight="Bold" Margin="0 0 0 10">Create a new texture</TextBlock>
+            <DockPanel>
+                <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="200" Value="{Binding Width}"></NumericUpDown>
+                <TextBlock VerticalAlignment="Center">Width</TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <NumericUpDown DockPanel.Dock="Right" Width="200" Value="{Binding Height}"></NumericUpDown>
+                <TextBlock VerticalAlignment="Center">Height</TextBlock>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>
