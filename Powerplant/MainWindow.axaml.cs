@@ -3,18 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
+using ReactiveUI;
 
 namespace Powerplant;
 
 public partial class MainWindow : Window
 {
+    private bool _disableEvents = false;
+    
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    public void SetPrimaryColor(Color color)
+    {
+        Viewport.PrimaryColor = new PwColor(color);
+
+        PrimaryColorCell.Background = new SolidColorBrush(color);
+
+        _disableEvents = true;
+        
+        ColorSpinR.Value = (float)color.R / byte.MaxValue;
+        ColorSpinR.Color = color;
+        ColorTextR.Text = color.R.ToString();
+        ColorSpinG.Value = (float)color.G / byte.MaxValue;
+        ColorSpinG.Color = color;
+        ColorTextG.Text = color.G.ToString();
+        ColorSpinB.Value = (float)color.B / byte.MaxValue;
+        ColorSpinB.Color = color;
+        ColorTextB.Text = color.B.ToString();
+        ColorSpinA.Value = (float)color.A / byte.MaxValue;
+        ColorSpinA.Color = color;
+        ColorTextA.Text = color.A.ToString();
+        
+        _disableEvents = false;
+
+        ColorWheel.Color = color;
     }
 
     private async void MenuNewTextureOptionClicked(object? sender, EventArgs e)
@@ -54,5 +85,70 @@ public partial class MainWindow : Window
         if (ff == null) return;
         
         ff.Save(Viewport.Bitmap, file.Path.AbsolutePath);
+    }
+
+    private void ColorSpectrum_OnColorChanged(object? sender, ColorChangedEventArgs e)
+    {
+        SetPrimaryColor(e.NewColor);
+    }
+
+    private void ColorSpinR_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        byte r = (byte)e.NewValue;
+        SetPrimaryColor((Viewport.PrimaryColor with {R = r}).ToColor());
+    }
+
+    private void ColorSpinG_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        byte g = (byte)e.NewValue;
+        SetPrimaryColor((Viewport.PrimaryColor with {G = g}).ToColor());
+    }
+
+    private void ColorSpinB_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        byte b = (byte)e.NewValue;
+        SetPrimaryColor((Viewport.PrimaryColor with {B = b}).ToColor());
+    }
+
+    private void ColorSpinA_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        byte a = (byte)e.NewValue;
+        SetPrimaryColor((Viewport.PrimaryColor with {A = a}).ToColor());
+    }
+
+    private void ColorTextR_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (!byte.TryParse(ColorTextR.Text, out byte r)) return;
+        
+        SetPrimaryColor((Viewport.PrimaryColor with {R = r}).ToColor());
+    }
+
+    private void ColorTextG_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (!byte.TryParse(ColorTextG.Text, out byte g)) return;
+        
+        SetPrimaryColor((Viewport.PrimaryColor with {G = g}).ToColor());
+    }
+
+    private void ColorTextB_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (!byte.TryParse(ColorTextB.Text, out byte b)) return;
+        
+        SetPrimaryColor((Viewport.PrimaryColor with {B = b}).ToColor());
+    }
+
+    private void ColorTextA_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (!byte.TryParse(ColorTextA.Text, out byte a)) return;
+        
+        SetPrimaryColor((Viewport.PrimaryColor with {A = a}).ToColor());
     }
 }

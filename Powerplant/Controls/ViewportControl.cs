@@ -28,6 +28,8 @@ public class ViewportControl : Control
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
+    public PwColor PrimaryColor { get; set; } = PwColor.Black;
+    public PwColor SecondaryColor { get; set; } = PwColor.White;
     
     public ViewportControl()
     {
@@ -107,8 +109,8 @@ public class ViewportControl : Control
 
         if (props.IsMiddleButtonPressed) ProcessViewportOffsetDrag(pos);
         
-        if (props.IsLeftButtonPressed) color = PwColor.Blue;
-        else if (props.IsRightButtonPressed) color = PwColor.Black;
+        if (props.IsLeftButtonPressed) color = PrimaryColor;
+        else if (props.IsRightButtonPressed) color = SecondaryColor;
         else return;
 
         int imgPosX = (int)((pos.X - _offset.X) / Zoom);
@@ -141,8 +143,8 @@ public class ViewportControl : Control
         PointerPointProperties props = e.GetCurrentPoint(this).Properties;
         PwColor color = new PwColor();
         
-        if (props.IsLeftButtonPressed) color = PwColor.Blue;
-        else if (props.IsRightButtonPressed) color = PwColor.Black;
+        if (props.IsLeftButtonPressed) color = PrimaryColor;
+        else if (props.IsRightButtonPressed) color = SecondaryColor;
         else return;
 
         int imgPosX = (int)((pos.X - _offset.X) / Zoom);

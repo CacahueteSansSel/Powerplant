@@ -1,3 +1,5 @@
+using Avalonia.Media;
+
 namespace Powerplant.Core;
 
 public struct PwColor
@@ -14,6 +16,11 @@ public struct PwColor
     public byte B;
     public byte A;
 
+    public PwColor(Color color) : this(color.R, color.G, color.B, color.A)
+    {
+        
+    }
+
     public PwColor(byte r, byte g, byte b, byte a = byte.MaxValue)
     {
         R = r;
@@ -24,4 +31,7 @@ public struct PwColor
 
     public uint ToBgra()
         => (uint)(B | (G << 8) | (R << 16) | (A << 24));
+
+    public Color ToColor()
+        => new(A, R, G, B);
 }

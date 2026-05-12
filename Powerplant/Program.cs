@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using System;
+using ReactiveUI.Avalonia;
 
 namespace Powerplant;
 
@@ -16,6 +17,7 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseReactiveUI(builder => {})
 #if DEBUG
             .WithDeveloperTools()
 #endif
