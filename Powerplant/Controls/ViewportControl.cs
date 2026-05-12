@@ -42,14 +42,7 @@ public class ViewportControl : Control
         _blackPen = new Pen(0xFF000000);
         _gridPen = new Pen(0xFFAAAAAA);
         
-        _bitmap = new ViewportBitmap(100, 100);
-        
-        _bitmap.Set(0, 0, PwColor.Black);
-        _bitmap.Set(2, 2, PwColor.White);
-        _bitmap.Set(4, 4, PwColor.Red);
-        _bitmap.Set(6, 6, PwColor.Green);
-        _bitmap.Set(8, 8, PwColor.Blue);
-        
+        _bitmap = new ViewportBitmap(16, 16);
         _bitmap.Sync();
 
         RegisterEvents();

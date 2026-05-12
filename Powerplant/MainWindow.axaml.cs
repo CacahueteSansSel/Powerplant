@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
@@ -150,5 +151,10 @@ public partial class MainWindow : Window
         if (!byte.TryParse(ColorTextA.Text, out byte a)) return;
         
         SetPrimaryColor((Viewport.PrimaryColor with {A = a}).ToColor());
+    }
+
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        Viewport.Center();
     }
 }

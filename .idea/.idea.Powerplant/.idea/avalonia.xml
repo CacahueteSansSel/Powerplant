@@ -3,7 +3,9 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="Powerplant/App.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/MainWindow.axaml" value="Powerplant/Powerplant.csproj" />
+        <entry key="Powerplant/Windows/NewTextureWindow.axaml" value="Powerplant/Powerplant.csproj" />
       </map>
     </option>
   </component>

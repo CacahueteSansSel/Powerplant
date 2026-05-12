@@ -6,6 +6,7 @@
         xmlns:powerplant="clr-namespace:Powerplant"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Powerplant.MainWindow"
+        Loaded="Control_OnLoaded"
         Title="Powerplant">
     <NativeMenu.Menu>
         <NativeMenu>
