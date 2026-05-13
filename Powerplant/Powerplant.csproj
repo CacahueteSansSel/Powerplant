@@ -26,5 +26,19 @@
         <PackageReference Include="ReactiveUI" Version="23.2.27" />
         <PackageReference Include="ReactiveUI.Avalonia" Version="12.0.1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+        <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\icons\pencil.svg" />
+      <AvaloniaResource Include="Resources\icons\pencil.svg" />
+      <None Remove="Resources\icons\square.svg" />
+      <AvaloniaResource Include="Resources\icons\square.svg" />
+      <None Remove="Resources\icons\eraser.svg" />
+      <AvaloniaResource Include="Resources\icons\eraser.svg" />
+      <None Remove="Resources\icons\color_picker.svg" />
+      <AvaloniaResource Include="Resources\icons\color_picker.svg" />
+      <None Remove="Resources\icons\bucket.svg" />
+      <AvaloniaResource Include="Resources\icons\bucket.svg" />
     </ItemGroup>
 </Project>

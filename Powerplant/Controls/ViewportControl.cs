@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Powerplant.Core;
+using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Path = Avalonia.Controls.Shapes.Path;
 
@@ -28,8 +29,12 @@ public class ViewportControl : Control
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
-    public PwColor PrimaryColor { get; set; } = PwColor.Black;
-    public PwColor SecondaryColor { get; set; } = PwColor.White;
+    public PwColor PrimaryColor { get; private set; } = PwColor.Black;
+    public PwColor SecondaryColor { get; private set; } = PwColor.White;
+    public ViewportTool? Tool { get; private set; }
+    public event EventHandler<ViewportTool?> OnToolChanged;
+    public event EventHandler<PwColor> OnPrimaryColorChanged;
+    public event EventHandler<PwColor> OnSecondaryColorChanged;
     
     public ViewportControl()
     {
@@ -46,6 +51,28 @@ public class ViewportControl : Control
         _bitmap.Sync();
 
         RegisterEvents();
+    }
+
+    public void SetTool(ViewportTool? tool)
+    {
+        Tool = tool;
+        Tool?.Viewport = this;
+        
+        OnToolChanged?.Invoke(this, tool);
+    }
+
+    public void SetPrimaryColor(PwColor color)
+    {
+        PrimaryColor = color;
+        
+        OnPrimaryColorChanged?.Invoke(this, color);
+    }
+
+    public void SetSecondaryColor(PwColor color)
+    {
+        SecondaryColor = color;
+        
+        OnSecondaryColorChanged?.Invoke(this, color);
     }
 
     public void CreateTexture(int width, int height)
@@ -98,17 +125,23 @@ public class ViewportControl : Control
     {
         Point pos = e.GetPosition(this);
         PointerPointProperties props = e.GetCurrentPoint(this).Properties;
-        PwColor color = new PwColor();
 
-        if (props.IsMiddleButtonPressed) ProcessViewportOffsetDrag(pos);
+        if (props.IsMiddleButtonPressed)
+        {
+            ProcessViewportOffsetDrag(pos);
+            return;
+        }
         
-        if (props.IsLeftButtonPressed) color = PrimaryColor;
-        else if (props.IsRightButtonPressed) color = SecondaryColor;
-        else return;
+        if (Tool == null || !Tool.SupportsHold)
+            return;
 
         int imgPosX = (int)((pos.X - _offset.X) / Zoom);
         int imgPosY = (int)((pos.Y - _offset.Y) / Zoom);
-        _bitmap.Set(imgPosX, imgPosY, color);
+        
+        if (props.IsLeftButtonPressed) Tool?.UsePrimary(imgPosX, imgPosY);
+        else if (props.IsRightButtonPressed) Tool?.UseSecondary(imgPosX, imgPosY);
+        else return;
+        
         _bitmap.Sync();
         InvalidateVisual();
     }
@@ -134,15 +167,14 @@ public class ViewportControl : Control
     {
         Point pos = e.GetPosition(this);
         PointerPointProperties props = e.GetCurrentPoint(this).Properties;
-        PwColor color = new PwColor();
-        
-        if (props.IsLeftButtonPressed) color = PrimaryColor;
-        else if (props.IsRightButtonPressed) color = SecondaryColor;
-        else return;
 
         int imgPosX = (int)((pos.X - _offset.X) / Zoom);
         int imgPosY = (int)((pos.Y - _offset.Y) / Zoom);
-        _bitmap.Set(imgPosX, imgPosY, color);
+        
+        if (props.IsLeftButtonPressed) Tool?.UsePrimary(imgPosX, imgPosY);
+        else if (props.IsRightButtonPressed) Tool?.UseSecondary(imgPosX, imgPosY);
+        else return;
+        
         _bitmap.Sync();
         InvalidateVisual();
     }

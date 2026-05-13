@@ -27,6 +27,31 @@
         </Grid>
         
         <DockPanel>
+            <Border DockPanel.Dock="Left" Background="#DDEFEFEF" VerticalAlignment="Top" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#FFBBBBBB" CornerRadius="8">
+                <StackPanel Orientation="Vertical" Spacing="10">
+                    <ToggleButton x:Name="PixelToolButton" Width="30" Height="30" ToolTip.Tip="Pencil" Click="PixelToolOptionClicked">
+                        <Svg Path="/Resources/icons/pencil.svg"
+                                 Width="20"
+                                 Height="20"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="EraserToolButton" Width="30" Height="30" ToolTip.Tip="Eraser" Click="EraserToolButton_OnClick">
+                        <Svg Path="/Resources/icons/eraser.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="ColorPickerTool" Width="30" Height="30" ToolTip.Tip="Color picker" Click="ColorPickerTool_OnClick">
+                        <Svg Path="/Resources/icons/color_picker.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="FloodFillTool" Width="30" Height="30" ToolTip.Tip="Bucket fill" Click="FloodFillTool_OnClick">
+                        <Svg Path="/Resources/icons/bucket.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
+                </StackPanel>
+            </Border>
+            
             <Border DockPanel.Dock="Right" Background="#DDEFEFEF" VerticalAlignment="Top" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#FFBBBBBB" CornerRadius="8">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <Panel>

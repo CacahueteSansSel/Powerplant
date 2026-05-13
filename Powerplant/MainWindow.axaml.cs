@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
+using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
 using ReactiveUI;
@@ -21,32 +22,42 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
+        Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
     }
 
-    public void SetPrimaryColor(Color color)
+    private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
     {
-        Viewport.PrimaryColor = new PwColor(color);
+        Color avColor = e.ToColor();
+        
+        SecondaryColorCell.Background = new SolidColorBrush(avColor);
+    }
 
-        PrimaryColorCell.Background = new SolidColorBrush(color);
+    private void ViewportOnPrimaryColorChanged(object? sender, PwColor e)
+    {
+        Color avColor = e.ToColor();
+        
+        PrimaryColorCell.Background = new SolidColorBrush(avColor);
 
         _disableEvents = true;
         
-        ColorSpinR.Value = (float)color.R / byte.MaxValue;
-        ColorSpinR.Color = color;
-        ColorTextR.Text = color.R.ToString();
-        ColorSpinG.Value = (float)color.G / byte.MaxValue;
-        ColorSpinG.Color = color;
-        ColorTextG.Text = color.G.ToString();
-        ColorSpinB.Value = (float)color.B / byte.MaxValue;
-        ColorSpinB.Color = color;
-        ColorTextB.Text = color.B.ToString();
-        ColorSpinA.Value = (float)color.A / byte.MaxValue;
-        ColorSpinA.Color = color;
-        ColorTextA.Text = color.A.ToString();
+        ColorSpinR.Value = (float)e.R / byte.MaxValue;
+        ColorSpinR.Color = avColor;
+        ColorTextR.Text = e.R.ToString();
+        ColorSpinG.Value = (float)e.G / byte.MaxValue;
+        ColorSpinG.Color = avColor;
+        ColorTextG.Text = e.G.ToString();
+        ColorSpinB.Value = (float)e.B / byte.MaxValue;
+        ColorSpinB.Color = avColor;
+        ColorTextB.Text = e.B.ToString();
+        ColorSpinA.Value = (float)e.A / byte.MaxValue;
+        ColorSpinA.Color = avColor;
+        ColorTextA.Text = e.A.ToString();
         
         _disableEvents = false;
 
-        ColorWheel.Color = color;
+        ColorWheel.Color = avColor;
     }
 
     private async void MenuNewTextureOptionClicked(object? sender, EventArgs e)
@@ -90,7 +101,7 @@ public partial class MainWindow : Window
 
     private void ColorSpectrum_OnColorChanged(object? sender, ColorChangedEventArgs e)
     {
-        SetPrimaryColor(e.NewColor);
+        Viewport.SetPrimaryColor(new PwColor(e.NewColor));
     }
 
     private void ColorSpinR_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
@@ -98,7 +109,7 @@ public partial class MainWindow : Window
         if (Viewport == null || _disableEvents) return;
         
         byte r = (byte)e.NewValue;
-        SetPrimaryColor((Viewport.PrimaryColor with {R = r}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {R = r});
     }
 
     private void ColorSpinG_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
@@ -106,7 +117,7 @@ public partial class MainWindow : Window
         if (Viewport == null || _disableEvents) return;
         
         byte g = (byte)e.NewValue;
-        SetPrimaryColor((Viewport.PrimaryColor with {G = g}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {G = g});
     }
 
     private void ColorSpinB_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
@@ -114,7 +125,7 @@ public partial class MainWindow : Window
         if (Viewport == null || _disableEvents) return;
         
         byte b = (byte)e.NewValue;
-        SetPrimaryColor((Viewport.PrimaryColor with {B = b}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {B = b});
     }
 
     private void ColorSpinA_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
@@ -122,39 +133,70 @@ public partial class MainWindow : Window
         if (Viewport == null || _disableEvents) return;
         
         byte a = (byte)e.NewValue;
-        SetPrimaryColor((Viewport.PrimaryColor with {A = a}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {A = a});
     }
 
     private void ColorTextR_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextR.Text, out byte r)) return;
         
-        SetPrimaryColor((Viewport.PrimaryColor with {R = r}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {R = r});
     }
 
     private void ColorTextG_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextG.Text, out byte g)) return;
         
-        SetPrimaryColor((Viewport.PrimaryColor with {G = g}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {G = g});
     }
 
     private void ColorTextB_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextB.Text, out byte b)) return;
         
-        SetPrimaryColor((Viewport.PrimaryColor with {B = b}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {B = b});
     }
 
     private void ColorTextA_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextA.Text, out byte a)) return;
         
-        SetPrimaryColor((Viewport.PrimaryColor with {A = a}).ToColor());
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {A = a});
     }
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
         Viewport.Center();
+    }
+
+    private void PixelToolOptionClicked(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new PixelTool());
+    }
+
+    private void SetTool(ViewportTool? tool)
+    {
+        Viewport.SetTool(tool);
+
+        // Update buttons here
+        PixelToolButton.IsChecked = tool is PixelTool;
+        EraserToolButton.IsChecked = tool is EraserTool;
+        ColorPickerTool.IsChecked = tool is ColorPickerTool;
+        FloodFillTool.IsChecked = tool is FloodFillTool;
+    }
+
+    private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new EraserTool());
+    }
+
+    private void ColorPickerTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new ColorPickerTool());
+    }
+
+    private void FloodFillTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new FloodFillTool());
     }
 }
