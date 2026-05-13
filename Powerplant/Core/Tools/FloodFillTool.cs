@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Powerplant.Core.Tools;
 
 public class FloodFillTool : ViewportTool
@@ -12,19 +14,30 @@ public class FloodFillTool : ViewportTool
         FloodFill(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.SecondaryColor);
     }
 
-    void FloodFill(int x, int y, PwColor toReplaceColor, PwColor finalColor)
+    void FloodFill(int startX, int startY, PwColor target, PwColor replacement)
     {
-        if (x < 0 || y < 0 || x >= Bitmap.Width || y >= Bitmap.Height)
+        if (target == replacement)
             return;
-        if (Bitmap.Get(x, y) != toReplaceColor || Bitmap.Get(x, y) == finalColor)
-            return;
-        
-        Bitmap.Set(x, y, finalColor);
-        
-        // The famous infinite shit machine
-        FloodFill(x - 1, y, toReplaceColor, finalColor);
-        FloodFill(x + 1, y, toReplaceColor, finalColor);
-        FloodFill(x, y - 1, toReplaceColor, finalColor);
-        FloodFill(x, y + 1, toReplaceColor, finalColor);
+
+        var stack = new Stack<(int x, int y)>();
+        stack.Push((startX, startY));
+
+        while (stack.Count > 0)
+        {
+            var (x, y) = stack.Pop();
+
+            if (x < 0 || y < 0 || x >= Bitmap.Width || y >= Bitmap.Height)
+                continue;
+
+            if (Bitmap.Get(x, y) != target)
+                continue;
+
+            Bitmap.Set(x, y, replacement);
+
+            stack.Push((x - 1, y));
+            stack.Push((x + 1, y));
+            stack.Push((x, y - 1));
+            stack.Push((x, y + 1));
+        }
     }
 }

@@ -25,6 +25,9 @@ public partial class MainWindow : Window
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
+        
+        Viewport.SetPrimaryColor(PwColor.Black);
+        Viewport.SetSecondaryColor(PwColor.White);
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -183,6 +186,7 @@ public partial class MainWindow : Window
         EraserToolButton.IsChecked = tool is EraserTool;
         ColorPickerTool.IsChecked = tool is ColorPickerTool;
         FloodFillTool.IsChecked = tool is FloodFillTool;
+        RectangleTool.IsChecked = tool is RectangleTool;
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
@@ -198,5 +202,10 @@ public partial class MainWindow : Window
     private void FloodFillTool_OnClick(object? sender, RoutedEventArgs e)
     {
         SetTool(new FloodFillTool());
+    }
+
+    private void RectangleTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new RectangleTool());
     }
 }

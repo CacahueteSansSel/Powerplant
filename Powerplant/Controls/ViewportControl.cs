@@ -31,6 +31,8 @@ public class ViewportControl : Control
     public ViewportBitmap Bitmap => _bitmap;
     public PwColor PrimaryColor { get; private set; } = PwColor.Black;
     public PwColor SecondaryColor { get; private set; } = PwColor.White;
+    public SolidColorBrush PrimaryColorBrush { get; private set; }
+    public SolidColorBrush SecondaryColorBrush { get; private set; }
     public ViewportTool? Tool { get; private set; }
     public event EventHandler<ViewportTool?> OnToolChanged;
     public event EventHandler<PwColor> OnPrimaryColorChanged;
@@ -64,6 +66,7 @@ public class ViewportControl : Control
     public void SetPrimaryColor(PwColor color)
     {
         PrimaryColor = color;
+        PrimaryColorBrush = new SolidColorBrush(color.ToColor());
         
         OnPrimaryColorChanged?.Invoke(this, color);
     }
@@ -71,6 +74,7 @@ public class ViewportControl : Control
     public void SetSecondaryColor(PwColor color)
     {
         SecondaryColor = color;
+        SecondaryColorBrush = new SolidColorBrush(color.ToColor());
         
         OnSecondaryColorChanged?.Invoke(this, color);
     }
@@ -117,8 +121,17 @@ public class ViewportControl : Control
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
+        Point pos = e.GetPosition(this);
+        PointerPointProperties props = e.GetCurrentPoint(this).Properties;
+        
         _dragLastCursorPos = null;
         _dragLastOffset = null;
+        
+        int imgPosX = TransformCoordX(pos.X);
+        int imgPosY = TransformCoordY(pos.Y);
+        
+        if (props.PointerUpdateKind != PointerUpdateKind.MiddleButtonReleased) 
+            Tool?.OnPointerUp(imgPosX, imgPosY);
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs e)
@@ -131,12 +144,14 @@ public class ViewportControl : Control
             ProcessViewportOffsetDrag(pos);
             return;
         }
+
+        int imgPosX = TransformCoordX(pos.X);
+        int imgPosY = TransformCoordY(pos.Y);
+        
+        Tool?.OnPointerMove(imgPosX, imgPosY);
         
         if (Tool == null || !Tool.SupportsHold)
             return;
-
-        int imgPosX = (int)((pos.X - _offset.X) / Zoom);
-        int imgPosY = (int)((pos.Y - _offset.Y) / Zoom);
         
         if (props.IsLeftButtonPressed) Tool?.UsePrimary(imgPosX, imgPosY);
         else if (props.IsRightButtonPressed) Tool?.UseSecondary(imgPosX, imgPosY);
@@ -144,6 +159,46 @@ public class ViewportControl : Control
         
         _bitmap.Sync();
         InvalidateVisual();
+    }
+
+    public int InvertTransformCoordX(double posX)
+    {
+        return (int)Math.Floor(posX * Zoom + _offset.X);
+    }
+
+    public int InvertTransformCoordY(double posY)
+    {
+        return (int)Math.Floor(posY * Zoom + _offset.Y);
+    }
+
+    public int InvertTransformX(double posX)
+    {
+        return (int)Math.Floor(posX * Zoom);
+    }
+
+    public int InvertTransformY(double posY)
+    {
+        return (int)Math.Floor(posY * Zoom);
+    }
+
+    public int TransformCoordX(double posX)
+    {
+        return (int)Math.Floor((posX - _offset.X) / Zoom);
+    }
+
+    public int TransformCoordY(double posY)
+    {
+        return (int)Math.Floor((posY - _offset.Y) / Zoom);
+    }
+
+    public int TransformX(double posX)
+    {
+        return (int)Math.Ceiling(posX / Zoom);
+    }
+
+    public int TransformY(double posY)
+    {
+        return (int)Math.Ceiling(posY / Zoom);
     }
 
     private void ProcessViewportOffsetDrag(Point pos)
@@ -167,9 +222,12 @@ public class ViewportControl : Control
     {
         Point pos = e.GetPosition(this);
         PointerPointProperties props = e.GetCurrentPoint(this).Properties;
-
-        int imgPosX = (int)((pos.X - _offset.X) / Zoom);
-        int imgPosY = (int)((pos.Y - _offset.Y) / Zoom);
+        
+        int imgPosX = TransformCoordX(pos.X);
+        int imgPosY = TransformCoordY(pos.Y);
+        
+        if (!props.IsMiddleButtonPressed) 
+            Tool?.OnPointerDown(imgPosX, imgPosY);
         
         if (props.IsLeftButtonPressed) Tool?.UsePrimary(imgPosX, imgPosY);
         else if (props.IsRightButtonPressed) Tool?.UseSecondary(imgPosX, imgPosY);
@@ -211,14 +269,23 @@ public class ViewportControl : Control
 
         if (renderGrid)
         {
-            for (int y = 0; y < _bitmap.Height; y++)
+            for (int x = 0; x <= _bitmap.Width; x++)
             {
-                for (int x = 0; x < _bitmap.Width; x++)
-                {
-                    Rect pixelRect = new(_offset.X + x * Zoom, _offset.Y + y * Zoom, Zoom, Zoom);
-                    context.DrawRectangle(null, _gridPen, pixelRect);
-                }
+                double px = _offset.X + x * Zoom;
+                context.DrawLine(_gridPen,
+                    new Point(px, _offset.Y),
+                    new Point(px, _offset.Y + _bitmap.Height * Zoom));
+            }
+
+            for (int y = 0; y <= _bitmap.Height; y++)
+            {
+                double py = _offset.Y + y * Zoom;
+                context.DrawLine(_gridPen,
+                    new Point(_offset.X, py),
+                    new Point(_offset.X + _bitmap.Width * Zoom, py));
             }
         }
+        
+        Tool?.Render(context);
     }
 }

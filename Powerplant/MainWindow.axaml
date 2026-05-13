@@ -49,6 +49,11 @@
                              Width="20"
                              Height="20"/>
                     </ToggleButton>
+                    <ToggleButton x:Name="RectangleTool" Width="30" Height="30" ToolTip.Tip="Rectangle" Click="RectangleTool_OnClick">
+                        <Svg Path="/Resources/icons/square.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
                 </StackPanel>
             </Border>
             
