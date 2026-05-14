@@ -40,5 +40,7 @@
       <AvaloniaResource Include="Resources\icons\color_picker.svg" />
       <None Remove="Resources\icons\bucket.svg" />
       <AvaloniaResource Include="Resources\icons\bucket.svg" />
+      <None Remove="Resources\icons\circle.svg" />
+      <AvaloniaResource Include="Resources\icons\circle.svg" />
     </ItemGroup>
 </Project>

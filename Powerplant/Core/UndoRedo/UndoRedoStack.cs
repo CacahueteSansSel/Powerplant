@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Powerplant.Controls;
+using Powerplant.Core.Commands;
 
 namespace Powerplant.Core.UndoRedo;
 
@@ -15,9 +16,10 @@ public class UndoRedoStack
         Viewport = viewport;
     }
 
-    public void Push(Command command, bool clearUndone = true)
+    public void Push(Command command, bool clearUndone = true, bool init = true)
     {
         command.Viewport = Viewport;
+        if (init) command.Init();
         command.Run();
         
         Viewport.Bitmap.Sync();
@@ -45,6 +47,6 @@ public class UndoRedoStack
     {
         if (!_undoneCommands.TryPop(out Command? cmd)) return;
 
-        Push(cmd, false);
+        Push(cmd, false, false);
     }
 }

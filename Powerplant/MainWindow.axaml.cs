@@ -187,6 +187,7 @@ public partial class MainWindow : Window
         ColorPickerTool.IsChecked = tool is ColorPickerTool;
         FloodFillTool.IsChecked = tool is FloodFillTool;
         RectangleTool.IsChecked = tool is RectangleTool;
+        EllipseTool.IsChecked = tool is EllipseTool;
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
@@ -217,5 +218,10 @@ public partial class MainWindow : Window
     private void RedoOptionClicked(object? sender, EventArgs e)
     {
         Viewport.UndoRedoStack.Redo();
+    }
+
+    private void EllipseTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new EllipseTool());
     }
 }

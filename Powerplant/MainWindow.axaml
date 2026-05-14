@@ -60,6 +60,11 @@
                              Width="20"
                              Height="20"/>
                     </ToggleButton>
+                    <ToggleButton x:Name="EllipseTool" Width="30" Height="30" ToolTip.Tip="Ellipse" Click="EllipseTool_OnClick">
+                        <Svg Path="/Resources/icons/circle.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
                 </StackPanel>
             </Border>
             

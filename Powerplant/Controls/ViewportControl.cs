@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Powerplant.Core;
+using Powerplant.Core.Commands;
 using Powerplant.Core.Tools;
 using Powerplant.Core.UndoRedo;
 using Powerplant.FileFormats;

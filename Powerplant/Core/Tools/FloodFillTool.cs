@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Media.Imaging;
+using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
 
 namespace Powerplant.Core.Tools;
@@ -52,31 +53,6 @@ public class FloodFillTool : ViewportTool
             stack.Push((x, y + 1));
         }
         
-        Viewport.RunCommand(new FloodFillCommand(finalPixels, replacement, Viewport.Bitmap.Copy()));
-    }
-
-    class FloodFillCommand : Command
-    {
-        private HashSet<(int x, int y)> _pixelList;
-        private PwColor _newColor;
-        private ViewportBitmap _oldBitmap;
-
-        public FloodFillCommand(HashSet<(int x, int y)> pixelList, PwColor newColor, ViewportBitmap oldBitmap)
-        {
-            _pixelList = pixelList;
-            _newColor = newColor;
-            _oldBitmap = oldBitmap;
-        }
-
-        public override void Run()
-        {
-            foreach (var pixel in _pixelList)
-                Bitmap.Set(pixel.x, pixel.y, _newColor);
-        }
-
-        public override void Undo()
-        {
-            Bitmap.ApplyBitmap(_oldBitmap);
-        }
+        Viewport.RunCommand(new PixelsCommand(finalPixels, replacement));
     }
 }
