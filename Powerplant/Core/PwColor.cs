@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Avalonia.Media;
 using SkiaSharp;
 
@@ -17,6 +18,21 @@ public struct PwColor : IEquatable<PwColor>
     public byte G;
     public byte B;
     public byte A;
+
+    public PwColor(string hex)
+    {
+        if (hex.Length == 6) hex = "FF" + hex;
+
+        string hexA = hex[..2];
+        string hexR = hex[2..4];
+        string hexG = hex[4..6];
+        string hexB = hex[6..];
+
+        byte.TryParse(hexA, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out A);
+        byte.TryParse(hexR, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out R);
+        byte.TryParse(hexG, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out G);
+        byte.TryParse(hexB, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out B);
+    }
 
     public PwColor(Color color) : this(color.R, color.G, color.B, color.A)
     {

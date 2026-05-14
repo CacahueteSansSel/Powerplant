@@ -27,6 +27,8 @@ public partial class MainWindow : Window
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
+        
+        SetTool(new PixelTool());
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -56,6 +58,17 @@ public partial class MainWindow : Window
         ColorSpinA.Value = (float)e.A / byte.MaxValue;
         ColorSpinA.Color = avColor;
         ColorTextA.Text = e.A.ToString();
+
+        ColorSpinH.Color = avColor;
+        ColorTextH.Text = ColorSpinH.Value.ToString("0");
+        ColorSpinS.Color = avColor;
+        ColorTextS.Text = ColorSpinS.Value.ToString("0");
+        ColorSpinV.Color = avColor;
+        ColorTextV.Text = ColorSpinV.Value.ToString("0");
+        
+        HexText.Text = (avColor.A < 255 ? avColor.A.ToString("X2") : "") + avColor.R.ToString("X2") 
+                                                                         + avColor.G.ToString("X2") 
+                                                                         + avColor.B.ToString("X2");
         
         _disableEvents = false;
 
@@ -240,5 +253,52 @@ public partial class MainWindow : Window
         if (result == null) return;
         
         Viewport.RunCommand(new ResizeViewportCommand(result.Width, result.Height, result.Anchor));
+    }
+
+    private void ColorTextH_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        
+    }
+
+    private void ColorTextS_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        
+    }
+
+    private void ColorTextV_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        
+    }
+
+    private void ColorSpinH_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        Viewport.SetPrimaryColor(new PwColor(ColorSpinH.Color));
+    }
+
+    private void ColorSpinS_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        Viewport.SetPrimaryColor(new PwColor(ColorSpinS.Color));
+    }
+
+    private void ColorSpinV_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+        
+        Viewport.SetPrimaryColor(new PwColor(ColorSpinV.Color));
+    }
+
+    private void HexText_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (Viewport == null || _disableEvents) return;
+
+        string hex = HexText.Text.TrimStart('#');
+        
+        if (hex.Length != 6 && hex.Length != 8) return;
+         
+        Viewport.SetPrimaryColor(new PwColor(hex));
     }
 }

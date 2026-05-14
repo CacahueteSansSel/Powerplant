@@ -82,26 +82,57 @@
                         </Border>
                     </Panel>
                     <ColorSpectrum x:Name="ColorWheel" ColorChanged="ColorSpectrum_OnColorChanged" Width="200" Height="150"></ColorSpectrum>
-                    <DockPanel>
-                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextR" TextChanged="ColorTextR_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                        <ColorSlider x:Name="ColorSpinR" ValueChanged="ColorSpinR_OnValueChanged" ColorComponent="Component1" Width="110" DockPanel.Dock="Right"></ColorSlider>
-                        <TextBlock VerticalAlignment="Center">R</TextBlock>
-                    </DockPanel>
-                    <DockPanel>
-                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextG" TextChanged="ColorTextG_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                        <ColorSlider x:Name="ColorSpinG" ValueChanged="ColorSpinG_OnValueChanged" ColorComponent="Component2" Width="110" DockPanel.Dock="Right"></ColorSlider>
-                        <TextBlock VerticalAlignment="Center">G</TextBlock>
-                    </DockPanel>
-                    <DockPanel>
-                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextB" TextChanged="ColorTextB_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                        <ColorSlider x:Name="ColorSpinB" ValueChanged="ColorSpinB_OnValueChanged" ColorComponent="Component3" Width="110" DockPanel.Dock="Right"></ColorSlider>
-                        <TextBlock VerticalAlignment="Center">B</TextBlock>
-                    </DockPanel>
-                    <DockPanel>
-                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextA" TextChanged="ColorTextA_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                        <ColorSlider x:Name="ColorSpinA" ValueChanged="ColorSpinA_OnValueChanged" ColorComponent="Alpha" Width="110" DockPanel.Dock="Right"></ColorSlider>
-                        <TextBlock VerticalAlignment="Center">A</TextBlock>
-                    </DockPanel>
+                    <TabControl Padding="0">
+                        <TabItem Header="RGBA" FontSize="15">
+                            <StackPanel Orientation="Vertical">
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextR" TextChanged="ColorTextR_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinR" ValueChanged="ColorSpinR_OnValueChanged" ColorComponent="Component1" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">R</TextBlock>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextG" TextChanged="ColorTextG_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinG" ValueChanged="ColorSpinG_OnValueChanged" ColorComponent="Component2" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">G</TextBlock>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextB" TextChanged="ColorTextB_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinB" ValueChanged="ColorSpinB_OnValueChanged" ColorComponent="Component3" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">B</TextBlock>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextA" TextChanged="ColorTextA_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinA" ValueChanged="ColorSpinA_OnValueChanged" ColorComponent="Alpha" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">A</TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="HSV" FontSize="15">
+                            <StackPanel Orientation="Vertical">
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextH" IsHitTestVisible="False" TextChanged="ColorTextH_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinH" ValueChanged="ColorSpinH_OnValueChanged" ColorComponent="Component1" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">H</TextBlock>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextS" IsHitTestVisible="False" TextChanged="ColorTextS_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinS" ValueChanged="ColorSpinS_OnValueChanged" ColorComponent="Component2" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">S</TextBlock>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextV" IsHitTestVisible="False" TextChanged="ColorTextV_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
+                                    <ColorSlider x:Name="ColorSpinV" ValueChanged="ColorSpinV_OnValueChanged" ColorComponent="Component3" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBlock VerticalAlignment="Center">V</TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="HEX" FontSize="15">
+                            <DockPanel>
+                                <TextBox DockPanel.Dock="Right" x:Name="HexText" TextChanged="HexText_OnTextChanged" Margin="10 0 0 0" Width="100" MinWidth="0">#FF000000</TextBox>
+                                <TextBlock VerticalAlignment="Center">Hexadecimal</TextBlock>
+                            </DockPanel>
+                        </TabItem>
+                    </TabControl>
                 </StackPanel>
             </Border>
             <Panel IsHitTestVisible="False"></Panel>

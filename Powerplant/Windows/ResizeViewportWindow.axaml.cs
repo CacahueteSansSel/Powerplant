@@ -90,6 +90,11 @@ public partial class ResizeViewportWindow : Window
     }
     
     public record Data(int Width, int Height);
+
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        WidthBox.Focus();
+    }
 }
 
 public record ResizeViewportResult(ResizeAnchor Anchor, int Width, int Height);

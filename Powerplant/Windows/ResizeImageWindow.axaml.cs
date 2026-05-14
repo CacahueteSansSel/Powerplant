@@ -36,6 +36,11 @@ public partial class ResizeImageWindow : Window
     }
     
     public record Data(int Width, int Height);
+
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        WidthBox.Focus();
+    }
 }
 
 public record ResizeImageResult(int Width, int Height, BitmapInterpolationMode InterpolationMode);

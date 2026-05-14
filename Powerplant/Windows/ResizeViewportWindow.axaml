@@ -6,6 +6,7 @@
         mc:Ignorable="d" Width="300" Height="400"
         x:Class="Powerplant.Windows.ResizeViewportWindow"
         Title="Resize Viewport"
+        Loaded="Control_OnLoaded"
         x:DataType="windows:ResizeViewportWindow+Data">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
