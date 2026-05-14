@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Media;
+using Powerplant.Core.UndoRedo;
 
 namespace Powerplant.Core.Tools;
 
@@ -58,16 +59,8 @@ public class RectangleTool : ViewportTool
 
     private void ApplyRectangle(int x, int y, int width, int height)
     {
-        for (int ry = y; ry < y + height; ry++)
-        {
-            for (int rx = x; rx < x + width; rx++)
-            {
-                Bitmap.Set(rx, ry, Viewport.PrimaryColor);
-            }
-        }
-        
-        Bitmap.Sync();
-        Viewport.InvalidateVisual();
+        Viewport.RunCommand(new RectangleCommand(x, y, width, height, 
+            Bitmap.Copy(x, y, width, height), Viewport.PrimaryColor));
     }
 
     public override void OnPointerMove(int cursorX, int cursorY)
@@ -99,5 +92,38 @@ public class RectangleTool : ViewportTool
         );
 
         context.FillRectangle(Viewport.PrimaryColorBrush, previewRect);
+    }
+
+    class RectangleCommand : Command
+    {
+        private int _x, _y, _width, _height;
+        private ViewportBitmap _oldData;
+        private PwColor _color;
+
+        public RectangleCommand(int x, int y, int width, int height, ViewportBitmap oldData, PwColor color)
+        {
+            _x = x;
+            _y = y;
+            _width = width;
+            _height = height;
+            _oldData = oldData;
+            _color = color;
+        }
+
+        public override void Run()
+        {
+            for (int ry = _y; ry < _y + _height; ry++)
+            {
+                for (int rx = _x; rx < _x + _width; rx++)
+                {
+                    Bitmap.Set(rx, ry, _color);
+                }
+            }
+        }
+
+        public override void Undo()
+        {
+            Bitmap.ApplyBitmap(_oldData, _x, _y);
+        }
     }
 }

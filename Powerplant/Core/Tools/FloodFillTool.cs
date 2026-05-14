@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Media.Imaging;
+using Powerplant.Core.UndoRedo;
 
 namespace Powerplant.Core.Tools;
 
@@ -19,8 +23,11 @@ public class FloodFillTool : ViewportTool
         if (target == replacement)
             return;
 
-        var stack = new Stack<(int x, int y)>();
+        Stack<(int x, int y)> stack = new Stack<(int x, int y)>();
         stack.Push((startX, startY));
+
+        HashSet<(int x, int y)> visited = new HashSet<(int x, int y)>();
+        HashSet<(int x, int y)> finalPixels = new HashSet<(int x, int y)>();
 
         while (stack.Count > 0)
         {
@@ -29,15 +36,47 @@ public class FloodFillTool : ViewportTool
             if (x < 0 || y < 0 || x >= Bitmap.Width || y >= Bitmap.Height)
                 continue;
 
+            if (visited.Contains((x, y)))
+                continue;
+
+            visited.Add((x, y));
+
             if (Bitmap.Get(x, y) != target)
                 continue;
 
-            Bitmap.Set(x, y, replacement);
+            finalPixels.Add((x, y));
 
             stack.Push((x - 1, y));
             stack.Push((x + 1, y));
             stack.Push((x, y - 1));
             stack.Push((x, y + 1));
+        }
+        
+        Viewport.RunCommand(new FloodFillCommand(finalPixels, replacement, Viewport.Bitmap.Copy()));
+    }
+
+    class FloodFillCommand : Command
+    {
+        private HashSet<(int x, int y)> _pixelList;
+        private PwColor _newColor;
+        private ViewportBitmap _oldBitmap;
+
+        public FloodFillCommand(HashSet<(int x, int y)> pixelList, PwColor newColor, ViewportBitmap oldBitmap)
+        {
+            _pixelList = pixelList;
+            _newColor = newColor;
+            _oldBitmap = oldBitmap;
+        }
+
+        public override void Run()
+        {
+            foreach (var pixel in _pixelList)
+                Bitmap.Set(pixel.x, pixel.y, _newColor);
+        }
+
+        public override void Undo()
+        {
+            Bitmap.ApplyBitmap(_oldBitmap);
         }
     }
 }

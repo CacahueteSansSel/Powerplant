@@ -18,6 +18,12 @@
                     <NativeMenuItemSeparator />
                 </NativeMenu>
             </NativeMenuItem>
+            <NativeMenuItem Header="Edit">
+                <NativeMenu>
+                    <NativeMenuItem Header="Undo" Gesture="Meta+Z" Click="UndoOptionClicked" />
+                    <NativeMenuItem Header="Redo" Gesture="Meta+Y" Click="RedoOptionClicked" />
+                </NativeMenu>
+            </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
     

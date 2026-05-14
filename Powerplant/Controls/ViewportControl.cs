@@ -12,6 +12,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Powerplant.Core;
 using Powerplant.Core.Tools;
+using Powerplant.Core.UndoRedo;
 using Powerplant.FileFormats;
 using Path = Avalonia.Controls.Shapes.Path;
 
@@ -34,6 +35,7 @@ public class ViewportControl : Control
     public SolidColorBrush PrimaryColorBrush { get; private set; }
     public SolidColorBrush SecondaryColorBrush { get; private set; }
     public ViewportTool? Tool { get; private set; }
+    public UndoRedoStack UndoRedoStack { get; private set; }
     public event EventHandler<ViewportTool?> OnToolChanged;
     public event EventHandler<PwColor> OnPrimaryColorChanged;
     public event EventHandler<PwColor> OnSecondaryColorChanged;
@@ -52,8 +54,13 @@ public class ViewportControl : Control
         _bitmap = new ViewportBitmap(16, 16);
         _bitmap.Sync();
 
+        UndoRedoStack = new UndoRedoStack(this);
+
         RegisterEvents();
     }
+
+    public void RunCommand(Command command)
+        => UndoRedoStack.Push(command);
 
     public void SetTool(ViewportTool? tool)
     {

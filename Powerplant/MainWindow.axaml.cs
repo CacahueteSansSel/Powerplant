@@ -208,4 +208,14 @@ public partial class MainWindow : Window
     {
         SetTool(new RectangleTool());
     }
+
+    private void UndoOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.UndoRedoStack.Undo();
+    }
+
+    private void RedoOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.UndoRedoStack.Redo();
+    }
 }

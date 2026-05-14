@@ -26,6 +26,48 @@ public class ViewportBitmap
         Fill(PwColor.Transparent);
     }
     
+    public void ApplyBitmap(ViewportBitmap source, int destX, int destY)
+    {
+        for (int y = 0; y < source.Height; y++)
+        {
+            for (int x = 0; x < source.Width; x++)
+            {
+                Set(destX + x, destY + y, source.Get(x, y));
+            }
+        }
+    }
+
+    public void ApplyBitmap(ViewportBitmap source)
+    {
+        if (source.Width != Width || source.Height != Height)
+            throw new ArgumentException("Source bitmap must have the same dimensions as the target bitmap.");
+        
+        Array.Copy(source._buffer, _buffer, source._buffer.Length);
+    }
+    
+    public ViewportBitmap Copy()
+    {
+        ViewportBitmap copy = new ViewportBitmap(Width, Height);
+        Array.Copy(_buffer, copy._buffer, _buffer.Length);
+        
+        return copy;
+    }
+    
+    public ViewportBitmap Copy(int x, int y, int width, int height)
+    {
+        ViewportBitmap cutBitmap = new ViewportBitmap(width, height);
+
+        for (int py = 0; py < height; py++)
+        {
+            for (int px = 0; px < width; px++)
+            {
+                cutBitmap.Set(px, py, Get(x + px, y + py));
+            }
+        }
+
+        return cutBitmap;
+    }
+    
     public void Fill(PwColor color)
     {
         Array.Fill(_buffer, color);
