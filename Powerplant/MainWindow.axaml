@@ -22,6 +22,9 @@
                 <NativeMenu>
                     <NativeMenuItem Header="Undo" Gesture="Meta+Z" Click="UndoOptionClicked" />
                     <NativeMenuItem Header="Redo" Gesture="Meta+Y" Click="RedoOptionClicked" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Header="Resize Image" Gesture="Meta+R" Click="ResizeImageOptionClicked" />
+                    <NativeMenuItem Header="Resize Canvas" Gesture="Meta+Shift+R" Click="ResizeViewportOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>

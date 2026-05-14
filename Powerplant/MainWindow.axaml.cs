@@ -6,8 +6,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
+using Powerplant.Core.Commands;
 using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
@@ -25,9 +27,6 @@ public partial class MainWindow : Window
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
-        
-        Viewport.SetPrimaryColor(PwColor.Black);
-        Viewport.SetSecondaryColor(PwColor.White);
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -223,5 +222,23 @@ public partial class MainWindow : Window
     private void EllipseTool_OnClick(object? sender, RoutedEventArgs e)
     {
         SetTool(new EllipseTool());
+    }
+
+    private async void ResizeImageOptionClicked(object? sender, EventArgs e)
+    {
+        ResizeImageResult? result = await new ResizeImageWindow(Viewport.Bitmap.Width, Viewport.Bitmap.Height)
+            .ShowDialog<ResizeImageResult?>(this);
+        if (result == null) return;
+        
+        Viewport.RunCommand(new ResizeImageCommand(result.Width, result.Height, result.InterpolationMode));
+    }
+
+    private async void ResizeViewportOptionClicked(object? sender, EventArgs e)
+    {
+        ResizeViewportResult? result = await new ResizeViewportWindow(Viewport.Bitmap.Width, Viewport.Bitmap.Height)
+            .ShowDialog<ResizeViewportResult?>(this);
+        if (result == null) return;
+        
+        Viewport.RunCommand(new ResizeViewportCommand(result.Width, result.Height, result.Anchor));
     }
 }

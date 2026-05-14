@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Media;
+using SkiaSharp;
 
 namespace Powerplant.Core;
 
@@ -18,6 +19,11 @@ public struct PwColor : IEquatable<PwColor>
     public byte A;
 
     public PwColor(Color color) : this(color.R, color.G, color.B, color.A)
+    {
+        
+    }
+
+    public PwColor(SKColor color) : this(color.Red, color.Green, color.Blue, color.Alpha)
     {
         
     }

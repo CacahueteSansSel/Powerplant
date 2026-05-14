@@ -4,25 +4,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:Powerplant.Windows"
         mc:Ignorable="d" Width="300" Height="400"
-        x:Class="Powerplant.Windows.NewTextureWindow"
-        Foreground="Black"
-        x:DataType="windows:NewTextureWindow+Data"
-        Loaded="Control_OnLoaded"
-        Title="New Texture">
+        x:Class="Powerplant.Windows.ResizeImageWindow"
+        Title="Stretch Image"
+        x:DataType="windows:ResizeImageWindow+Data">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
             <Button Click="CancelButtonClicked">Cancel</Button>
-            <Button Click="CreateTextureButtonClicked" IsDefault="True">Create texture</Button>
+            <Button Click="CreateTextureButtonClicked" IsDefault="True">Stretch</Button>
         </StackPanel>
         <StackPanel Spacing="10">
-            <TextBlock FontWeight="Bold" Margin="0 0 0 10">Create a new texture</TextBlock>
+            <TextBlock FontWeight="Bold" Margin="0 0 0 10">Stretch Image</TextBlock>
             <DockPanel>
-                <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="200" Value="{Binding Width}"></NumericUpDown>
-                <TextBlock VerticalAlignment="Center">Width</TextBlock>
+                <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="170" Value="{Binding Width}"></NumericUpDown>
+                <TextBlock VerticalAlignment="Center">New width</TextBlock>
             </DockPanel>
             <DockPanel>
-                <NumericUpDown DockPanel.Dock="Right" Width="200" Value="{Binding Height}"></NumericUpDown>
-                <TextBlock VerticalAlignment="Center">Height</TextBlock>
+                <NumericUpDown DockPanel.Dock="Right" Width="170" Value="{Binding Height}"></NumericUpDown>
+                <TextBlock VerticalAlignment="Center">New height</TextBlock>
             </DockPanel>
         </StackPanel>
     </DockPanel>

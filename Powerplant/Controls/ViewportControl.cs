@@ -95,6 +95,14 @@ public class ViewportControl : Control
         Center();
     }
 
+    public void SetBitmap(ViewportBitmap bitmap)
+    {
+        _bitmap = bitmap;
+        _bitmap.Sync();
+        
+        Center();
+    }
+
     public void LoadTexture(string filename)
     {
         FileFormatBase? ff = FileFormatManager.GetByExtension(System.IO.Path.GetExtension(filename).TrimStart('.'));

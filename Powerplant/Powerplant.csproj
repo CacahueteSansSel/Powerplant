@@ -43,4 +43,11 @@
       <None Remove="Resources\icons\circle.svg" />
       <AvaloniaResource Include="Resources\icons\circle.svg" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Windows\ResizeImageWindow.axaml.cs">
+        <DependentUpon>ResizeImageWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

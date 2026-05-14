@@ -13,8 +13,6 @@ public partial class NewTextureWindow : Window
         InitializeComponent();
 
         DataContext = new Data(16, 16);
-
-        WidthBox.Focus();
     }
 
     private void CancelButtonClicked(object? sender, RoutedEventArgs e)
@@ -30,4 +28,9 @@ public partial class NewTextureWindow : Window
     }
 
     public record Data(int Width, int Height);
+
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        WidthBox.Focus();
+    }
 }
