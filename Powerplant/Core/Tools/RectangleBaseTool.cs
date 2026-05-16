@@ -27,6 +27,9 @@ public abstract class RectangleBaseTool : ViewportTool
     {
         _isDrawing = true;
         
+        if (cursorX < 0 || cursorY < 0 || cursorX >= Bitmap.Width || cursorY >= Bitmap.Height)
+            return;
+        
         _initialCursorX = cursorX;
         _initialCursorY = cursorY;
     }
@@ -36,7 +39,8 @@ public abstract class RectangleBaseTool : ViewportTool
         if (!_isDrawing) return;
         _isDrawing = false;
         
-        Apply(_x, _y, _width, _height);
+        if (cursorX >= 0 || cursorY >= 0 || cursorX < Bitmap.Width || cursorY < Bitmap.Height)
+            Apply(_x, _y, _width, _height);
 
         _x = 0;
         _y = 0;

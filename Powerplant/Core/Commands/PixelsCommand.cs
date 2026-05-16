@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace Powerplant.Core.Commands;
 
@@ -11,6 +13,12 @@ public class PixelsCommand : Command
     public PixelsCommand(HashSet<(int x, int y)> pixelList, PwColor newColor)
     {
         _pixelList = pixelList;
+        _newColor = newColor;
+    }
+
+    public PixelsCommand(Vector2[] pixels, PwColor newColor)
+    {
+        _pixelList = new HashSet<(int x, int y)>(pixels.Select(p => ((int)p.X, (int)p.Y)));
         _newColor = newColor;
     }
 

@@ -7,11 +7,21 @@ public class EraserTool : ViewportTool
 {
     public override void UsePrimary(int cursorX, int cursorY)
     {
+        if (Bitmap.Get(cursorX, cursorY).A == 0)
+            return;
+        if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
+            return;
+        
         Viewport.RunCommand(new EraserToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY)));
     }
 
     public override void UseSecondary(int cursorX, int cursorY)
     {
+        if (Bitmap.Get(cursorX, cursorY).A == 0)
+            return;
+        if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
+            return;
+        
         Viewport.RunCommand(new EraserToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY)));
     }
 

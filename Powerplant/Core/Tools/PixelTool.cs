@@ -9,6 +9,8 @@ public class PixelTool : ViewportTool
     {
         if (Bitmap.Get(cursorX, cursorY) == Viewport.PrimaryColor)
             return;
+        if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
+            return;
         
         Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.PrimaryColor));
     }
@@ -16,6 +18,8 @@ public class PixelTool : ViewportTool
     public override void UseSecondary(int cursorX, int cursorY)
     {
         if (Bitmap.Get(cursorX, cursorY) == Viewport.SecondaryColor)
+            return;
+        if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
             return;
         
         Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.SecondaryColor));

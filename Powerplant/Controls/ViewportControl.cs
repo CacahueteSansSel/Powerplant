@@ -28,6 +28,9 @@ public class ViewportControl : Control
     private Vector2 _offset;
     private Point? _dragLastCursorPos;
     private Vector2? _dragLastOffset;
+    private StreamGeometry? _selectionGeometry;
+    private IBrush _selectionBrush;
+    private IPen _selectionPen;
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
@@ -35,8 +38,11 @@ public class ViewportControl : Control
     public PwColor SecondaryColor { get; private set; } = PwColor.White;
     public SolidColorBrush PrimaryColorBrush { get; private set; }
     public SolidColorBrush SecondaryColorBrush { get; private set; }
+    public IBrush? SelectionBrush => _selectionBrush;
+    public IPen? SelectionPen => _selectionPen;
     public ViewportTool? Tool { get; private set; }
     public UndoRedoStack UndoRedoStack { get; private set; }
+    public PixelSelection Selection { get; private set; } = PixelSelection.Empty;
     public event EventHandler<ViewportTool?> OnToolChanged;
     public event EventHandler<PwColor> OnPrimaryColorChanged;
     public event EventHandler<PwColor> OnSecondaryColorChanged;
@@ -51,6 +57,8 @@ public class ViewportControl : Control
 
         _blackPen = new Pen(0xFF000000);
         _gridPen = new Pen(0xFFAAAAAA);
+        _selectionBrush = new SolidColorBrush(0x77FFFFFF);
+        _selectionPen = new Pen((uint)0xFF000000, 1, DashStyle.Dash);
         
         _bitmap = new ViewportBitmap(16, 16);
         _bitmap.Sync();
@@ -62,6 +70,40 @@ public class ViewportControl : Control
 
     public void RunCommand(Command command)
         => UndoRedoStack.Push(command);
+
+    public void SetSelection(PixelSelection selection)
+    {
+        Selection = selection;
+        
+        InvalidateVisual();
+    }
+
+    public void ClearSelection() 
+        => SetSelection(PixelSelection.Empty);
+
+    private void BuildSelectionGeometry()
+    {
+        _selectionGeometry = new StreamGeometry();
+
+        using StreamGeometryContext ctx = _selectionGeometry.Open();
+        
+        foreach (Vector2 pixel in Selection.Pixels)
+        {
+            Rect r = new Rect(
+                _offset.X + pixel.X * Zoom,
+                _offset.Y + pixel.Y * Zoom,
+                Zoom,
+                Zoom);
+
+            ctx.BeginFigure(r.TopLeft);
+
+            ctx.LineTo(r.TopRight);
+            ctx.LineTo(r.BottomRight);
+            ctx.LineTo(r.BottomLeft);
+
+            ctx.EndFigure(true);
+        }
+    }
 
     public void SetTool(ViewportTool? tool)
     {
@@ -133,6 +175,34 @@ public class ViewportControl : Control
         PointerPressed += OnPointerPressed;
         PointerMoved += OnPointerMoved;
         PointerReleased += OnPointerReleased;
+        KeyDown += OnKeyDown;
+    }
+
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Escape:
+                ClearSelection();
+                break;
+        }
+
+        if (!Selection.IsEmpty)
+        {
+            switch (e.Key)
+            {
+                case Key.Delete:
+                case Key.Back:
+                    ClearSelectionOnImage(true);
+                    break;
+            }
+        }
+    }
+
+    private void ClearSelectionOnImage(bool clearSelection = false)
+    {
+        RunCommand(new PixelsCommand(Selection.Pixels, PwColor.Transparent));
+        if (clearSelection) ClearSelection();
     }
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -300,6 +370,12 @@ public class ViewportControl : Control
                     new Point(_offset.X, py),
                     new Point(_offset.X + _bitmap.Width * Zoom, py));
             }
+        }
+        
+        if (!Selection.IsEmpty)
+        {
+            BuildSelectionGeometry();
+            context.DrawGeometry(_selectionBrush, _selectionPen, _selectionGeometry);
         }
         
         Tool?.Render(context);

@@ -33,7 +33,13 @@ public class EllipseTool : RectangleBaseTool
 
                 double distance = dx * dx + dy * dy;
 
-                if (distance <= 1.0) set.Add((px, py));
+                if (distance <= 1.0)
+                {
+                    if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(px, py))
+                        continue;
+                    
+                    set.Add((px, py));
+                }
             }
         }
 

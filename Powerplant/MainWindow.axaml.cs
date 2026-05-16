@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -200,6 +201,7 @@ public partial class MainWindow : Window
         FloodFillTool.IsChecked = tool is FloodFillTool;
         RectangleTool.IsChecked = tool is RectangleTool;
         EllipseTool.IsChecked = tool is EllipseTool;
+        RectSelectTool.IsChecked = tool is SelectionRectangleTool;
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
@@ -300,5 +302,10 @@ public partial class MainWindow : Window
         if (hex.Length != 6 && hex.Length != 8) return;
          
         Viewport.SetPrimaryColor(new PwColor(hex));
+    }
+
+    private void RectSelectTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new SelectionRectangleTool());
     }
 }

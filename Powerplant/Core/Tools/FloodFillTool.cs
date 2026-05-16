@@ -36,6 +36,8 @@ public class FloodFillTool : ViewportTool
 
             if (x < 0 || y < 0 || x >= Bitmap.Width || y >= Bitmap.Height)
                 continue;
+            if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(x, y))
+                continue;
 
             if (visited.Contains((x, y)))
                 continue;

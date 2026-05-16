@@ -42,6 +42,8 @@
       <AvaloniaResource Include="Resources\icons\bucket.svg" />
       <None Remove="Resources\icons\circle.svg" />
       <AvaloniaResource Include="Resources\icons\circle.svg" />
+      <None Remove="Resources\icons\select.svg" />
+      <AvaloniaResource Include="Resources\icons\select.svg" />
     </ItemGroup>
 
     <ItemGroup>

@@ -68,6 +68,11 @@
                              Width="20"
                              Height="20"/>
                     </ToggleButton>
+                    <ToggleButton x:Name="RectSelectTool" Width="30" Height="30" ToolTip.Tip="Rect Select" Click="RectSelectTool_OnClick">
+                        <Svg Path="/Resources/icons/select.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
                 </StackPanel>
             </Border>
             

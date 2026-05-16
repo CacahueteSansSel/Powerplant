@@ -49,6 +49,9 @@ public class RectangleTool : RectangleBaseTool
             {
                 for (int rx = _x; rx < _x + _width; rx++)
                 {
+                    if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(rx, ry))
+                        continue;
+                    
                     Bitmap.Set(rx, ry, _color);
                 }
             }
