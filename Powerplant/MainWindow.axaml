@@ -10,6 +10,11 @@
         Title="Powerplant">
     <NativeMenu.Menu>
         <NativeMenu>
+            <NativeMenuItem Header="Powerplant">
+                <NativeMenu>
+                    <NativeMenuItem Header="About" Click="AboutMenuOptionClicked" />
+                </NativeMenu>
+            </NativeMenuItem>
             <NativeMenuItem Header="File">
                 <NativeMenu>
                     <NativeMenuItem Header="New Texture" Gesture="Meta+N" Click="MenuNewTextureOptionClicked" />

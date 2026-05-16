@@ -308,4 +308,9 @@ public partial class MainWindow : Window
     {
         SetTool(new SelectionRectangleTool());
     }
+
+    private void AboutMenuOptionClicked(object? sender, EventArgs e)
+    {
+        new AboutWindow().ShowDialog(this);
+    }
 }

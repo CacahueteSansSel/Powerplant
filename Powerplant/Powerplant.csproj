@@ -44,6 +44,10 @@
       <AvaloniaResource Include="Resources\icons\circle.svg" />
       <None Remove="Resources\icons\select.svg" />
       <AvaloniaResource Include="Resources\icons\select.svg" />
+      <None Remove="Resources\logos\powerplant.png" />
+      <AvaloniaResource Include="Resources\logos\powerplant.png" />
+      <None Remove="Resources\logos\powerplant.svg" />
+      <AvaloniaResource Include="Resources\logos\powerplant.svg" />
     </ItemGroup>
 
     <ItemGroup>
