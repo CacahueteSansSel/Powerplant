@@ -9,6 +9,8 @@ namespace Powerplant.Core.Tools;
 
 public class EllipseTool : RectangleBaseTool
 {
+    public override string Name => "Draw Ellipse";
+    
     public EllipseTool()
     {
         

@@ -5,6 +5,8 @@ namespace Powerplant.Core.Tools;
 
 public class PixelTool : ViewportTool
 {
+    public override string Name => "Pencil";
+    
     public override void UsePrimary(int cursorX, int cursorY)
     {
         if (Bitmap.Get(cursorX, cursorY) == Viewport.PrimaryColor)

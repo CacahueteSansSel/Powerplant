@@ -5,6 +5,8 @@ namespace Powerplant.Core.Tools;
 
 public class DebugTool : ViewportTool
 {
+    public override string Name => "Debug Tool";
+    
     public override void UsePrimary(int cursorX, int cursorY)
     {
         Console.WriteLine($"UsePrimary {cursorX} {cursorY}");

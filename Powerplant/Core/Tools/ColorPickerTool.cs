@@ -5,6 +5,8 @@ namespace Powerplant.Core.Tools;
 
 public class ColorPickerTool : ViewportTool
 {
+    public override string Name => "Color Picker";
+
     public override void UsePrimary(int cursorX, int cursorY)
     {
         Viewport.RunCommand(new ColorPickerCommand(Viewport.PrimaryColor, Bitmap.Get(cursorX, cursorY), false));

@@ -200,6 +200,19 @@ public partial class MainWindow : Window
     {
         Viewport.SetTool(tool);
 
+        ToolOptionsBar.IsVisible = tool != null;
+        ToolNameText.Text = tool?.Name;
+
+        if (ToolOptionsBar.IsVisible)
+        {
+            Control? toolControl = tool.ToolSettingsControl;
+            
+            ToolSettingsControlPanel.Children.Clear();
+            
+            if (toolControl != null)
+                ToolSettingsControlPanel.Children.Add(toolControl);
+        }
+
         // Update buttons here
         PixelToolButton.IsChecked = tool is PixelTool;
         EraserToolButton.IsChecked = tool is EraserTool;

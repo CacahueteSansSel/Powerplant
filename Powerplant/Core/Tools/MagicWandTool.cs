@@ -10,6 +10,8 @@ namespace Powerplant.Core.Tools;
 
 public class MagicWandTool : ViewportTool
 {
+    public override string Name => "Magic Wand Selection";
+    
     public override void UsePrimary(int cursorX, int cursorY)
     {
         MagicWand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY));

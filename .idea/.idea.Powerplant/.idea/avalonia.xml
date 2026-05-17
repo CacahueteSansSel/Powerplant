@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="Powerplant/App.axaml" value="Powerplant/Powerplant.csproj" />
+        <entry key="Powerplant/Controls/ToolsSettings/DrawRectangleToolSettings.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/MainWindow.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Styles/PowerplantStyles.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Windows/AboutWindow.axaml" value="Powerplant/Powerplant.csproj" />

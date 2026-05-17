@@ -9,6 +9,8 @@ namespace Powerplant.Core.Tools;
 
 public class FloodFillTool : ViewportTool
 {
+    public override string Name => "Flood Fill";
+    
     public override void UsePrimary(int cursorX, int cursorY)
     {
         FloodFill(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.PrimaryColor);

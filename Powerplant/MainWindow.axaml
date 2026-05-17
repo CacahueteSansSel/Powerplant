@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Powerplant.Controls"
         xmlns:powerplant="clr-namespace:Powerplant"
+        xmlns:toolsSettings="clr-namespace:Powerplant.Controls.ToolsSettings"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Powerplant.MainWindow"
         Loaded="Control_OnLoaded"
@@ -42,6 +43,14 @@
         </Grid>
 
         <DockPanel>
+            <Border DockPanel.Dock="Top" x:Name="ToolOptionsBar" Classes="pw-container" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock x:Name="ToolNameText" VerticalAlignment="Center">Tool Name</TextBlock>
+                    <Panel x:Name="ToolSettingsControlPanel">
+                    </Panel>
+                </StackPanel>
+            </Border>
+            
             <Border DockPanel.Dock="Left" VerticalAlignment="Top" Classes="pw-container">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <StackPanel Orientation="Vertical" Spacing="5">

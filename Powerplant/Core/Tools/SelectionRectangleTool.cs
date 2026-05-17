@@ -8,6 +8,8 @@ namespace Powerplant.Core.Tools;
 
 public class SelectionRectangleTool : RectangleBaseTool
 {
+    public override string Name => "Rectangle Selection";
+    
     public SelectionRectangleTool()
     {
         

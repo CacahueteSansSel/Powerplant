@@ -14,6 +14,8 @@ public class MoveSelectionTool : ViewportTool
     int _initialX, _initialY;
     int _deltaX, _deltaY;
     
+    public override string Name => "Move Selection";
+    
     public override void UsePrimary(int cursorX, int cursorY)
     {
         
