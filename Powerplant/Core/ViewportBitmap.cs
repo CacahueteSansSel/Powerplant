@@ -94,7 +94,12 @@ public class ViewportBitmap
     }
 
     public PwColor Get(int x, int y)
-        => _buffer[y * Width + x];
+    {
+        if (x < 0 || y < 0 || x >= Width || y >= Height)
+            return PwColor.Transparent;
+        
+        return _buffer[y * Width + x];
+    }
 
     public void Set(int x, int y, PwColor color)
     {

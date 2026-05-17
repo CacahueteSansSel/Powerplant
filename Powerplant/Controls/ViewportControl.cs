@@ -47,7 +47,9 @@ public class ViewportControl : Control
     public event EventHandler<PwColor> OnPrimaryColorChanged;
     public event EventHandler<PwColor> OnSecondaryColorChanged;
     public event EventHandler<ViewportBitmap> OnBitmapChanged;
-    
+
+    public StreamGeometry? SelectionGeometry => _selectionGeometry;
+
     public ViewportControl()
     {
         RenderOptions.SetBitmapInterpolationMode(

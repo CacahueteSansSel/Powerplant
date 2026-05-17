@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Avalonia;
+using Avalonia.Media;
 using Powerplant.Core.Commands;
 using Tmds.DBus.Protocol;
 
@@ -52,6 +54,20 @@ public class MoveSelectionTool : ViewportTool
         
         _deltaX = cursorX - _initialX;
         _deltaY = cursorY - _initialY;
+    }
+
+    public override void Render(DrawingContext context)
+    {
+        if (!_isMoving) return;
+        if (Viewport.SelectionGeometry == null) return;
+
+        Matrix matrix = Matrix.Identity * Matrix.CreateTranslation(Viewport.InvertTransformX(_deltaX), 
+            Viewport.InvertTransformY(_deltaY));
+        
+        using (DrawingContext.PushedState ctx = context.PushTransform(matrix))
+        {
+            context.DrawGeometry(Viewport.SelectionBrush, Viewport.SelectionPen, Viewport.SelectionGeometry);
+        }
     }
 
     class MovePixelsCommand : Command
