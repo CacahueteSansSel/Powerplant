@@ -15,7 +15,7 @@
             <TextBlock TextAlignment="Center">Copyright © Cacahuète Dev and Contributors, 2026</TextBlock>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom">
-            <Button HorizontalAlignment="Right" Click="Button_OnClick">Close</Button>
+            <Button HorizontalAlignment="Right" Click="Button_OnClick" Classes="primary">Close</Button>
         </StackPanel>
         <Panel></Panel>
     </DockPanel>

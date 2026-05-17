@@ -5,8 +5,18 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources
+                    x:Key="Dark"
+                    Accent="#7BA058"/>
+                <ColorPaletteResources
+                    x:Key="Light"
+                    Accent="#7BA058"/>
+            </FluentTheme.Palettes>
+        </FluentTheme>
         
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
+        <StyleInclude Source="avares://Powerplant/Styles/PowerplantStyles.axaml"/>
     </Application.Styles>
 </Application>

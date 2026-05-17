@@ -41,7 +41,7 @@
         </Grid>
         
         <DockPanel>
-            <Border DockPanel.Dock="Left" Background="#DDEFEFEF" VerticalAlignment="Top" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#FFBBBBBB" CornerRadius="8">
+            <Border DockPanel.Dock="Left" VerticalAlignment="Top" Classes="pw-container">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <ToggleButton x:Name="PixelToolButton" Width="30" Height="30" ToolTip.Tip="Pencil" Click="PixelToolOptionClicked">
                         <Svg Path="/Resources/icons/pencil.svg"
@@ -81,7 +81,7 @@
                 </StackPanel>
             </Border>
             
-            <Border DockPanel.Dock="Right" Background="#DDEFEFEF" VerticalAlignment="Top" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#FFBBBBBB" CornerRadius="8">
+            <Border DockPanel.Dock="Right" VerticalAlignment="Top" Classes="pw-container">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <Panel>
                         <Border x:Name="SecondaryColorCell" Background="White" Margin="10 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" BorderThickness="2" BorderBrush="Black">

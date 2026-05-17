@@ -1,0 +1,110 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Spacing="10">
+                <Button Classes="primary">Primary Button</Button>
+                <Button>Standard Button</Button>
+                <Border DockPanel.Dock="Left" Classes="pw-container" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical" Spacing="10" Classes="pw-container">
+                        <ToggleButton x:Name="PixelToolButton" IsChecked="True" Width="30" Height="30" ToolTip.Tip="Pencil">
+                            <Svg Path="/Resources/icons/pencil.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="EraserToolButton" Width="30" Height="30" ToolTip.Tip="Eraser">
+                            <Svg Path="/Resources/icons/eraser.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="ColorPickerTool" Width="30" Height="30" ToolTip.Tip="Color picker">
+                            <Svg Path="/Resources/icons/color_picker.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="FloodFillTool" Width="30" Height="30" ToolTip.Tip="Bucket fill">
+                            <Svg Path="/Resources/icons/bucket.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="RectangleTool" Width="30" Height="30" ToolTip.Tip="Rectangle">
+                            <Svg Path="/Resources/icons/square.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="EllipseTool" Width="30" Height="30" ToolTip.Tip="Ellipse">
+                            <Svg Path="/Resources/icons/circle.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="RectSelectTool" Width="30" Height="30" ToolTip.Tip="Rect Select">
+                            <Svg Path="/Resources/icons/select.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+    <Style Selector="Border.pw-container">
+        <Setter Property="Background" Value="#DDFFFFFF" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="#FF7BA058" />
+        <Setter Property="CornerRadius" Value="14" />
+    </Style>
+    
+    <Style Selector="Button.primary">
+        <Setter Property="CornerRadius" Value="6"></Setter>
+        <Setter Property="Background" Value="#FF7BA058"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+        
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.5"></BrushTransition>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+        <Setter Property="CornerRadius" Value="6"></Setter>
+        <Setter Property="Background" Value="#FF97C969"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+        
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.5"></BrushTransition>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="#658546"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+        
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.5"></BrushTransition>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button">
+        <Setter Property="CornerRadius" Value="6"></Setter>
+        <Setter Property="Background" Value="#22000000"></Setter>
+    </Style>
+    
+    <Style Selector="Button:pressed">
+        <Setter Property="RenderTransform" Value=""></Setter>
+        <Setter Property="Background" Value="#05000000"></Setter>
+    </Style>
+    
+    <Style Selector="ToggleButton">
+        <Setter Property="CornerRadius" Value="6"></Setter>
+        <Setter Property="Background" Value="#22000000"></Setter>
+    </Style>
+</Styles>
