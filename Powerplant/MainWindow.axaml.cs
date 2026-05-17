@@ -209,6 +209,7 @@ public partial class MainWindow : Window
         EllipseTool.IsChecked = tool is EllipseTool;
         RectSelectTool.IsChecked = tool is SelectionRectangleTool;
         MoveSelectionTool.IsChecked = tool is MoveSelectionTool;
+        MagicWandTool.IsChecked = tool is MagicWandTool;
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
@@ -324,5 +325,10 @@ public partial class MainWindow : Window
     private void MoveSelectionTool_OnClick(object? sender, RoutedEventArgs e)
     {
         SetTool(new MoveSelectionTool());
+    }
+
+    private void MagicWandTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new MagicWandTool());
     }
 }

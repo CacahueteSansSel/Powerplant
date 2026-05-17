@@ -24,6 +24,8 @@ public class MoveSelectionTool : ViewportTool
 
     public override void OnPointerDown(int cursorX, int cursorY)
     {
+        if (Viewport.Selection.IsEmpty) return;
+        
         if (_isMoving) return;
         _isMoving = true;
         
@@ -35,6 +37,8 @@ public class MoveSelectionTool : ViewportTool
     {
         if (!_isMoving) return;
         _isMoving = false;
+        
+        if (Viewport.Selection.IsEmpty) return;
         
         _deltaX = cursorX - _initialX;
         _deltaY = cursorY - _initialY;
@@ -55,6 +59,7 @@ public class MoveSelectionTool : ViewportTool
         private ViewportBitmap _oldBitmap;
         private Vector2[] _pixels;
         private Vector2 _delta;
+        private PixelSelection _oldSelection;
         
         public MovePixelsCommand(Vector2[] pixels, Vector2 delta)
         {
@@ -64,6 +69,7 @@ public class MoveSelectionTool : ViewportTool
 
         public override void Init()
         {
+            _oldSelection = Viewport.Selection;
             _oldBitmap = Bitmap.Copy();
         }
 
@@ -79,14 +85,16 @@ public class MoveSelectionTool : ViewportTool
             
             foreach (KeyValuePair<Vector2, PwColor> kv in colors)
                 Bitmap.Set((int)(kv.Key.X + _delta.X), (int)(kv.Key.Y + _delta.Y), kv.Value);
-            
-            Viewport.Selection.Offset(_delta);
-            Viewport.InvalidateVisual();
+
+            PixelSelection offsetSelection = Viewport.Selection.Copy();
+            offsetSelection.Offset(_delta);
+            Viewport.SetSelection(offsetSelection);
         }
 
         public override void Undo()
         {
             Viewport.SetBitmap(_oldBitmap);
+            Viewport.SetSelection(_oldSelection);
         }
     }
 }

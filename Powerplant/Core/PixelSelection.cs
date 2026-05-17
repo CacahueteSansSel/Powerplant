@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -6,7 +7,7 @@ namespace Powerplant.Core;
 
 public class PixelSelection
 {
-    public static PixelSelection Empty => new([]);
+    public static PixelSelection Empty => new(Array.Empty<Vector2>());
     
     public static PixelSelection Rectangle(int x, int y, int width, int height)
     {
@@ -40,6 +41,14 @@ public class PixelSelection
     {
         _pixels = new List<Vector2>(pixels);
     }
+
+    private PixelSelection(List<Vector2> pixels)
+    {
+        _pixels = pixels;
+    }
+
+    public PixelSelection Copy()
+        => new(_pixels);
 
     public void Add(Vector2 pixel)
     {

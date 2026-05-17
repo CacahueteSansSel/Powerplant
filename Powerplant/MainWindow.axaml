@@ -19,7 +19,8 @@
                 <NativeMenu>
                     <NativeMenuItem Header="New Texture" Gesture="Meta+N" Click="MenuNewTextureOptionClicked" />
                     <NativeMenuItem Header="Open Texture" Gesture="Meta+O" Click="MenuOpenTextureOptionClicked" />
-                    <NativeMenuItem Header="Save Texture As..." Gesture="Meta+Shift+S" Click="MenuSaveTextureOptionClicked" />
+                    <NativeMenuItem Header="Save Texture As..." Gesture="Meta+Shift+S"
+                                    Click="MenuSaveTextureOptionClicked" />
                     <NativeMenuItemSeparator />
                 </NativeMenu>
             </NativeMenuItem>
@@ -34,90 +35,133 @@
             </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
-    
+
     <Panel>
         <Grid>
             <controls:ViewportControl x:Name="Viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></controls:ViewportControl>
         </Grid>
-        
+
         <DockPanel>
             <Border DockPanel.Dock="Left" VerticalAlignment="Top" Classes="pw-container">
-                <StackPanel Orientation="Vertical" Spacing="10">
-                    <ToggleButton x:Name="PixelToolButton" Width="30" Height="30" ToolTip.Tip="Pencil" Click="PixelToolOptionClicked">
-                        <Svg Path="/Resources/icons/pencil.svg"
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <StackPanel Orientation="Vertical" Spacing="5">
+                        <ToggleButton x:Name="RectSelectTool" Width="30" Height="30" ToolTip.Tip="Rect Select"
+                                      Click="RectSelectTool_OnClick">
+                            <Svg Path="/Resources/icons/select.svg"
                                  Width="20"
-                                 Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="EraserToolButton" Width="30" Height="30" ToolTip.Tip="Eraser" Click="EraserToolButton_OnClick">
-                        <Svg Path="/Resources/icons/eraser.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="ColorPickerTool" Width="30" Height="30" ToolTip.Tip="Color picker" Click="ColorPickerTool_OnClick">
-                        <Svg Path="/Resources/icons/color_picker.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="FloodFillTool" Width="30" Height="30" ToolTip.Tip="Bucket fill" Click="FloodFillTool_OnClick">
-                        <Svg Path="/Resources/icons/bucket.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="RectangleTool" Width="30" Height="30" ToolTip.Tip="Rectangle" Click="RectangleTool_OnClick">
-                        <Svg Path="/Resources/icons/square.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="EllipseTool" Width="30" Height="30" ToolTip.Tip="Ellipse" Click="EllipseTool_OnClick">
-                        <Svg Path="/Resources/icons/circle.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="RectSelectTool" Width="30" Height="30" ToolTip.Tip="Rect Select" Click="RectSelectTool_OnClick">
-                        <Svg Path="/Resources/icons/select.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="MoveSelectionTool" Width="30" Height="30" ToolTip.Tip="Move Selection" Click="MoveSelectionTool_OnClick">
-                        <Svg Path="/Resources/icons/move.svg"
-                             Width="20"
-                             Height="20"/>
-                    </ToggleButton>
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="MagicWandTool" Width="30" Height="30" ToolTip.Tip="Magic Wand Selection"
+                                      Click="MagicWandTool_OnClick">
+                            <Svg Path="/Resources/icons/wand.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="FloodFillTool" Width="30" Height="30" ToolTip.Tip="Bucket fill"
+                                      Click="FloodFillTool_OnClick">
+                            <Svg Path="/Resources/icons/bucket.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="PixelToolButton" Width="30" Height="30" ToolTip.Tip="Pencil"
+                                      Click="PixelToolOptionClicked">
+                            <Svg Path="/Resources/icons/pencil.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="RectangleTool" Width="30" Height="30" ToolTip.Tip="Rectangle"
+                                      Click="RectangleTool_OnClick">
+                            <Svg Path="/Resources/icons/square.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="EllipseTool" Width="30" Height="30" ToolTip.Tip="Ellipse"
+                                      Click="EllipseTool_OnClick">
+                            <Svg Path="/Resources/icons/circle.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Spacing="5">
+                        <ToggleButton x:Name="MoveSelectionTool" Width="30" Height="30" ToolTip.Tip="Move Selection"
+                                      Click="MoveSelectionTool_OnClick">
+                            <Svg Path="/Resources/icons/move.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="EraserToolButton" Width="30" Height="30" ToolTip.Tip="Eraser"
+                                      Click="EraserToolButton_OnClick">
+                            <Svg Path="/Resources/icons/eraser.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                        <ToggleButton x:Name="ColorPickerTool" Width="30" Height="30" ToolTip.Tip="Color picker"
+                                      Click="ColorPickerTool_OnClick">
+                            <Svg Path="/Resources/icons/color_picker.svg"
+                                 Width="20"
+                                 Height="20" />
+                        </ToggleButton>
+                    </StackPanel>
                 </StackPanel>
             </Border>
-            
+
             <Border DockPanel.Dock="Right" VerticalAlignment="Top" Classes="pw-container">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <Panel>
-                        <Border x:Name="SecondaryColorCell" Background="White" Margin="10 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" BorderThickness="2" BorderBrush="Black">
-                            
+                        <Border x:Name="SecondaryColorCell" Background="White" Margin="10 10 0 0"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30"
+                                BorderThickness="2" BorderBrush="Black">
+
                         </Border>
-                        <Border x:Name="PrimaryColorCell" Background="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" BorderThickness="2" BorderBrush="Black">
-                            
+                        <Border x:Name="PrimaryColorCell" Background="Black" HorizontalAlignment="Left"
+                                VerticalAlignment="Top" Width="30" Height="30" BorderThickness="2" BorderBrush="Black">
+
                         </Border>
                     </Panel>
-                    <ColorSpectrum x:Name="ColorWheel" ColorChanged="ColorSpectrum_OnColorChanged" Width="200" Height="150"></ColorSpectrum>
+                    <ColorSpectrum x:Name="ColorWheel" ColorChanged="ColorSpectrum_OnColorChanged" Width="200"
+                                   Height="150">
+                    </ColorSpectrum>
                     <TabControl Padding="0">
                         <TabItem Header="RGBA" FontSize="15">
                             <StackPanel Orientation="Vertical">
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextR" TextChanged="ColorTextR_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinR" ValueChanged="ColorSpinR_OnValueChanged" ColorComponent="Component1" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextR"
+                                             TextChanged="ColorTextR_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinR" ValueChanged="ColorSpinR_OnValueChanged"
+                                                 ColorComponent="Component1" Width="110" DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">R</TextBlock>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextG" TextChanged="ColorTextG_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinG" ValueChanged="ColorSpinG_OnValueChanged" ColorComponent="Component2" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextG"
+                                             TextChanged="ColorTextG_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinG" ValueChanged="ColorSpinG_OnValueChanged"
+                                                 ColorComponent="Component2" Width="110" DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">G</TextBlock>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextB" TextChanged="ColorTextB_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinB" ValueChanged="ColorSpinB_OnValueChanged" ColorComponent="Component3" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextB"
+                                             TextChanged="ColorTextB_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinB" ValueChanged="ColorSpinB_OnValueChanged"
+                                                 ColorComponent="Component3" Width="110" DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">B</TextBlock>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextA" TextChanged="ColorTextA_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinA" ValueChanged="ColorSpinA_OnValueChanged" ColorComponent="Alpha" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextA"
+                                             TextChanged="ColorTextA_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinA" ValueChanged="ColorSpinA_OnValueChanged"
+                                                 ColorComponent="Alpha" Width="110" DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">A</TextBlock>
                                 </DockPanel>
                             </StackPanel>
@@ -125,25 +169,46 @@
                         <TabItem Header="HSV" FontSize="15">
                             <StackPanel Orientation="Vertical">
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextH" IsHitTestVisible="False" TextChanged="ColorTextH_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinH" ValueChanged="ColorSpinH_OnValueChanged" ColorComponent="Component1" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextH" IsHitTestVisible="False"
+                                             TextChanged="ColorTextH_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinH" ValueChanged="ColorSpinH_OnValueChanged"
+                                                 ColorComponent="Component1" ColorModel="Hsva" Width="110"
+                                                 DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">H</TextBlock>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextS" IsHitTestVisible="False" TextChanged="ColorTextS_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinS" ValueChanged="ColorSpinS_OnValueChanged" ColorComponent="Component2" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextS" IsHitTestVisible="False"
+                                             TextChanged="ColorTextS_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinS" ValueChanged="ColorSpinS_OnValueChanged"
+                                                 ColorComponent="Component2" ColorModel="Hsva" Width="110"
+                                                 DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">S</TextBlock>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextV" IsHitTestVisible="False" TextChanged="ColorTextV_OnTextChanged" Margin="10 0 0 0" Width="50" MinWidth="0"></TextBox>
-                                    <ColorSlider x:Name="ColorSpinV" ValueChanged="ColorSpinV_OnValueChanged" ColorComponent="Component3" ColorModel="Hsva" Width="110" DockPanel.Dock="Right"></ColorSlider>
+                                    <TextBox DockPanel.Dock="Right" x:Name="ColorTextV" IsHitTestVisible="False"
+                                             TextChanged="ColorTextV_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                             MinWidth="0">
+                                    </TextBox>
+                                    <ColorSlider x:Name="ColorSpinV" ValueChanged="ColorSpinV_OnValueChanged"
+                                                 ColorComponent="Component3" ColorModel="Hsva" Width="110"
+                                                 DockPanel.Dock="Right">
+                                    </ColorSlider>
                                     <TextBlock VerticalAlignment="Center">V</TextBlock>
                                 </DockPanel>
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="HEX" FontSize="15">
                             <DockPanel>
-                                <TextBox DockPanel.Dock="Right" x:Name="HexText" TextChanged="HexText_OnTextChanged" Margin="10 0 0 0" Width="100" MinWidth="0">#FF000000</TextBox>
+                                <TextBox DockPanel.Dock="Right" x:Name="HexText" TextChanged="HexText_OnTextChanged"
+                                         Margin="10 0 0 0" Width="100" MinWidth="0">
+                                    #FF000000
+                                </TextBox>
                                 <TextBlock VerticalAlignment="Center">Hexadecimal</TextBlock>
                             </DockPanel>
                         </TabItem>

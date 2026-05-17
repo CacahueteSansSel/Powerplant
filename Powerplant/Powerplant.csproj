@@ -74,6 +74,8 @@
       <AvaloniaResource Include="Resources\fonts\StackSansText-SemiBold.ttf" />
       <None Remove="Resources\icons\move.svg" />
       <AvaloniaResource Include="Resources\icons\move.svg" />
+      <None Remove="Resources\icons\wand.svg" />
+      <AvaloniaResource Include="Resources\icons\wand.svg" />
     </ItemGroup>
 
     <ItemGroup>
