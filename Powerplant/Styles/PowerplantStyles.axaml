@@ -3,8 +3,11 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Spacing="10">
+                <TextBlock Classes="title">Preview Controls</TextBlock>
+                <TextBlock>Text</TextBlock>
                 <Button Classes="primary">Primary Button</Button>
                 <Button>Standard Button</Button>
+                <NumericUpDown Value="28"></NumericUpDown>
                 <Border DockPanel.Dock="Left" Classes="pw-container" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" Spacing="10" Classes="pw-container">
                         <ToggleButton x:Name="PixelToolButton" IsChecked="True" Width="30" Height="30" ToolTip.Tip="Pencil">
@@ -96,6 +99,7 @@
     <Style Selector="Button">
         <Setter Property="CornerRadius" Value="6"></Setter>
         <Setter Property="Background" Value="#22000000"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
     </Style>
     
     <Style Selector="Button:pressed">
@@ -106,5 +110,20 @@
     <Style Selector="ToggleButton">
         <Setter Property="CornerRadius" Value="6"></Setter>
         <Setter Property="Background" Value="#22000000"></Setter>
+    </Style>
+    
+    <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
+    </Style>
+    
+    <Style Selector="TextBlock.title">
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansHeadline-Regular.ttf#Stack Sans Headline Regular"></Setter>
+    </Style>
+    
+    <Style Selector="NumericUpDown">
+        <Setter Property="CornerRadius" Value="6"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
+        <Setter Property="BorderBrush" Value="#FFCCCCCC"></Setter>
     </Style>
 </Styles>

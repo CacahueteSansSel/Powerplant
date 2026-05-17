@@ -48,6 +48,32 @@
       <AvaloniaResource Include="Resources\logos\powerplant.png" />
       <None Remove="Resources\logos\powerplant.svg" />
       <AvaloniaResource Include="Resources\logos\powerplant.svg" />
+      <None Remove="Resources\fonts\StackSansHeadline-Bold.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-Bold.ttf" />
+      <None Remove="Resources\fonts\StackSansHeadline-ExtraLight.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-ExtraLight.ttf" />
+      <None Remove="Resources\fonts\StackSansHeadline-Light.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-Light.ttf" />
+      <None Remove="Resources\fonts\StackSansHeadline-Medium.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-Medium.ttf" />
+      <None Remove="Resources\fonts\StackSansHeadline-Regular.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-Regular.ttf" />
+      <None Remove="Resources\fonts\StackSansHeadline-SemiBold.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansHeadline-SemiBold.ttf" />
+      <None Remove="Resources\fonts\StackSansText-Bold.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-Bold.ttf" />
+      <None Remove="Resources\fonts\StackSansText-ExtraLight.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-ExtraLight.ttf" />
+      <None Remove="Resources\fonts\StackSansText-Light.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-Light.ttf" />
+      <None Remove="Resources\fonts\StackSansText-Medium.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-Medium.ttf" />
+      <None Remove="Resources\fonts\StackSansText-Regular.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-Regular.ttf" />
+      <None Remove="Resources\fonts\StackSansText-SemiBold.ttf" />
+      <AvaloniaResource Include="Resources\fonts\StackSansText-SemiBold.ttf" />
+      <None Remove="Resources\icons\move.svg" />
+      <AvaloniaResource Include="Resources\icons\move.svg" />
     </ItemGroup>
 
     <ItemGroup>
@@ -55,5 +81,9 @@
         <DependentUpon>ResizeImageWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\fonts\" />
     </ItemGroup>
 </Project>

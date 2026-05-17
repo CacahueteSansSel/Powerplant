@@ -60,4 +60,9 @@ public class PixelSelection
 
     public bool Contains(int x, int y) 
         => _pixels.Any(pos => (int)pos.X == x && (int)pos.Y == y);
+
+    public void Offset(Vector2 offset)
+    {
+        _pixels = _pixels.Select(p => p + offset).ToList();
+    }
 }

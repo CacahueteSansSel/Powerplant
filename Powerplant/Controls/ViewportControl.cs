@@ -46,6 +46,7 @@ public class ViewportControl : Control
     public event EventHandler<ViewportTool?> OnToolChanged;
     public event EventHandler<PwColor> OnPrimaryColorChanged;
     public event EventHandler<PwColor> OnSecondaryColorChanged;
+    public event EventHandler<ViewportBitmap> OnBitmapChanged;
     
     public ViewportControl()
     {
@@ -134,6 +135,8 @@ public class ViewportControl : Control
         _bitmap = new ViewportBitmap(width, height);
         _bitmap.Sync();
         
+        OnBitmapChanged?.Invoke(this, _bitmap);
+        
         Center();
     }
 
@@ -141,6 +144,8 @@ public class ViewportControl : Control
     {
         _bitmap = bitmap;
         _bitmap.Sync();
+        
+        OnBitmapChanged?.Invoke(this, _bitmap);
         
         Center();
     }
@@ -152,6 +157,8 @@ public class ViewportControl : Control
 
         _bitmap = ff.Load(filename)!;
         _bitmap.Sync();
+        
+        OnBitmapChanged?.Invoke(this, _bitmap);
         
         Center();
     }

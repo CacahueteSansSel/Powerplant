@@ -19,4 +19,13 @@
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
         <StyleInclude Source="avares://Powerplant/Styles/PowerplantStyles.axaml"/>
     </Application.Styles>
+             
+    <Application.Resources>
+        <FontFamily x:Key="MainFont">
+            avares://Powerplant/Resources/fonts/StackSansHeadline-Regular#StackSansHeadline
+        </FontFamily>
+        <FontFamily x:Key="MainFontBold">
+            avares://Powerplant/Resources/fonts/StackSansHeadline-Bold#StackSansHeadline
+        </FontFamily>
+    </Application.Resources>
 </Application>

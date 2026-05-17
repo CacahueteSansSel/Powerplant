@@ -15,7 +15,7 @@
             <Button Click="CreateTextureButtonClicked" IsDefault="True" Classes="primary">Create texture</Button>
         </StackPanel>
         <StackPanel Spacing="10">
-            <TextBlock FontWeight="Bold" Margin="0 0 0 10">Create a new texture</TextBlock>
+            <TextBlock Classes="title" Margin="0 0 0 10">Create a new texture</TextBlock>
             <DockPanel>
                 <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="200" Value="{Binding Width}"></NumericUpDown>
                 <TextBlock VerticalAlignment="Center">Width</TextBlock>

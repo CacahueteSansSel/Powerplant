@@ -28,8 +28,14 @@ public partial class MainWindow : Window
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
+        Viewport.OnBitmapChanged += ViewportOnBitmapChanged;
         
         SetTool(new PixelTool());
+    }
+
+    private void ViewportOnBitmapChanged(object? sender, ViewportBitmap e)
+    {
+        Title = $"{e.Width}x{e.Height} Texture - Powerplant";
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -202,6 +208,7 @@ public partial class MainWindow : Window
         RectangleTool.IsChecked = tool is RectangleTool;
         EllipseTool.IsChecked = tool is EllipseTool;
         RectSelectTool.IsChecked = tool is SelectionRectangleTool;
+        MoveSelectionTool.IsChecked = tool is MoveSelectionTool;
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
@@ -312,5 +319,10 @@ public partial class MainWindow : Window
     private void AboutMenuOptionClicked(object? sender, EventArgs e)
     {
         new AboutWindow().ShowDialog(this);
+    }
+
+    private void MoveSelectionTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SetTool(new MoveSelectionTool());
     }
 }

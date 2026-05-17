@@ -78,6 +78,11 @@
                              Width="20"
                              Height="20"/>
                     </ToggleButton>
+                    <ToggleButton x:Name="MoveSelectionTool" Width="30" Height="30" ToolTip.Tip="Move Selection" Click="MoveSelectionTool_OnClick">
+                        <Svg Path="/Resources/icons/move.svg"
+                             Width="20"
+                             Height="20"/>
+                    </ToggleButton>
                 </StackPanel>
             </Border>
             
