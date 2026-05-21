@@ -83,6 +83,10 @@
         <DependentUpon>ResizeImageWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Controls\ToolsSettings\DrawEllipseToolSettings.axaml.cs">
+        <DependentUpon>DrawEllipseToolSettings.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
