@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
@@ -10,6 +11,7 @@ namespace Powerplant.Core.Tools;
 public class FloodFillTool : ViewportTool
 {
     public override string Name => "Flood Fill";
+    public override Key? Key => Avalonia.Input.Key.F;
     
     public override void UsePrimary(int cursorX, int cursorY)
     {

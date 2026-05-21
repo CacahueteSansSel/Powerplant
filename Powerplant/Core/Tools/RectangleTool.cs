@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Powerplant.Controls.ToolsSettings;
 using Powerplant.Core.Commands;
@@ -13,7 +14,8 @@ public class RectangleTool : RectangleBaseTool
     public override string Name => "Draw Rectangle";
     public ToolSettings Settings { get; } = new();
     public override Control? ToolSettingsControl => new DrawRectangleToolSettings(this);
-
+    public override Key? Key => Avalonia.Input.Key.O;
+    
     public RectangleTool()
     {
         

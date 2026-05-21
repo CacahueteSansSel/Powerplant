@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.Media;
 using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
@@ -9,7 +10,8 @@ namespace Powerplant.Core.Tools;
 public class SelectionRectangleTool : RectangleBaseTool
 {
     public override string Name => "Rectangle Selection";
-    
+    public override Key? Key => Avalonia.Input.Key.S;
+
     public SelectionRectangleTool()
     {
         

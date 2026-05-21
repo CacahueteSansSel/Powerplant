@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -15,27 +16,71 @@ using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
 using ReactiveUI;
+using Path = System.IO.Path;
 
 namespace Powerplant;
 
 public partial class MainWindow : Window
 {
     private bool _disableEvents = false;
+    private string? _currentFilename;
+
+    private ViewportTool[] _tools;
     
     public MainWindow()
     {
         InitializeComponent();
+
+        _tools =
+        [
+            new ColorPickerTool(),
+            new EllipseTool(),
+            new EraserTool(),
+            new FloodFillTool(),
+            new MagicWandTool(),
+            new MoveSelectionTool(),
+            new PixelTool(),
+            new RectangleTool(),
+            new SelectionRectangleTool()
+        ];
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
         Viewport.OnBitmapChanged += ViewportOnBitmapChanged;
+
+        KeyDown += OnKeyDown;
         
         SetTool(new PixelTool());
     }
 
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        foreach (ViewportTool tool in _tools)
+        {
+            if (tool.Key != e.Key) continue;
+            
+            SetTool(tool);
+            return;
+        }
+    }
+
     private void ViewportOnBitmapChanged(object? sender, ViewportBitmap e)
     {
-        Title = $"{e.Width}x{e.Height} Texture - Powerplant";
+        UpdateTitle();
+    }
+
+    private void UpdateTitle()
+    {
+        Title = "";
+        
+        if (_currentFilename != null)
+        {
+            Title = $"{Path.GetFileName(_currentFilename)} " +
+                    $"({Viewport.Bitmap.Width}x{Viewport.Bitmap.Height})";
+        }
+        else Title = $"{Viewport.Bitmap.Width}x{Viewport.Bitmap.Height} Texture";
+
+        Title += " - Powerplant";
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -101,11 +146,21 @@ public partial class MainWindow : Window
         
         if (fileList.Count != 1) return;
         IStorageFile file = fileList.First();
-        
-        Viewport.LoadTexture(file.Path.AbsolutePath);
+
+        OpenFile(file.Path.AbsolutePath);
     }
 
-    private async void MenuSaveTextureOptionClicked(object? sender, EventArgs e)
+    private void OpenFile(string path)
+    {
+        Viewport.LoadTexture(path);
+        RecentFilesManager.Add(path);
+
+        _currentFilename = path;
+        
+        UpdateTitle();
+    }
+
+    private async void MenuSaveTextureAsOptionClicked(object? sender, EventArgs e)
     {
         List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
 
@@ -114,11 +169,20 @@ public partial class MainWindow : Window
             FileTypeChoices = fileTypes
         });
         if (file == null) return;
-        
-        FileFormatBase? ff = FileFormatManager.GetByExtension(System.IO.Path.GetExtension(file.Path.AbsolutePath).TrimStart('.'));
+
+        SaveFile(file.Path.AbsolutePath);
+    }
+
+    private void SaveFile(string path)
+    {
+        FileFormatBase? ff = FileFormatManager.GetByExtension(Path.GetExtension(path).TrimStart('.'));
         if (ff == null) return;
         
-        ff.Save(Viewport.Bitmap, file.Path.AbsolutePath);
+        ff.Save(Viewport.Bitmap, path);
+        _currentFilename = path;
+        RecentFilesManager.Add(path);
+        
+        UpdateTitle();
     }
 
     private void ColorSpectrum_OnColorChanged(object? sender, ColorChangedEventArgs e)
@@ -343,5 +407,25 @@ public partial class MainWindow : Window
     private void MagicWandTool_OnClick(object? sender, RoutedEventArgs e)
     {
         SetTool(new MagicWandTool());
+    }
+
+    private void SelectAllOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.SetSelection(PixelSelection.Rectangle(0, 0, Viewport.Bitmap.Width, Viewport.Bitmap.Height));
+    }
+
+    private async void OpenRecentMenuOptionClicked(object? sender, EventArgs e)
+    {
+        string? filename = await new OpenRecentWindow().ShowDialog<string>(this);
+        
+        if (!string.IsNullOrWhiteSpace(filename))
+            OpenFile(filename);
+    }
+
+    private void MenuSaveTextureOptionClicked(object? sender, EventArgs e)
+    {
+        if (_currentFilename == null) return;
+        
+        SaveFile(_currentFilename);
     }
 }

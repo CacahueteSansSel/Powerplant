@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
@@ -11,6 +12,7 @@ namespace Powerplant.Core.Tools;
 public class MagicWandTool : ViewportTool
 {
     public override string Name => "Magic Wand Selection";
+    public override Key? Key => Avalonia.Input.Key.W;
     
     public override void UsePrimary(int cursorX, int cursorY)
     {

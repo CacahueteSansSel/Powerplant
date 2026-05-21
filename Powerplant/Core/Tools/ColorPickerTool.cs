@@ -1,3 +1,4 @@
+using Avalonia.Input;
 using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
 
@@ -6,6 +7,7 @@ namespace Powerplant.Core.Tools;
 public class ColorPickerTool : ViewportTool
 {
     public override string Name => "Color Picker";
+    public override Key? Key => Avalonia.Input.Key.K;
 
     public override void UsePrimary(int cursorX, int cursorY)
     {

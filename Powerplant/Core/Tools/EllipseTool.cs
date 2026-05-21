@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Powerplant.Controls.ToolsSettings;
 using Powerplant.Core.Commands;
@@ -15,6 +16,7 @@ public class EllipseTool : RectangleBaseTool
 
     public ToolSettings Settings { get; } = new();
     public override Control? ToolSettingsControl => new DrawEllipseToolSettings(this);
+    public override Key? Key => Avalonia.Input.Key.L;
     
     public EllipseTool()
     {

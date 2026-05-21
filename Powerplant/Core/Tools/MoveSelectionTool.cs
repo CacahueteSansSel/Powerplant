@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.Media;
 using Powerplant.Core.Commands;
 using Tmds.DBus.Protocol;
@@ -15,6 +16,7 @@ public class MoveSelectionTool : ViewportTool
     int _deltaX, _deltaY;
     
     public override string Name => "Move Selection";
+    public override Key? Key => Avalonia.Input.Key.M;
     
     public override void UsePrimary(int cursorX, int cursorY)
     {

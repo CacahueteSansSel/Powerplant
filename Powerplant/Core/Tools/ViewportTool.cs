@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Powerplant.Controls;
 using Powerplant.Controls.ToolsSettings;
@@ -11,6 +12,7 @@ public abstract class ViewportTool
     public abstract string Name { get; }
     public virtual bool SupportsHold => true;
     public virtual Control? ToolSettingsControl => null;
+    public virtual Key? Key => null;
     
     public ViewportControl Viewport { get; internal set; }
     

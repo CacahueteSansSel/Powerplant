@@ -18,10 +18,13 @@
             </NativeMenuItem>
             <NativeMenuItem Header="File">
                 <NativeMenu>
-                    <NativeMenuItem Header="New Texture" Gesture="Meta+N" Click="MenuNewTextureOptionClicked" />
-                    <NativeMenuItem Header="Open Texture" Gesture="Meta+O" Click="MenuOpenTextureOptionClicked" />
-                    <NativeMenuItem Header="Save Texture As..." Gesture="Meta+Shift+S"
+                    <NativeMenuItem Header="New Texture..." Gesture="Meta+N" Click="MenuNewTextureOptionClicked" />
+                    <NativeMenuItem Header="Open Texture..." Gesture="Meta+O" Click="MenuOpenTextureOptionClicked" />
+                    <NativeMenuItem Header="Open Recent..." Gesture="Meta+Shift+O" Click="OpenRecentMenuOptionClicked"/>
+                    <NativeMenuItem Header="Save Texture" Gesture="Meta+S"
                                     Click="MenuSaveTextureOptionClicked" />
+                    <NativeMenuItem Header="Save Texture As..." Gesture="Meta+Shift+S"
+                                    Click="MenuSaveTextureAsOptionClicked" />
                     <NativeMenuItemSeparator />
                 </NativeMenu>
             </NativeMenuItem>
@@ -29,6 +32,8 @@
                 <NativeMenu>
                     <NativeMenuItem Header="Undo" Gesture="Meta+Z" Click="UndoOptionClicked" />
                     <NativeMenuItem Header="Redo" Gesture="Meta+Y" Click="RedoOptionClicked" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Header="Select All" Gesture="Meta+A" Click="SelectAllOptionClicked" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Resize Image" Gesture="Meta+R" Click="ResizeImageOptionClicked" />
                     <NativeMenuItem Header="Resize Canvas" Gesture="Meta+Shift+R" Click="ResizeViewportOptionClicked" />
