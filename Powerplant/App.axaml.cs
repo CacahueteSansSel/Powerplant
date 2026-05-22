@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Powerplant.Core;
+using Powerplant.Core.Effects;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
 
@@ -20,6 +21,7 @@ public partial class App : Application
         FileFormatManager.Init();
         AppDirectoryManager.Init();
         RecentFilesManager.Init();
+        EffectsManager.Init();
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

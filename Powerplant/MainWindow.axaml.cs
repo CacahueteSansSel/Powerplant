@@ -12,6 +12,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
 using Powerplant.Core.Commands;
+using Powerplant.Core.Effects;
 using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
@@ -435,5 +436,10 @@ public partial class MainWindow : Window
     private void HorizontalFlipOptionClicked(object? sender, EventArgs e)
     {
         Viewport.RunCommand(new FlipCommand(true));
+    }
+
+    private void PureBlackEffectOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.RunCommand(new EffectRunner<PureBlackEffect>(Viewport).RunEffectCommand);
     }
 }

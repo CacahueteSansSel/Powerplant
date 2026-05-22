@@ -40,6 +40,11 @@
                     <NativeMenuItem Header="Horizontal Flip" Click="HorizontalFlipOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
+            <NativeMenuItem Header="Effects">
+                <NativeMenu>
+                    <NativeMenuItem Header="Pure Black" Click="PureBlackEffectOptionClicked" />
+                </NativeMenu>
+            </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
 
