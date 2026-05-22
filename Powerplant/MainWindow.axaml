@@ -34,6 +34,12 @@
                     <NativeMenuItem Header="Resize Canvas" Gesture="Meta+Shift+R" Click="ResizeViewportOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
+            <NativeMenuItem Header="Image">
+                <NativeMenu>
+                    <NativeMenuItem Header="Vertical Flip" Click="VerticalFlipOptionClicked" />
+                    <NativeMenuItem Header="Horizontal Flip" Click="HorizontalFlipOptionClicked" />
+                </NativeMenu>
+            </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
 
@@ -128,7 +134,7 @@
                         </Border>
                     </Panel>
                     <ColorSpectrum x:Name="ColorWheel" ColorChanged="ColorSpectrum_OnColorChanged" Width="200"
-                                   Height="150">
+                                   Height="150" Shape="Ring">
                     </ColorSpectrum>
                     <TabControl Padding="0">
                         <TabItem Header="RGBA" FontSize="15">

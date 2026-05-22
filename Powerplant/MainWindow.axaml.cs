@@ -51,6 +51,9 @@ public partial class MainWindow : Window
         KeyDown += OnKeyDown;
         
         SetTool(new PixelTool());
+        
+        Viewport.SetPrimaryColor(PwColor.White);
+        Viewport.SetSecondaryColor(PwColor.Black);
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
@@ -422,5 +425,15 @@ public partial class MainWindow : Window
         if (_currentFilename == null) return;
         
         SaveFile(_currentFilename);
+    }
+
+    private void VerticalFlipOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.RunCommand(new FlipCommand(false));
+    }
+
+    private void HorizontalFlipOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.RunCommand(new FlipCommand(true));
     }
 }

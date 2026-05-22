@@ -146,4 +146,33 @@ public class ViewportBitmap
 
         return new ViewportBitmap(resized);
     }
+
+    public void FlipVertical()
+    {
+        PwColor[] pixelsBackup = new PwColor[_buffer.Length];
+        Array.Copy(_buffer, pixelsBackup, _buffer.Length);
+
+        for (int y = 0; y < Height; y++)
+        {
+            int targetY = Height - 1 - y;
+            
+            Array.Copy(pixelsBackup, y * Width, _buffer, targetY * Width, Width);
+        }
+    }
+
+    public void FlipHorizontal()
+    {
+        PwColor[] pixelsBackup = new PwColor[_buffer.Length];
+        Array.Copy(_buffer, pixelsBackup, _buffer.Length);
+
+        for (int x = 0; x < Width; x++)
+        {
+            int targetX = Width - 1 - x;
+
+            for (int y = 0; y < Height; y++)
+            {
+                Set(targetX, y, pixelsBackup[y * Width + x]);
+            }
+        }
+    }
 }
