@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="400" Height="320"
+        x:Class="Powerplant.Windows.Effects.OutlineWindow"
+        Title="OutlineWindow">
+    <DockPanel Margin="10">
+        <StackPanel Orientation="Vertical" Spacing="4" DockPanel.Dock="Top">
+            <TextBlock Classes="title">Outline Effect</TextBlock>
+            <DockPanel>
+                <ToggleButton DockPanel.Dock="Right" x:Name="StyleEightNeighbors" IsCheckedChanged="StyleEightNeighbors_OnIsCheckedChanged">8 neighbors</ToggleButton>
+                <ToggleButton DockPanel.Dock="Right" x:Name="StyleFourNeighbors" IsCheckedChanged="StyleFourNeighbors_OnIsCheckedChanged" Margin="0 0 5 0">4 neighbors</ToggleButton>
+                <TextBlock VerticalAlignment="Center">Style</TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <ToggleSwitch DockPanel.Dock="Right" x:Name="SmoothSwitch" IsCheckedChanged="SmoothSwitch_OnIsCheckedChanged"></ToggleSwitch>
+                <TextBlock VerticalAlignment="Center">Smooth</TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <NumericUpDown DockPanel.Dock="Right" x:Name="OutlineSizeBox" Width="150" Value="1" ValueChanged="OutlineSizeBox_OnValueChanged"></NumericUpDown>
+                <TextBlock VerticalAlignment="Center">Outline Size</TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBox DockPanel.Dock="Right" x:Name="ColorTextBox" Width="150" TextChanged="ColorTextBox_OnTextChanged">000000</TextBox>
+                <TextBlock VerticalAlignment="Center">Color</TextBlock>
+            </DockPanel>
+        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button Click="ConfirmButtonClicked" DockPanel.Dock="Right" Margin="5 0 0 0" Classes="primary">Confirm</Button>
+            <Button Click="CancelButtonClicked" DockPanel.Dock="Right">Cancel</Button>
+            <Panel></Panel>
+        </DockPanel>
+        <Panel></Panel>
+    </DockPanel>
+</Window>

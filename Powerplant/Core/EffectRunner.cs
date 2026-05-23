@@ -9,7 +9,8 @@ public class EffectRunner<T> where T : Effect, new()
     private ViewportBitmap _originalBitmapCopy;
     private ViewportControl _viewport;
 
-    public Command RunEffectCommand => new(_originalBitmapCopy);
+    public Command RunEffectCommand => new((T)_effect, _originalBitmapCopy);
+    public T Effect => (T)_effect;
 
     public EffectRunner(ViewportControl viewport)
     {
@@ -41,10 +42,10 @@ public class EffectRunner<T> where T : Effect, new()
         private T _effect;
         private ViewportBitmap _oldBitmap;
 
-        public Command(ViewportBitmap oldBitmap)
+        public Command(T effect, ViewportBitmap oldBitmap)
         {
             _oldBitmap = oldBitmap;
-            _effect = new T();
+            _effect = effect;
         }
         
         public override void Run()

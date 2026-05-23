@@ -43,6 +43,7 @@
             <NativeMenuItem Header="Effects">
                 <NativeMenu>
                     <NativeMenuItem Header="Pure Black" Click="PureBlackEffectOptionClicked" />
+                    <NativeMenuItem Header="Outline" Click="OutlineEffectOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>

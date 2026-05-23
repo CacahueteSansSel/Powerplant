@@ -16,6 +16,7 @@ using Powerplant.Core.Effects;
 using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
+using Powerplant.Windows.Effects;
 using ReactiveUI;
 using Path = System.IO.Path;
 
@@ -441,5 +442,10 @@ public partial class MainWindow : Window
     private void PureBlackEffectOptionClicked(object? sender, EventArgs e)
     {
         Viewport.RunCommand(new EffectRunner<PureBlackEffect>(Viewport).RunEffectCommand);
+    }
+
+    private void OutlineEffectOptionClicked(object? sender, EventArgs e)
+    {
+        new OutlineWindow(Viewport).Show(this);
     }
 }

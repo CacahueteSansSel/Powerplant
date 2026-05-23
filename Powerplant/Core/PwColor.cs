@@ -22,6 +22,7 @@ public struct PwColor : IEquatable<PwColor>
     public PwColor(string hex)
     {
         if (hex.Length == 6) hex = "FF" + hex;
+        else if (hex.Length != 8) return;
 
         string hexA = hex[..2];
         string hexR = hex[2..4];
