@@ -76,6 +76,8 @@
       <AvaloniaResource Include="Resources\icons\move.svg" />
       <None Remove="Resources\icons\wand.svg" />
       <AvaloniaResource Include="Resources\icons\wand.svg" />
+      <None Remove="Resources\icons\color_switch.svg" />
+      <AvaloniaResource Include="Resources\icons\color_switch.svg" />
     </ItemGroup>
 
     <ItemGroup>

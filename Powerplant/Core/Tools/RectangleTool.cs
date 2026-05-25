@@ -23,6 +23,9 @@ public class RectangleTool : RectangleBaseTool
     
     protected override void Apply(int x, int y, int width, int height)
     {
+        if (width <= 0 || height <= 0)
+            return;
+        
         Viewport.RunCommand(new RectangleCommand(x, y, width, height, Viewport.PrimaryColor, !Settings.IsFilled, Settings.Thickness));
     }
 

@@ -30,7 +30,10 @@ public class ViewportControl : Control
     private Vector2? _dragLastOffset;
     private StreamGeometry? _selectionGeometry;
     private IBrush _selectionBrush;
-    private IPen _selectionPen;
+    private Pen _selectionPen;
+    private Vector2? _cursorPos;
+    private Pen _curPixelPen;
+    private string _toolDescText;
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
@@ -47,6 +50,9 @@ public class ViewportControl : Control
     public event EventHandler<PwColor> OnPrimaryColorChanged;
     public event EventHandler<PwColor> OnSecondaryColorChanged;
     public event EventHandler<ViewportBitmap> OnBitmapChanged;
+    public event Action<int, int> OnCursorPositionChanged;
+    public event EventHandler<PixelSelection> OnSelectionChanged;
+    public event EventHandler<string> OnToolDescriptionTextChanged;
 
     public StreamGeometry? SelectionGeometry => _selectionGeometry;
 
@@ -61,7 +67,8 @@ public class ViewportControl : Control
         _blackPen = new Pen(0xFF000000);
         _gridPen = new Pen(0xFFAAAAAA);
         _selectionBrush = new SolidColorBrush(0x77FFFFFF);
-        _selectionPen = new Pen((uint)0xFF000000, 1, DashStyle.Dash);
+        _selectionPen = new Pen(0xFF000000, 1, DashStyle.Dash);
+        _curPixelPen = new Pen(0xFF000000, 2);
         
         _bitmap = new ViewportBitmap(16, 16);
         _bitmap.Sync();
@@ -71,12 +78,19 @@ public class ViewportControl : Control
         RegisterEvents();
     }
 
+    public void SetToolDescriptionText(string text)
+    {
+        _toolDescText = text;
+        OnToolDescriptionTextChanged?.Invoke(this, _toolDescText);
+    }
+
     public void RunCommand(Command command)
         => UndoRedoStack.Push(command);
 
     public void SetSelection(PixelSelection selection)
     {
         Selection = selection;
+        OnSelectionChanged?.Invoke(this, selection);
         
         InvalidateVisual();
     }
@@ -114,6 +128,8 @@ public class ViewportControl : Control
         Tool?.Viewport = this;
         
         OnToolChanged?.Invoke(this, tool);
+        
+        SetToolDescriptionText(tool == null ? "-" : tool.Name.ToLower());
     }
 
     public void SetPrimaryColor(PwColor color)
@@ -244,6 +260,10 @@ public class ViewportControl : Control
         int imgPosY = TransformCoordY(pos.Y);
         
         Tool?.OnPointerMove(imgPosX, imgPosY);
+        OnCursorPositionChanged?.Invoke(imgPosX, imgPosY);
+        _cursorPos = new Vector2(imgPosX, imgPosY);
+        
+        InvalidateVisual();
         
         if (Tool == null || !Tool.SupportsHold)
             return;
@@ -378,6 +398,14 @@ public class ViewportControl : Control
                 context.DrawLine(_gridPen,
                     new Point(_offset.X, py),
                     new Point(_offset.X + _bitmap.Width * Zoom, py));
+            }
+
+            if (_cursorPos != null)
+            {
+                Rect selectionRect = new Rect(InvertTransformCoordX(_cursorPos.Value.X),
+                    InvertTransformCoordY(_cursorPos.Value.Y), Zoom, Zoom);
+                
+                context.DrawRectangle(_curPixelPen, selectionRect);
             }
         }
         

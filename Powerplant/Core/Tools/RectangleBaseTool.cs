@@ -12,6 +12,8 @@ public abstract class RectangleBaseTool : ViewportTool
     private int _width;
     private int _height;
     private bool _isDrawing;
+
+    protected bool SettingToolTextEnabled { get; set; } = true;
     
     public override void UsePrimary(int cursorX, int cursorY)
     {
@@ -80,6 +82,9 @@ public abstract class RectangleBaseTool : ViewportTool
         _height = (int)normRect.Height+1;
 
         Viewport.InvalidateVisual();
+        
+        if (SettingToolTextEnabled)
+            Viewport.SetToolDescriptionText($"drawing x: {_x}; y: {_y}; w: {_width}; h: {_height}");
     }
 
     public override void Render(DrawingContext context)

@@ -54,8 +54,8 @@
             <controls:ViewportControl x:Name="Viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></controls:ViewportControl>
         </Grid>
 
-        <DockPanel>
-            <Border DockPanel.Dock="Top" x:Name="ToolOptionsBar" Classes="pw-container" HorizontalAlignment="Left">
+        <Panel>
+            <Border x:Name="ToolOptionsBar" Classes="pw-container" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="2 14 14 2">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBlock x:Name="ToolNameText" VerticalAlignment="Center">Tool Name</TextBlock>
                     <Panel x:Name="ToolSettingsControlPanel">
@@ -63,7 +63,7 @@
                 </StackPanel>
             </Border>
             
-            <Border DockPanel.Dock="Left" VerticalAlignment="Top" Classes="pw-container">
+            <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 60 10 10" CornerRadius="2 14 14 14" Classes="pw-container">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <StackPanel Orientation="Vertical" Spacing="5">
                         <ToggleButton x:Name="RectSelectTool" Width="30" Height="30" ToolTip.Tip="Rect Select"
@@ -126,10 +126,10 @@
                 </StackPanel>
             </Border>
 
-            <Border DockPanel.Dock="Right" VerticalAlignment="Top" Classes="pw-container">
+            <Border VerticalAlignment="Top" HorizontalAlignment="Right" Classes="pw-container" CornerRadius="14 2 14 14">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <Panel>
-                        <Border x:Name="SecondaryColorCell" Background="White" Margin="10 10 0 0"
+                        <Border x:Name="SecondaryColorCell" Background="White" Margin="15 15 0 0"
                                 HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30"
                                 BorderThickness="2" BorderBrush="Black">
 
@@ -138,6 +138,12 @@
                                 VerticalAlignment="Top" Width="30" Height="30" BorderThickness="2" BorderBrush="Black">
 
                         </Border>
+                        <Panel Width="15"
+                               Height="15"
+                               VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30 0 0 0"
+                               PointerPressed="ColorSwitchButtonClicked" Cursor="Hand">
+                            <Svg Path="/Resources/icons/color_switch.svg"/>
+                        </Panel>
                     </Panel>
                     <ColorSpectrum x:Name="ColorWheel" ColorChanged="ColorSpectrum_OnColorChanged" Width="200"
                                    Height="150" Shape="Ring">
@@ -236,7 +242,23 @@
                     </TabControl>
                 </StackPanel>
             </Border>
-            <Panel IsHitTestVisible="False"></Panel>
-        </DockPanel>
+            
+            <Border Classes="pw-container" HorizontalAlignment="Left" VerticalAlignment="Bottom" CornerRadius="14 14 14 2">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Border Background="LightGray" CornerRadius="4" Padding="5 1 5 1">
+                        <TextBlock x:Name="CoordsDetailsText">x: 0; y: 0</TextBlock>
+                    </Border>
+                    <Border Background="LightGray" CornerRadius="4" Padding="5 1 5 1">
+                        <TextBlock x:Name="TextureSizeDetailsText">w: 0; h: 0</TextBlock>
+                    </Border>
+                    <Border Background="LightGray" CornerRadius="4" Padding="5 1 5 1">
+                        <TextBlock x:Name="SelectionDetailsText">x: 0; y: 0; w: 0; h: 0</TextBlock>
+                    </Border>
+                    <Border Background="LightGray" CornerRadius="4" Padding="5 1 5 1">
+                        <TextBlock x:Name="ToolDetailsText">-</TextBlock>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Panel>
     </Panel>
 </Window>

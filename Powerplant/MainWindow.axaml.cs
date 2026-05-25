@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Web;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
@@ -49,6 +50,9 @@ public partial class MainWindow : Window
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
         Viewport.OnBitmapChanged += ViewportOnBitmapChanged;
+        Viewport.OnCursorPositionChanged += ViewportOnCursorPositionChanged;
+        Viewport.OnSelectionChanged += ViewportOnSelectionChanged;
+        Viewport.OnToolDescriptionTextChanged += ViewportOnToolDescriptionTextChanged;
 
         KeyDown += OnKeyDown;
         
@@ -56,6 +60,30 @@ public partial class MainWindow : Window
         
         Viewport.SetPrimaryColor(PwColor.White);
         Viewport.SetSecondaryColor(PwColor.Black);
+        
+        UpdateTextureDetails();
+    }
+
+    private void ViewportOnToolDescriptionTextChanged(object? sender, string text)
+    {
+        ToolDetailsText.Text = text;
+    }
+
+    private void ViewportOnSelectionChanged(object? sender, PixelSelection e)
+    {
+        if (e.IsEmpty)
+        {
+            SelectionDetailsText.Text = "x: 0; y: 0; w: 0; h: 0";
+            return;
+        }
+        
+        SelectionDetailsText.Text =
+            $"x: {(int)e.Bounds.X}; y: {(int)e.Bounds.Y}; w: {(int)e.Bounds.Width}; h: {(int)e.Bounds.Height}";
+    }
+
+    private void ViewportOnCursorPositionChanged(int x, int y)
+    {
+        CoordsDetailsText.Text = $"x: {x}; y: {y}";
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
@@ -71,10 +99,10 @@ public partial class MainWindow : Window
 
     private void ViewportOnBitmapChanged(object? sender, ViewportBitmap e)
     {
-        UpdateTitle();
+        UpdateTextureDetails();
     }
 
-    private void UpdateTitle()
+    private void UpdateTextureDetails()
     {
         Title = "";
         
@@ -86,6 +114,8 @@ public partial class MainWindow : Window
         else Title = $"{Viewport.Bitmap.Width}x{Viewport.Bitmap.Height} Texture";
 
         Title += " - Powerplant";
+        
+        TextureSizeDetailsText.Text = $"w: {Viewport.Bitmap.Width}; y: {Viewport.Bitmap.Height}";
     }
 
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
@@ -152,7 +182,7 @@ public partial class MainWindow : Window
         if (fileList.Count != 1) return;
         IStorageFile file = fileList.First();
 
-        OpenFile(file.Path.AbsolutePath);
+        OpenFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
     }
 
     private void OpenFile(string path)
@@ -162,7 +192,7 @@ public partial class MainWindow : Window
 
         _currentFilename = path;
         
-        UpdateTitle();
+        UpdateTextureDetails();
     }
 
     private async void MenuSaveTextureAsOptionClicked(object? sender, EventArgs e)
@@ -175,7 +205,7 @@ public partial class MainWindow : Window
         });
         if (file == null) return;
 
-        SaveFile(file.Path.AbsolutePath);
+        SaveFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
     }
 
     private void SaveFile(string path)
@@ -187,7 +217,7 @@ public partial class MainWindow : Window
         _currentFilename = path;
         RecentFilesManager.Add(path);
         
-        UpdateTitle();
+        UpdateTextureDetails();
     }
 
     private void ColorSpectrum_OnColorChanged(object? sender, ColorChangedEventArgs e)
@@ -272,7 +302,7 @@ public partial class MainWindow : Window
         ToolOptionsBar.IsVisible = tool != null;
         ToolNameText.Text = tool?.Name;
 
-        if (ToolOptionsBar.IsVisible)
+        if (ToolOptionsBar.IsVisible && tool != null)
         {
             Control? toolControl = tool.ToolSettingsControl;
             
@@ -447,5 +477,14 @@ public partial class MainWindow : Window
     private void OutlineEffectOptionClicked(object? sender, EventArgs e)
     {
         new OutlineWindow(Viewport).Show(this);
+    }
+
+    private void ColorSwitchButtonClicked(object? sender, PointerPressedEventArgs e)
+    {
+        PwColor primaryColor = Viewport.PrimaryColor;
+        PwColor secondaryColor = Viewport.SecondaryColor;
+        
+        Viewport.SetPrimaryColor(secondaryColor);
+        Viewport.SetSecondaryColor(primaryColor);
     }
 }
