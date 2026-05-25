@@ -12,6 +12,8 @@ mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Resources"
 cp -R "$BUILD_DIR/"* "$APP_DIR/Contents/MacOS/"
 
+iconutil -c icns Resources/Icon.iconset
+
 cp Resources/Info.plist "$APP_DIR/Contents/Info.plist"
 cp Resources/Icon.icns "$APP_DIR/Contents/Resources/Icon.icns"
 
