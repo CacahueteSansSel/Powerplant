@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using Avalonia;
 using Avalonia.Controls;
@@ -16,6 +18,7 @@ using Powerplant.Core.Tools;
 using Powerplant.Core.UndoRedo;
 using Powerplant.FileFormats;
 using Path = Avalonia.Controls.Shapes.Path;
+using SelectionMode = Powerplant.Core.Commands.SelectionMode;
 
 namespace Powerplant.Controls;
 
@@ -31,7 +34,8 @@ public class ViewportControl : Control
     private StreamGeometry? _selectionGeometry;
     private IBrush _selectionBrush;
     private Pen _selectionPen;
-    private Vector2? _cursorPos;
+    private Vector2 _realCursorPos;
+    private Vector2? _bitmapCursorPos;
     private Pen _curPixelPen;
     private string _toolDescText;
     
@@ -55,6 +59,9 @@ public class ViewportControl : Control
     public event EventHandler<string> OnToolDescriptionTextChanged;
 
     public StreamGeometry? SelectionGeometry => _selectionGeometry;
+    public Vector2 RealCursorPosition => _realCursorPos;
+    public Vector2? BitmapCursorPosition => _bitmapCursorPos;
+    public bool IsShiftPressed { get; private set; }
 
     public ViewportControl()
     {
@@ -66,8 +73,8 @@ public class ViewportControl : Control
 
         _blackPen = new Pen(0xFF000000);
         _gridPen = new Pen(0xFFAAAAAA);
-        _selectionBrush = new SolidColorBrush(0x77FFFFFF);
-        _selectionPen = new Pen(0xFF000000, 1, DashStyle.Dash);
+        _selectionBrush = new SolidColorBrush(0x77A7F55D);
+        _selectionPen = new Pen(0xFF4D6537, 2, DashStyle.Dash);
         _curPixelPen = new Pen(0xFF000000, 2);
         
         _bitmap = new ViewportBitmap(16, 16);
@@ -87,9 +94,24 @@ public class ViewportControl : Control
     public void RunCommand(Command command)
         => UndoRedoStack.Push(command);
 
-    public void SetSelection(PixelSelection selection)
+    public void SetSelection(PixelSelection selection, SelectionMode mode = SelectionMode.Set)
     {
-        Selection = selection;
+        switch (mode)
+        {
+            case SelectionMode.Set:
+                Selection = selection;
+                
+                break;
+            case SelectionMode.Add:
+                Selection.Add(selection);
+                
+                break;
+            case SelectionMode.Remove:
+                throw new NotImplementedException();
+                
+                break;
+        }
+        
         OnSelectionChanged?.Invoke(this, selection);
         
         InvalidateVisual();
@@ -101,23 +123,88 @@ public class ViewportControl : Control
     private void BuildSelectionGeometry()
     {
         _selectionGeometry = new StreamGeometry();
-
-        using StreamGeometryContext ctx = _selectionGeometry.Open();
         
-        foreach (Vector2 pixel in Selection.Pixels)
+        List<Vector2> pixels = Selection.Pixels.ToList();
+        List<(Point A, Point B)> edges = [];
+
+        foreach (Vector2 p in pixels)
         {
-            Rect r = new Rect(
-                _offset.X + pixel.X * Zoom,
-                _offset.Y + pixel.Y * Zoom,
-                Zoom,
-                Zoom);
+            float x = p.X;
+            float y = p.Y;
 
-            ctx.BeginFigure(r.TopLeft);
+            // Top
+            if (!pixels.Contains(new Vector2(x, y - 1)))
+            {
+                edges.Add((
+                    new Point(x, y),
+                    new Point(x + 1, y)
+                ));
+            }
 
-            ctx.LineTo(r.TopRight);
-            ctx.LineTo(r.BottomRight);
-            ctx.LineTo(r.BottomLeft);
+            // Right
+            if (!pixels.Contains(new Vector2(x + 1, y)))
+            {
+                edges.Add((
+                    new Point(x + 1, y),
+                    new Point(x + 1, y + 1)
+                ));
+            }
 
+            // Bottom
+            if (!pixels.Contains(new Vector2(x, y + 1)))
+            {
+                edges.Add((
+                    new Point(x + 1, y + 1),
+                    new Point(x, y + 1)
+                ));
+            }
+
+            // Left
+            if (!pixels.Contains(new Vector2(x - 1, y)))
+            {
+                edges.Add((
+                    new Point(x, y + 1),
+                    new Point(x, y)
+                ));
+            }
+        }
+        
+        using StreamGeometryContext ctx = _selectionGeometry.Open();
+        List<(Point A, Point B)> remaining = new List<(Point A, Point B)>(edges);
+
+        while (remaining.Count > 0)
+        {
+            (Point A, Point B) first = remaining[0];
+            remaining.RemoveAt(0);
+
+            List<Point> polygon =
+            [
+                first.A,
+                first.B
+            ];
+
+            Point current = first.B;
+
+            while (true)
+            {
+                int index = remaining.FindIndex(e => e.A == current);
+                if (index == -1) break;
+
+                (Point A, Point B) edge = remaining[index];
+                remaining.RemoveAt(index);
+
+                polygon.Add(edge.B);
+                current = edge.B;
+
+                if (current == polygon[0]) break;
+            }
+
+            ctx.BeginFigure(new Point(_offset.X + polygon[0].X * Zoom, _offset.Y + polygon[0].Y * Zoom));
+            for (int i = 1; i < polygon.Count; i++)
+            {
+                ctx.LineTo(new Point(_offset.X + polygon[i].X * Zoom, 
+                    _offset.Y + polygon[i].Y * Zoom));
+            }
             ctx.EndFigure(true);
         }
     }
@@ -201,10 +288,27 @@ public class ViewportControl : Control
         PointerMoved += OnPointerMoved;
         PointerReleased += OnPointerReleased;
         KeyDown += OnKeyDown;
+        KeyUp += OnKeyUp;
+        LostFocus += OnLostFocus;
+    }
+
+    private void OnLostFocus(object? sender, FocusChangedEventArgs e)
+    {
+        IsShiftPressed = false;
+        //Console.WriteLine($"Shift: {IsShiftPressed}");
+    }
+
+    private void OnKeyUp(object? sender, KeyEventArgs e)
+    {
+        IsShiftPressed = false;
+        //Console.WriteLine($"Shift: {IsShiftPressed}");
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
+        IsShiftPressed = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+        //Console.WriteLine($"Shift: {IsShiftPressed}");
+        
         switch (e.Key)
         {
             case Key.Escape:
@@ -250,6 +354,8 @@ public class ViewportControl : Control
         Point pos = e.GetPosition(this);
         PointerPointProperties props = e.GetCurrentPoint(this).Properties;
 
+        _realCursorPos = new Vector2((float)pos.X, (float)pos.Y);
+
         if (props.IsMiddleButtonPressed)
         {
             ProcessViewportOffsetDrag(pos);
@@ -261,7 +367,7 @@ public class ViewportControl : Control
         
         Tool?.OnPointerMove(imgPosX, imgPosY);
         OnCursorPositionChanged?.Invoke(imgPosX, imgPosY);
-        _cursorPos = new Vector2(imgPosX, imgPosY);
+        _bitmapCursorPos = new Vector2(imgPosX, imgPosY);
         
         InvalidateVisual();
         
@@ -400,10 +506,10 @@ public class ViewportControl : Control
                     new Point(_offset.X + _bitmap.Width * Zoom, py));
             }
 
-            if (_cursorPos != null)
+            if (_bitmapCursorPos != null)
             {
-                Rect selectionRect = new Rect(InvertTransformCoordX(_cursorPos.Value.X),
-                    InvertTransformCoordY(_cursorPos.Value.Y), Zoom, Zoom);
+                Rect selectionRect = new Rect(InvertTransformCoordX(_bitmapCursorPos.Value.X),
+                    InvertTransformCoordY(_bitmapCursorPos.Value.Y), Zoom, Zoom);
                 
                 context.DrawRectangle(_curPixelPen, selectionRect);
             }
@@ -416,5 +522,23 @@ public class ViewportControl : Control
         }
         
         Tool?.Render(context);
+    }
+
+    public void DecrementZoom()
+    {
+        _zoom -= 2f;
+        _offset = new Vector2((float)Bounds.Width / 2 - _bitmap.Width * Zoom / 2, 
+            (float)Bounds.Height / 2 - _bitmap.Height * Zoom / 2);
+        
+        InvalidateVisual();
+    }
+
+    public void IncrementZoom()
+    {
+        _zoom += 2f;
+        _offset = new Vector2((float)Bounds.Width / 2 - _bitmap.Width * Zoom / 2, 
+            (float)Bounds.Height / 2 - _bitmap.Height * Zoom / 2);
+        
+        InvalidateVisual();
     }
 }

@@ -57,6 +57,11 @@ public class MagicWandTool : ViewportTool
             stack.Push((x, y + 1));
         }
         
-        Viewport.RunCommand(new SelectionCommand(PixelSelection.List(finalPixels.Select(tuple => new Vector2(tuple.x, tuple.y)).ToArray())));
+        SelectionMode mode = SelectionMode.Set;
+
+        if (Viewport.IsShiftPressed)
+            mode = SelectionMode.Add;
+        
+        Viewport.RunCommand(new SelectionCommand(PixelSelection.List(finalPixels.Select(tuple => new Vector2(tuple.x, tuple.y)).ToArray()), mode));
     }
 }

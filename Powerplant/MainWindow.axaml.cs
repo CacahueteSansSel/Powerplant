@@ -62,6 +62,8 @@ public partial class MainWindow : Window
         Viewport.SetSecondaryColor(PwColor.Black);
         
         UpdateTextureDetails();
+
+        Focus();
     }
 
     private void ViewportOnToolDescriptionTextChanged(object? sender, string text)
@@ -486,5 +488,20 @@ public partial class MainWindow : Window
         
         Viewport.SetPrimaryColor(secondaryColor);
         Viewport.SetSecondaryColor(primaryColor);
+    }
+
+    private void CenterViewOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.Center();
+    }
+
+    private void ZoomPlusOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.IncrementZoom();
+    }
+
+    private void ZoomMinusOptionClicked(object? sender, EventArgs e)
+    {
+        Viewport.DecrementZoom();
     }
 }

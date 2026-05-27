@@ -80,6 +80,20 @@ public class PixelSelection
         UpdateRect();
     }
 
+    public void Add(Vector2[] pixels)
+    {
+        foreach (Vector2 pixel in pixels)
+        {
+            if (!_pixels.Contains(pixel))
+                _pixels.Add(pixel);
+        }
+        
+        UpdateRect();
+    }
+
+    public void Add(PixelSelection selection)
+        => Add(selection.Pixels);
+
     public void Remove(Vector2 pixel)
     {
         if (!_pixels.Contains(pixel)) return;

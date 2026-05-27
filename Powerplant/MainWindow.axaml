@@ -34,6 +34,13 @@
                     <NativeMenuItem Header="Resize Canvas" Gesture="Meta+Shift+R" Click="ResizeViewportOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
+            <NativeMenuItem Header="View">
+                <NativeMenu>
+                    <NativeMenuItem Header="Center View" Gesture="Meta+B" Click="CenterViewOptionClicked" />
+                    <NativeMenuItem Header="Zoom +" Gesture="Meta+Up" Click="ZoomPlusOptionClicked" />
+                    <NativeMenuItem Header="Zoom -" Gesture="Meta+Down" Click="ZoomMinusOptionClicked" />
+                </NativeMenu>
+            </NativeMenuItem>
             <NativeMenuItem Header="Image">
                 <NativeMenu>
                     <NativeMenuItem Header="Vertical Flip" Click="VerticalFlipOptionClicked" />
