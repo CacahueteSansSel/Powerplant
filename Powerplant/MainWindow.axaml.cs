@@ -28,6 +28,7 @@ public partial class MainWindow : Window
 {
     private bool _disableEvents = false;
     private string? _currentFilename;
+    private bool _isFileModified = false;
 
     private ViewportTool[] _tools;
     
@@ -54,6 +55,7 @@ public partial class MainWindow : Window
         Viewport.OnCursorPositionChanged += ViewportOnCursorPositionChanged;
         Viewport.OnSelectionChanged += ViewportOnSelectionChanged;
         Viewport.OnToolDescriptionTextChanged += ViewportOnToolDescriptionTextChanged;
+        Viewport.OnModification += ViewportOnModification;
 
         KeyDown += OnKeyDown;
         
@@ -65,6 +67,11 @@ public partial class MainWindow : Window
         UpdateTextureDetails();
 
         Focus();
+    }
+
+    private void ViewportOnModification()
+    {
+        SetModified(true);
     }
 
     private void ViewportOnToolDescriptionTextChanged(object? sender, string text)
@@ -111,12 +118,13 @@ public partial class MainWindow : Window
         
         if (_currentFilename != null)
         {
-            Title = $"{Path.GetFileName(_currentFilename)} " +
-                    $"({Viewport.Bitmap.Width}x{Viewport.Bitmap.Height})";
+            Title = Path.GetFileName(_currentFilename);
         }
-        else Title = $"{Viewport.Bitmap.Width}x{Viewport.Bitmap.Height} Texture";
+        else Title = $"New Texture";
 
-        Title += " - Powerplant";
+        if (_isFileModified) Title += "*";
+        
+        Title += $" ({Viewport.Bitmap.Width}x{Viewport.Bitmap.Height}) - Powerplant";
         
         TextureSizeDetailsText.Text = $"w: {Viewport.Bitmap.Width}; y: {Viewport.Bitmap.Height}";
     }
@@ -188,6 +196,12 @@ public partial class MainWindow : Window
         OpenFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
     }
 
+    private void SetModified(bool modified)
+    {
+        _isFileModified = modified;
+        UpdateTextureDetails();
+    }
+
     private void OpenFile(string path)
     {
         Viewport.LoadTexture(path);
@@ -195,7 +209,7 @@ public partial class MainWindow : Window
 
         _currentFilename = path;
         
-        UpdateTextureDetails();
+        SetModified(false);
     }
 
     private async void MenuSaveTextureAsOptionClicked(object? sender, EventArgs e)
@@ -220,7 +234,7 @@ public partial class MainWindow : Window
         _currentFilename = path;
         RecentFilesManager.Add(path);
         
-        UpdateTextureDetails();
+        SetModified(false);
     }
 
     private void ColorSpectrum_OnColorChanged(object? sender, ColorChangedEventArgs e)
@@ -537,5 +551,13 @@ public partial class MainWindow : Window
         Clipboard?.SetBitmapAsync(bitmap.Bitmap);
         Viewport.RunCommand(new PixelsCommand(Viewport.Selection.Pixels, PwColor.Transparent));
         Viewport.ClearSelection();
+    }
+
+    private async void PasteOptionClicked(object? sender, EventArgs e)
+    {
+        Bitmap? bitmap = await Clipboard!.TryGetBitmapAsync();
+        if (bitmap == null) return;
+        
+        SetTool(new PasteImageTool(bitmap));
     }
 }

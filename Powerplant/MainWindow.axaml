@@ -30,6 +30,7 @@
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Copy" Gesture="Meta+C" Click="CopyOptionClicked" />
                     <NativeMenuItem Header="Cut" Gesture="Meta+X" Click="CutOptionClicked" />
+                    <NativeMenuItem Header="Paste" Gesture="Meta+V" Click="PasteOptionClicked" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Select All" Gesture="Meta+A" Click="SelectAllOptionClicked" />
                     <NativeMenuItemSeparator />

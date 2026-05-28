@@ -59,6 +59,7 @@ public class ViewportControl : Control
     public event Action<int, int> OnCursorPositionChanged;
     public event EventHandler<PixelSelection> OnSelectionChanged;
     public event EventHandler<string> OnToolDescriptionTextChanged;
+    public event Action OnModification;
 
     public StreamGeometry? SelectionGeometry => _selectionGeometry;
     public Vector2 RealCursorPosition => _realCursorPos;
@@ -102,7 +103,10 @@ public class ViewportControl : Control
     }
 
     public void RunCommand(Command command)
-        => UndoRedoStack.Push(command);
+    {
+        UndoRedoStack.Push(command);
+        OnModification?.Invoke();
+    }
 
     public void SetSelection(PixelSelection selection, SelectionMode mode = SelectionMode.Set)
     {
@@ -149,7 +153,7 @@ public class ViewportControl : Control
     {
         _selectionGeometry = new StreamGeometry();
         
-        List<Vector2> pixels = Selection.Pixels.ToList();
+        HashSet<Vector2> pixels = Selection.Pixels.ToHashSet();
         List<(Point A, Point B)> edges = [];
 
         foreach (Vector2 p in pixels)
@@ -278,6 +282,8 @@ public class ViewportControl : Control
         OnBitmapChanged?.Invoke(this, _bitmap);
         
         Center();
+        
+        OnModification?.Invoke();
     }
 
     public void LoadTexture(string filename)
