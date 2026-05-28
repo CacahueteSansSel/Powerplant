@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -503,5 +504,38 @@ public partial class MainWindow : Window
     private void ZoomMinusOptionClicked(object? sender, EventArgs e)
     {
         Viewport.DecrementZoom();
+    }
+
+    private void ResizeToSelectionOptionClicked(object? sender, EventArgs e)
+    {
+        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
+        if (bitmap == null) return;
+        
+        Viewport.ClearSelection();
+        Viewport.RunCommand(new SetBitmapCommand(bitmap));
+    }
+
+    private void CopyOptionClicked(object? sender, EventArgs e)
+    {
+        if (Viewport.Selection.IsEmpty)
+            return;
+        
+        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
+        if (bitmap == null) return;
+        
+        Clipboard?.SetBitmapAsync(bitmap.Bitmap);
+    }
+
+    private void CutOptionClicked(object? sender, EventArgs e)
+    {
+        if (Viewport.Selection.IsEmpty)
+            return;
+        
+        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
+        if (bitmap == null) return;
+        
+        Clipboard?.SetBitmapAsync(bitmap.Bitmap);
+        Viewport.RunCommand(new PixelsCommand(Viewport.Selection.Pixels, PwColor.Transparent));
+        Viewport.ClearSelection();
     }
 }

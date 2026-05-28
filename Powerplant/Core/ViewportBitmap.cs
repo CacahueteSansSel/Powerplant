@@ -13,6 +13,7 @@ public class ViewportBitmap
     private PwColor[] _buffer;
 
     public IImage Image => _bitmap;
+    public Bitmap Bitmap => _bitmap;
     public int Width { get; }
     public int Height { get; }
 

@@ -28,6 +28,9 @@
                     <NativeMenuItem Header="Undo" Gesture="Meta+Z" Click="UndoOptionClicked" />
                     <NativeMenuItem Header="Redo" Gesture="Meta+Y" Click="RedoOptionClicked" />
                     <NativeMenuItemSeparator />
+                    <NativeMenuItem Header="Copy" Gesture="Meta+C" Click="CopyOptionClicked" />
+                    <NativeMenuItem Header="Cut" Gesture="Meta+X" Click="CutOptionClicked" />
+                    <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Select All" Gesture="Meta+A" Click="SelectAllOptionClicked" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Resize Image" Gesture="Meta+R" Click="ResizeImageOptionClicked" />
@@ -45,6 +48,8 @@
                 <NativeMenu>
                     <NativeMenuItem Header="Vertical Flip" Click="VerticalFlipOptionClicked" />
                     <NativeMenuItem Header="Horizontal Flip" Click="HorizontalFlipOptionClicked" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Header="Resize to Selection" Click="ResizeToSelectionOptionClicked" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="Effects">

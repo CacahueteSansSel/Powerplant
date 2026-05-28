@@ -38,6 +38,8 @@ public class ViewportControl : Control
     private Vector2? _bitmapCursorPos;
     private Pen _curPixelPen;
     private string _toolDescText;
+    private Bitmap _checkerboard;
+    private ImageBrush _backgroundBrush;
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
@@ -72,10 +74,18 @@ public class ViewportControl : Control
         Focusable = true;
 
         _blackPen = new Pen(0xFF000000);
-        _gridPen = new Pen(0xFFAAAAAA);
+        _gridPen = new Pen(0x77000000);
         _selectionBrush = new SolidColorBrush(0x77A7F55D);
         _selectionPen = new Pen(0xFF4D6537, 2, DashStyle.Dash);
         _curPixelPen = new Pen(0xFF000000, 2);
+
+        _checkerboard = new Bitmap(AssetLoader.Open(new Uri("avares://Powerplant/Resources/checkerboard.png")));
+        _backgroundBrush = new ImageBrush(_checkerboard)
+        {
+            TileMode = TileMode.Tile,
+            DestinationRect = new RelativeRect(0, 0, 32, 32, RelativeUnit.Absolute),
+            Stretch = Stretch.None
+        };
         
         _bitmap = new ViewportBitmap(16, 16);
         _bitmap.Sync();
@@ -119,6 +129,21 @@ public class ViewportControl : Control
 
     public void ClearSelection() 
         => SetSelection(PixelSelection.Empty);
+
+    public ViewportBitmap? GenerateBitmapFromSelection()
+    {
+        if (Selection.IsEmpty) return null;
+
+        ViewportBitmap bitmap = new ViewportBitmap((int)Selection.Bounds.Width, (int)Selection.Bounds.Height);
+        foreach (Vector2 pixel in Selection.Pixels)
+        {
+            bitmap.Set((int)(pixel.X - Selection.Bounds.X), (int)(pixel.Y - Selection.Bounds.Y), 
+                Bitmap.Get((int)pixel.X, (int)pixel.Y));
+        }
+        bitmap.Sync();
+
+        return bitmap;
+    }
 
     private void BuildSelectionGeometry()
     {
@@ -485,6 +510,10 @@ public class ViewportControl : Control
         context.DrawRectangle(new SolidColorBrush(Colors.White), null, new Rect(0, 0, Bounds.Width, Bounds.Height));
 
         Rect bounds = new Rect(_offset.X, _offset.Y, _bitmap.Width * Zoom, _bitmap.Height * Zoom);
+
+        _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, 32, 32, RelativeUnit.Absolute);
+        context.DrawRectangle(_backgroundBrush, null, bounds);
+        
         context.DrawImage(_bitmap.Image, bounds);
         context.DrawRectangle(null, _blackPen, bounds);
 

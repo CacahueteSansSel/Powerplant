@@ -78,6 +78,8 @@
       <AvaloniaResource Include="Resources\icons\wand.svg" />
       <None Remove="Resources\icons\color_switch.svg" />
       <AvaloniaResource Include="Resources\icons\color_switch.svg" />
+      <None Remove="Resources\checkerboard.png" />
+      <AvaloniaResource Include="Resources\checkerboard.png" />
     </ItemGroup>
 
     <ItemGroup>
