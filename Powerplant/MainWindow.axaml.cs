@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Web;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -31,7 +32,7 @@ public partial class MainWindow : Window
     private bool _isFileModified = false;
 
     private ViewportTool[] _tools;
-    
+
     public MainWindow()
     {
         InitializeComponent();
@@ -48,6 +49,8 @@ public partial class MainWindow : Window
             new RectangleTool(),
             new SelectionRectangleTool()
         ];
+
+        DataContext = new MainWindowCommands(this);
         
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
@@ -57,16 +60,90 @@ public partial class MainWindow : Window
         Viewport.OnToolDescriptionTextChanged += ViewportOnToolDescriptionTextChanged;
         Viewport.OnModification += ViewportOnModification;
 
+        SetupTitleBarOffsets();
+        BuildWindowMenu();
+
         KeyDown += OnKeyDown;
-        
+
         SetTool(new PixelTool());
-        
+
         Viewport.SetPrimaryColor(PwColor.White);
         Viewport.SetSecondaryColor(PwColor.Black);
-        
+
         UpdateTextureDetails();
 
         Focus();
+    }
+
+    private void SetupTitleBarOffsets()
+    {
+        if (OperatingSystem.IsMacOS())
+        {
+            LeftTitlebarOffsetPanel.Width = 70;
+        }
+
+        if (OperatingSystem.IsWindows())
+        {
+            RightTitlebarOffsetPanel.Width = 200;
+        }
+    }
+
+    private void BuildWindowMenu()
+    {
+        NativeMenu? nativeMenu = NativeMenu.GetMenu(this);
+        WindowMenu.Items.Clear();
+
+        if (nativeMenu == null) return;
+
+        foreach (Control control in BuildItemList(nativeMenu.Items))
+            WindowMenu.Items.Add(control);
+    }
+
+    List<Control> BuildItemList(IList<NativeMenuItemBase> nativeItems)
+    {
+        List<Control> targetList = new();
+
+        foreach (NativeMenuItemBase item in nativeItems)
+        {
+            Control windowItem = null;
+
+            switch (item)
+            {
+                case NativeMenuItemSeparator:
+                    windowItem = new Separator();
+
+                    break;
+                case NativeMenuItem stdNativeItem:
+                    MenuItem mi = new();
+                    mi.Header = stdNativeItem.Header;
+                    mi.Tag = stdNativeItem;
+                    mi.Click += GeneratedWindowItemOnClick;
+
+                    if (stdNativeItem.Menu != null)
+                    {
+                        foreach (Control control in BuildItemList(stdNativeItem.Menu.Items))
+                            mi.Items.Add(control);
+                    }
+
+                    windowItem = mi;
+
+                    break;
+            }
+
+            if (windowItem != null)
+                targetList.Add(windowItem);
+        }
+
+        return targetList;
+    }
+
+    private void GeneratedWindowItemOnClick(object? sender, RoutedEventArgs e)
+    {
+        MenuItem item = (MenuItem)sender!;
+        NativeMenuItem nativeItem = (NativeMenuItem)item.Tag!;
+
+        if (nativeItem.Command != null)
+            nativeItem.Command.Execute(null);
     }
 
     private void ViewportOnModification()
@@ -86,7 +163,7 @@ public partial class MainWindow : Window
             SelectionDetailsText.Text = "x: 0; y: 0; w: 0; h: 0";
             return;
         }
-        
+
         SelectionDetailsText.Text =
             $"x: {(int)e.Bounds.X}; y: {(int)e.Bounds.Y}; w: {(int)e.Bounds.Width}; h: {(int)e.Bounds.Height}";
     }
@@ -101,7 +178,7 @@ public partial class MainWindow : Window
         foreach (ViewportTool tool in _tools)
         {
             if (tool.Key != e.Key) continue;
-            
+
             SetTool(tool);
             return;
         }
@@ -115,7 +192,7 @@ public partial class MainWindow : Window
     private void UpdateTextureDetails()
     {
         Title = "";
-        
+
         if (_currentFilename != null)
         {
             Title = Path.GetFileName(_currentFilename);
@@ -123,8 +200,9 @@ public partial class MainWindow : Window
         else Title = $"New Texture";
 
         if (_isFileModified) Title += "*";
-        
+
         Title += $" ({Viewport.Bitmap.Width}x{Viewport.Bitmap.Height}) - Powerplant";
+        TitleText.Text = Title;
         
         TextureSizeDetailsText.Text = $"w: {Viewport.Bitmap.Width}; y: {Viewport.Bitmap.Height}";
     }
@@ -132,18 +210,18 @@ public partial class MainWindow : Window
     private void ViewportOnSecondaryColorChanged(object? sender, PwColor e)
     {
         Color avColor = e.ToColor();
-        
+
         SecondaryColorCell.Background = new SolidColorBrush(avColor);
     }
 
     private void ViewportOnPrimaryColorChanged(object? sender, PwColor e)
     {
         Color avColor = e.ToColor();
-        
+
         PrimaryColorCell.Background = new SolidColorBrush(avColor);
 
         _disableEvents = true;
-        
+
         ColorSpinR.Value = (float)e.R / byte.MaxValue;
         ColorSpinR.Color = avColor;
         ColorTextR.Text = e.R.ToString();
@@ -163,37 +241,14 @@ public partial class MainWindow : Window
         ColorTextS.Text = ColorSpinS.Value.ToString("0");
         ColorSpinV.Color = avColor;
         ColorTextV.Text = ColorSpinV.Value.ToString("0");
-        
-        HexText.Text = (avColor.A < 255 ? avColor.A.ToString("X2") : "") + avColor.R.ToString("X2") 
-                                                                         + avColor.G.ToString("X2") 
+
+        HexText.Text = (avColor.A < 255 ? avColor.A.ToString("X2") : "") + avColor.R.ToString("X2")
+                                                                         + avColor.G.ToString("X2")
                                                                          + avColor.B.ToString("X2");
-        
+
         _disableEvents = false;
 
         ColorWheel.Color = avColor;
-    }
-
-    private async void MenuNewTextureOptionClicked(object? sender, EventArgs e)
-    {
-        Vector2 size = await new NewTextureWindow().ShowDialog<Vector2>(this);
-        if (size.X == 0 || size.Y == 0) return;
-        
-        Viewport.CreateTexture((int)size.X, (int)size.Y);
-    }
-
-    private async void MenuOpenTextureOptionClicked(object? sender, EventArgs e)
-    {
-        List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
-
-        IReadOnlyList<IStorageFile> fileList = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
-        {
-            FileTypeFilter = fileTypes
-        });
-        
-        if (fileList.Count != 1) return;
-        IStorageFile file = fileList.First();
-
-        OpenFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
     }
 
     private void SetModified(bool modified)
@@ -208,32 +263,19 @@ public partial class MainWindow : Window
         RecentFilesManager.Add(path);
 
         _currentFilename = path;
-        
+
         SetModified(false);
-    }
-
-    private async void MenuSaveTextureAsOptionClicked(object? sender, EventArgs e)
-    {
-        List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
-
-        IStorageFile? file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
-        {
-            FileTypeChoices = fileTypes
-        });
-        if (file == null) return;
-
-        SaveFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
     }
 
     private void SaveFile(string path)
     {
         FileFormatBase? ff = FileFormatManager.GetByExtension(Path.GetExtension(path).TrimStart('.'));
         if (ff == null) return;
-        
+
         ff.Save(Viewport.Bitmap, path);
         _currentFilename = path;
         RecentFilesManager.Add(path);
-        
+
         SetModified(false);
     }
 
@@ -245,61 +287,61 @@ public partial class MainWindow : Window
     private void ColorSpinR_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         byte r = (byte)e.NewValue;
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {R = r});
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { R = r });
     }
 
     private void ColorSpinG_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         byte g = (byte)e.NewValue;
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {G = g});
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { G = g });
     }
 
     private void ColorSpinB_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         byte b = (byte)e.NewValue;
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {B = b});
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { B = b });
     }
 
     private void ColorSpinA_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         byte a = (byte)e.NewValue;
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {A = a});
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { A = a });
     }
 
     private void ColorTextR_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextR.Text, out byte r)) return;
-        
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {R = r});
+
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { R = r });
     }
 
     private void ColorTextG_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextG.Text, out byte g)) return;
-        
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {G = g});
+
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { G = g });
     }
 
     private void ColorTextB_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextB.Text, out byte b)) return;
-        
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {B = b});
+
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { B = b });
     }
 
     private void ColorTextA_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (!byte.TryParse(ColorTextA.Text, out byte a)) return;
-        
-        Viewport.SetPrimaryColor(Viewport.PrimaryColor with {A = a});
+
+        Viewport.SetPrimaryColor(Viewport.PrimaryColor with { A = a });
     }
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
@@ -322,9 +364,9 @@ public partial class MainWindow : Window
         if (ToolOptionsBar.IsVisible && tool != null)
         {
             Control? toolControl = tool.ToolSettingsControl;
-            
+
             ToolSettingsControlPanel.Children.Clear();
-            
+
             if (toolControl != null)
                 ToolSettingsControlPanel.Children.Add(toolControl);
         }
@@ -361,72 +403,41 @@ public partial class MainWindow : Window
         SetTool(new RectangleTool());
     }
 
-    private void UndoOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.UndoRedoStack.Undo();
-    }
-
-    private void RedoOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.UndoRedoStack.Redo();
-    }
-
     private void EllipseTool_OnClick(object? sender, RoutedEventArgs e)
     {
         SetTool(new EllipseTool());
     }
 
-    private async void ResizeImageOptionClicked(object? sender, EventArgs e)
-    {
-        ResizeImageResult? result = await new ResizeImageWindow(Viewport.Bitmap.Width, Viewport.Bitmap.Height)
-            .ShowDialog<ResizeImageResult?>(this);
-        if (result == null) return;
-        
-        Viewport.RunCommand(new ResizeImageCommand(result.Width, result.Height, result.InterpolationMode));
-    }
-
-    private async void ResizeViewportOptionClicked(object? sender, EventArgs e)
-    {
-        ResizeViewportResult? result = await new ResizeViewportWindow(Viewport.Bitmap.Width, Viewport.Bitmap.Height)
-            .ShowDialog<ResizeViewportResult?>(this);
-        if (result == null) return;
-        
-        Viewport.RunCommand(new ResizeViewportCommand(result.Width, result.Height, result.Anchor));
-    }
-
     private void ColorTextH_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        
     }
 
     private void ColorTextS_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        
     }
 
     private void ColorTextV_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        
     }
 
     private void ColorSpinH_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         Viewport.SetPrimaryColor(new PwColor(ColorSpinH.Color));
     }
 
     private void ColorSpinS_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         Viewport.SetPrimaryColor(new PwColor(ColorSpinS.Color));
     }
 
     private void ColorSpinV_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (Viewport == null || _disableEvents) return;
-        
+
         Viewport.SetPrimaryColor(new PwColor(ColorSpinV.Color));
     }
 
@@ -435,9 +446,9 @@ public partial class MainWindow : Window
         if (Viewport == null || _disableEvents) return;
 
         string hex = HexText.Text.TrimStart('#');
-        
+
         if (hex.Length != 6 && hex.Length != 8) return;
-         
+
         Viewport.SetPrimaryColor(new PwColor(hex));
     }
 
@@ -456,108 +467,182 @@ public partial class MainWindow : Window
         SetTool(new MagicWandTool());
     }
 
-    private void SelectAllOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.SetSelection(PixelSelection.Rectangle(0, 0, Viewport.Bitmap.Width, Viewport.Bitmap.Height));
-    }
-
-    private async void OpenRecentMenuOptionClicked(object? sender, EventArgs e)
-    {
-        string? filename = await new OpenRecentWindow().ShowDialog<string>(this);
-        
-        if (!string.IsNullOrWhiteSpace(filename))
-            OpenFile(filename);
-    }
-
-    private void MenuSaveTextureOptionClicked(object? sender, EventArgs e)
-    {
-        if (_currentFilename == null) return;
-        
-        SaveFile(_currentFilename);
-    }
-
-    private void VerticalFlipOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.RunCommand(new FlipCommand(false));
-    }
-
-    private void HorizontalFlipOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.RunCommand(new FlipCommand(true));
-    }
-
-    private void PureBlackEffectOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.RunCommand(new EffectRunner<PureBlackEffect>(Viewport).RunEffectCommand);
-    }
-
-    private void OutlineEffectOptionClicked(object? sender, EventArgs e)
-    {
-        new OutlineWindow(Viewport).Show(this);
-    }
-
-    private void ColorSwitchButtonClicked(object? sender, PointerPressedEventArgs e)
+    public void ColorSwitchButtonClicked(object? sender, PointerPressedEventArgs e)
     {
         PwColor primaryColor = Viewport.PrimaryColor;
         PwColor secondaryColor = Viewport.SecondaryColor;
-        
+
         Viewport.SetPrimaryColor(secondaryColor);
         Viewport.SetSecondaryColor(primaryColor);
     }
 
-    private void CenterViewOptionClicked(object? sender, EventArgs e)
+    public class MainWindowCommands
     {
-        Viewport.Center();
-    }
+        private MainWindow _win;
 
-    private void ZoomPlusOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.IncrementZoom();
-    }
+        public MainWindowCommands(MainWindow window)
+        {
+            _win = window;
+        }
 
-    private void ZoomMinusOptionClicked(object? sender, EventArgs e)
-    {
-        Viewport.DecrementZoom();
-    }
+        public async void MenuNewTextureOptionClicked()
+        {
+            Vector2 size = await new NewTextureWindow().ShowDialog<Vector2>(_win);
+            if (size.X == 0 || size.Y == 0) return;
 
-    private void ResizeToSelectionOptionClicked(object? sender, EventArgs e)
-    {
-        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
-        if (bitmap == null) return;
-        
-        Viewport.ClearSelection();
-        Viewport.RunCommand(new SetBitmapCommand(bitmap));
-    }
+            _win.Viewport.CreateTexture((int)size.X, (int)size.Y);
+        }
 
-    private void CopyOptionClicked(object? sender, EventArgs e)
-    {
-        if (Viewport.Selection.IsEmpty)
-            return;
-        
-        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
-        if (bitmap == null) return;
-        
-        Clipboard?.SetBitmapAsync(bitmap.Bitmap);
-    }
+        public async void MenuOpenTextureOptionClicked()
+        {
+            List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
 
-    private void CutOptionClicked(object? sender, EventArgs e)
-    {
-        if (Viewport.Selection.IsEmpty)
-            return;
-        
-        ViewportBitmap? bitmap = Viewport.GenerateBitmapFromSelection();
-        if (bitmap == null) return;
-        
-        Clipboard?.SetBitmapAsync(bitmap.Bitmap);
-        Viewport.RunCommand(new PixelsCommand(Viewport.Selection.Pixels, PwColor.Transparent));
-        Viewport.ClearSelection();
-    }
+            IReadOnlyList<IStorageFile> fileList = await _win.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+            {
+                FileTypeFilter = fileTypes
+            });
 
-    private async void PasteOptionClicked(object? sender, EventArgs e)
-    {
-        Bitmap? bitmap = await Clipboard!.TryGetBitmapAsync();
-        if (bitmap == null) return;
-        
-        SetTool(new PasteImageTool(bitmap));
+            if (fileList.Count != 1) return;
+            IStorageFile file = fileList.First();
+
+            _win.OpenFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
+        }
+
+        public async void MenuSaveTextureAsOptionClicked()
+        {
+            List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
+
+            IStorageFile? file = await _win.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+            {
+                FileTypeChoices = fileTypes
+            });
+            if (file == null) return;
+
+            _win.SaveFile(HttpUtility.UrlDecode(file.Path.AbsolutePath));
+        }
+
+        public void UndoOptionClicked()
+        {
+            _win.Viewport.UndoRedoStack.Undo();
+        }
+
+        public void RedoOptionClicked()
+        {
+            _win.Viewport.UndoRedoStack.Redo();
+        }
+
+        public async void ResizeImageOptionClicked()
+        {
+            ResizeImageResult? result = await new ResizeImageWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
+                .ShowDialog<ResizeImageResult?>(_win);
+            if (result == null) return;
+
+            _win.Viewport.RunCommand(new ResizeImageCommand(result.Width, result.Height, result.InterpolationMode));
+        }
+
+        public async void ResizeViewportOptionClicked()
+        {
+            ResizeViewportResult? result = await new ResizeViewportWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
+                .ShowDialog<ResizeViewportResult?>(_win);
+            if (result == null) return;
+
+            _win.Viewport.RunCommand(new ResizeViewportCommand(result.Width, result.Height, result.Anchor));
+        }
+
+        public void SelectAllOptionClicked()
+        {
+            _win.Viewport.SetSelection(PixelSelection.Rectangle(0, 0, _win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height));
+        }
+
+        public async void OpenRecentMenuOptionClicked()
+        {
+            string? filename = await new OpenRecentWindow().ShowDialog<string>(_win);
+
+            if (!string.IsNullOrWhiteSpace(filename))
+                _win.OpenFile(filename);
+        }
+
+        public void MenuSaveTextureOptionClicked()
+        {
+            if (_win._currentFilename == null) return;
+
+            _win.SaveFile(_win._currentFilename);
+        }
+
+        public void VerticalFlipOptionClicked()
+        {
+            _win.Viewport.RunCommand(new FlipCommand(false));
+        }
+
+        public void HorizontalFlipOptionClicked()
+        {
+            _win.Viewport.RunCommand(new FlipCommand(true));
+        }
+
+        public void PureBlackEffectOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<PureBlackEffect>(_win.Viewport).RunEffectCommand);
+        }
+
+        public void OutlineEffectOptionClicked()
+        {
+            new OutlineWindow(_win.Viewport).Show(_win);
+        }
+
+        public void CenterViewOptionClicked()
+        {
+            _win.Viewport.Center();
+        }
+
+        public void ZoomPlusOptionClicked()
+        {
+            _win.Viewport.IncrementZoom();
+        }
+
+        public void ZoomMinusOptionClicked()
+        {
+            _win.Viewport.DecrementZoom();
+        }
+
+        public void ResizeToSelectionOptionClicked()
+        {
+            ViewportBitmap? bitmap = _win.Viewport.GenerateBitmapFromSelection();
+            if (bitmap == null) return;
+
+            _win.Viewport.ClearSelection();
+            _win.Viewport.RunCommand(new SetBitmapCommand(bitmap));
+        }
+
+        public void CopyOptionClicked()
+        {
+            if (_win.Viewport.Selection.IsEmpty)
+                return;
+
+            ViewportBitmap? bitmap = _win.Viewport.GenerateBitmapFromSelection();
+            if (bitmap == null) return;
+
+            _win.Clipboard?.SetBitmapAsync(bitmap.Bitmap);
+        }
+
+        public void CutOptionClicked()
+        {
+            if (_win.Viewport.Selection.IsEmpty)
+                return;
+
+            ViewportBitmap? bitmap = _win.Viewport.GenerateBitmapFromSelection();
+            if (bitmap == null) return;
+
+            _win.Clipboard?.SetBitmapAsync(bitmap.Bitmap);
+            _win.Viewport.RunCommand(new PixelsCommand(_win.Viewport.Selection.Pixels, PwColor.Transparent));
+            _win.Viewport.ClearSelection();
+        }
+
+        public async void PasteOptionClicked()
+        {
+            Bitmap? bitmap = await _win.Clipboard!.TryGetBitmapAsync();
+            if (bitmap == null) return;
+
+            _win.SetTool(new PasteImageTool(bitmap));
+        }
     }
 }
