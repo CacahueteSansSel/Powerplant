@@ -10,17 +10,20 @@ public class PasteImageTool : ViewportTool
 {
     private Bitmap _bitmap;
     private Vector2? _position;
+    private bool _resetAfterPaste;
     
     public override string Name => "Paste image";
 
-    public PasteImageTool(Bitmap bitmap)
+    public PasteImageTool(Bitmap bitmap, bool resetAfterPaste)
     {
         _bitmap = bitmap;
+        _resetAfterPaste = resetAfterPaste;
     }
     
     public override void UsePrimary(int cursorX, int cursorY)
     {
         Viewport.RunCommand(new BitmapCommand(cursorX, cursorY, _bitmap));
+        if (_resetAfterPaste) Viewport.SetTool(new PixelTool());
     }
 
     public override void UseSecondary(int cursorX, int cursorY)

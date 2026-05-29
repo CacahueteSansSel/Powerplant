@@ -61,20 +61,47 @@ public partial class MainWindow : Window
         Viewport.OnSelectionChanged += ViewportOnSelectionChanged;
         Viewport.OnToolDescriptionTextChanged += ViewportOnToolDescriptionTextChanged;
         Viewport.OnModification += ViewportOnModification;
+        Viewport.OnToolChanged += ViewportOnToolChanged;
 
         SetupTitleBarOffsets();
         BuildWindowMenu();
 
         KeyDown += OnKeyDown;
 
-        SetTool(new PixelTool());
-
+        Viewport.SetTool(new PixelTool());
         Viewport.SetPrimaryColor(PwColor.White);
         Viewport.SetSecondaryColor(PwColor.Black);
 
         UpdateTextureDetails();
 
         Focus();
+    }
+
+    private void ViewportOnToolChanged(object? sender, ViewportTool? tool)
+    {
+        ToolOptionsBar.IsVisible = tool != null;
+        ToolNameText.Text = tool?.Name;
+
+        if (ToolOptionsBar.IsVisible && tool != null)
+        {
+            Control? toolControl = tool.ToolSettingsControl;
+
+            ToolSettingsControlPanel.Children.Clear();
+
+            if (toolControl != null)
+                ToolSettingsControlPanel.Children.Add(toolControl);
+        }
+
+        // Update buttons here
+        PixelToolButton.IsChecked = tool is PixelTool;
+        EraserToolButton.IsChecked = tool is EraserTool;
+        ColorPickerTool.IsChecked = tool is ColorPickerTool;
+        FloodFillTool.IsChecked = tool is FloodFillTool;
+        RectangleTool.IsChecked = tool is RectangleTool;
+        EllipseTool.IsChecked = tool is EllipseTool;
+        RectSelectTool.IsChecked = tool is SelectionRectangleTool;
+        MoveSelectionTool.IsChecked = tool is MoveSelectionTool;
+        MagicWandTool.IsChecked = tool is MagicWandTool;
     }
 
     private void SetupTitleBarOffsets()
@@ -181,7 +208,7 @@ public partial class MainWindow : Window
         {
             if (tool.Key != e.Key) continue;
 
-            SetTool(tool);
+            Viewport.SetTool(tool);
             return;
         }
     }
@@ -365,61 +392,32 @@ public partial class MainWindow : Window
 
     private void PixelToolOptionClicked(object? sender, RoutedEventArgs e)
     {
-        SetTool(new PixelTool());
-    }
-
-    private void SetTool(ViewportTool? tool)
-    {
-        Viewport.SetTool(tool);
-
-        ToolOptionsBar.IsVisible = tool != null;
-        ToolNameText.Text = tool?.Name;
-
-        if (ToolOptionsBar.IsVisible && tool != null)
-        {
-            Control? toolControl = tool.ToolSettingsControl;
-
-            ToolSettingsControlPanel.Children.Clear();
-
-            if (toolControl != null)
-                ToolSettingsControlPanel.Children.Add(toolControl);
-        }
-
-        // Update buttons here
-        PixelToolButton.IsChecked = tool is PixelTool;
-        EraserToolButton.IsChecked = tool is EraserTool;
-        ColorPickerTool.IsChecked = tool is ColorPickerTool;
-        FloodFillTool.IsChecked = tool is FloodFillTool;
-        RectangleTool.IsChecked = tool is RectangleTool;
-        EllipseTool.IsChecked = tool is EllipseTool;
-        RectSelectTool.IsChecked = tool is SelectionRectangleTool;
-        MoveSelectionTool.IsChecked = tool is MoveSelectionTool;
-        MagicWandTool.IsChecked = tool is MagicWandTool;
+        Viewport.SetTool(new PixelTool());
     }
 
     private void EraserToolButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new EraserTool());
+        Viewport.SetTool(new EraserTool());
     }
 
     private void ColorPickerTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new ColorPickerTool());
+        Viewport.SetTool(new ColorPickerTool());
     }
 
     private void FloodFillTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new FloodFillTool());
+        Viewport.SetTool(new FloodFillTool());
     }
 
     private void RectangleTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new RectangleTool());
+        Viewport.SetTool(new RectangleTool());
     }
 
     private void EllipseTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new EllipseTool());
+        Viewport.SetTool(new EllipseTool());
     }
 
     private void ColorTextH_OnTextChanged(object? sender, TextChangedEventArgs e)
@@ -468,17 +466,17 @@ public partial class MainWindow : Window
 
     private void RectSelectTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new SelectionRectangleTool());
+        Viewport.SetTool(new SelectionRectangleTool());
     }
 
     private void MoveSelectionTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new MoveSelectionTool());
+        Viewport.SetTool(new MoveSelectionTool());
     }
 
     private void MagicWandTool_OnClick(object? sender, RoutedEventArgs e)
     {
-        SetTool(new MagicWandTool());
+        Viewport.SetTool(new MagicWandTool());
     }
 
     public void ColorSwitchButtonClicked(object? sender, PointerPressedEventArgs e)
@@ -688,7 +686,7 @@ public partial class MainWindow : Window
             Bitmap? bitmap = await _win.Clipboard!.TryGetBitmapAsync();
             if (bitmap == null) return;
 
-            _win.SetTool(new PasteImageTool(bitmap));
+            _win.Viewport.SetTool(new PasteImageTool(bitmap, true));
         }
     }
 }
