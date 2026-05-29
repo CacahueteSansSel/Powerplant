@@ -59,6 +59,9 @@ public struct PwColor : IEquatable<PwColor>
     public Color ToColor()
         => new(A, R, G, B);
 
+    public string ToHexString()
+        => A == 255 ? $"{R:X2}{G:X2}{B:X2}" : $"{A:X2}{R:X2}{G:X2}{B:X2}";
+
     public static bool operator ==(PwColor left, PwColor right)
     {
         return left.R == right.R && left.G == right.G && left.B == right.B && left.A == right.A;

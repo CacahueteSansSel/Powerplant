@@ -9,6 +9,7 @@
         <entry key="Powerplant/MainWindow.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Styles/PowerplantStyles.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Windows/AboutWindow.axaml" value="Powerplant/Powerplant.csproj" />
+        <entry key="Powerplant/Windows/ColorSelectWindow.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Windows/Effects/OutlineWindow.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Windows/NewTextureWindow.axaml" value="Powerplant/Powerplant.csproj" />
         <entry key="Powerplant/Windows/OpenRecentWindow.axaml" value="Powerplant/Powerplant.csproj" />

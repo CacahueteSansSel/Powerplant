@@ -8,6 +8,7 @@
         Foreground="Black"
         x:DataType="windows:NewTextureWindow+Data"
         Loaded="Control_OnLoaded"
+        CanMaximize="False"
         Title="New Texture">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">

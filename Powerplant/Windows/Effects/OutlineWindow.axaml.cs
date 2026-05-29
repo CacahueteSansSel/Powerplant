@@ -66,6 +66,8 @@ public partial class OutlineWindow : Window
 
     private void UpdateEffectPreview()
     {
+        if (_runner == null) return;
+        
         _runner.Effect.IsEightNeighbor = StyleEightNeighbors.IsChecked!.Value;
         _runner.Effect.IsSmooth = SmoothSwitch.IsChecked!.Value;
         _runner.Effect.Size = (int)OutlineSizeBox.Value!.Value;
@@ -94,6 +96,15 @@ public partial class OutlineWindow : Window
 
     private void ColorTextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
+        UpdateEffectPreview();
+    }
+
+    private async void SelectColorButtonClicked(object? sender, RoutedEventArgs e)
+    {
+        PwColor? color = await new ColorSelectWindow(_runner.Effect.Color).ShowDialog<PwColor?>(this);
+        if (!color.HasValue) return;
+
+        ColorTextBox.Text = color.Value.ToHexString();
         UpdateEffectPreview();
     }
 }

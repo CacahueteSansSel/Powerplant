@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Width="400" Height="320"
         x:Class="Powerplant.Windows.Effects.OutlineWindow"
+        CanMaximize="False"
         Title="OutlineWindow">
     <DockPanel Margin="10">
         <StackPanel Orientation="Vertical" Spacing="4" DockPanel.Dock="Top">
@@ -22,7 +23,14 @@
                 <TextBlock VerticalAlignment="Center">Outline Size</TextBlock>
             </DockPanel>
             <DockPanel>
-                <TextBox DockPanel.Dock="Right" x:Name="ColorTextBox" Width="150" TextChanged="ColorTextBox_OnTextChanged">000000</TextBox>
+                <DockPanel DockPanel.Dock="Right" Width="150">
+                    <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="5 0 0 0" ToolTip.Tip="Select Color" Click="SelectColorButtonClicked">
+                        <Svg Path="/Resources/icons/color.svg"
+                             Width="20"
+                             Height="20" />
+                    </Button>
+                    <TextBox x:Name="ColorTextBox" TextChanged="ColorTextBox_OnTextChanged">000000</TextBox>
+                </DockPanel>
                 <TextBlock VerticalAlignment="Center">Color</TextBlock>
             </DockPanel>
         </StackPanel>

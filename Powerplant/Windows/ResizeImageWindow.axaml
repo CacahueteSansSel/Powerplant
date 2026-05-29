@@ -7,6 +7,7 @@
         x:Class="Powerplant.Windows.ResizeImageWindow"
         Title="Stretch Image"
         Loaded="Control_OnLoaded"
+        CanMaximize="False"
         x:DataType="windows:ResizeImageWindow+Data">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
