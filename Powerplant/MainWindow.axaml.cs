@@ -172,7 +172,7 @@ public partial class MainWindow : Window
         NativeMenuItem nativeItem = (NativeMenuItem)item.Tag!;
 
         if (nativeItem.Command != null)
-            nativeItem.Command.Execute(null);
+            nativeItem.Command.Execute(nativeItem.CommandParameter);
     }
 
     private void ViewportOnModification()
@@ -687,6 +687,16 @@ public partial class MainWindow : Window
             if (bitmap == null) return;
 
             _win.Viewport.SetTool(new PasteImageTool(bitmap, true));
+        }
+
+        public void HideHelperCheckerboardOptionClicked()
+        {
+            _win.Viewport.SetFixedCheckerboardTileSize(null);
+        }
+
+        public void SetHelperCheckerboardOptionClicked(int size)
+        {
+            _win.Viewport.SetFixedCheckerboardTileSize(new Vector2(size, size));
         }
     }
 }

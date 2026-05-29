@@ -40,6 +40,7 @@ public class ViewportControl : Control
     private string _toolDescText;
     private Bitmap _checkerboard;
     private ImageBrush _backgroundBrush;
+    private Vector2? _fixedCheckerboardTileSize;
     
     public float Zoom => MathF.Pow(1.1f, _zoom);
     public ViewportBitmap Bitmap => _bitmap;
@@ -85,7 +86,7 @@ public class ViewportControl : Control
         {
             TileMode = TileMode.Tile,
             DestinationRect = new RelativeRect(0, 0, 32, 32, RelativeUnit.Absolute),
-            Stretch = Stretch.None
+            Stretch = Stretch.Fill
         };
         
         _bitmap = new ViewportBitmap(16, 16);
@@ -94,6 +95,13 @@ public class ViewportControl : Control
         UndoRedoStack = new UndoRedoStack(this);
 
         RegisterEvents();
+
+        _fixedCheckerboardTileSize = new Vector2(16, 16);
+    }
+
+    public void SetFixedCheckerboardTileSize(Vector2? tileSize)
+    {
+        _fixedCheckerboardTileSize = tileSize;
     }
 
     public void SetToolDescriptionText(string text)
@@ -517,7 +525,15 @@ public class ViewportControl : Control
 
         Rect bounds = new Rect(_offset.X, _offset.Y, _bitmap.Width * Zoom, _bitmap.Height * Zoom);
 
-        _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, 32, 32, RelativeUnit.Absolute);
+        if (_fixedCheckerboardTileSize != null)
+        {
+            _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, _fixedCheckerboardTileSize.Value.X * 2f * Zoom, _fixedCheckerboardTileSize.Value.Y * 2f * Zoom, RelativeUnit.Absolute);
+        }
+        else
+        {
+            _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, 32, 32, RelativeUnit.Absolute);
+        }
+        
         context.DrawRectangle(_backgroundBrush, null, bounds);
         
         context.DrawImage(_bitmap.Image, bounds);

@@ -48,6 +48,19 @@
                     <NativeMenuItem Header="Center View" Gesture="Meta+B" Command="{Binding CenterViewOptionClicked}" />
                     <NativeMenuItem Header="Zoom +" Gesture="Meta+Up" Command="{Binding ZoomPlusOptionClicked}" />
                     <NativeMenuItem Header="Zoom -" Gesture="Meta+Down" Command="{Binding ZoomMinusOptionClicked}" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Header="Fixed Checkerboard">
+                        <NativeMenu>
+                            <NativeMenuItem Header="Hide" Command="{Binding HideHelperCheckerboardOptionClicked}" />
+                            <NativeMenuItemSeparator />
+                            <NativeMenuItem Header="16x16" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="16" />
+                            <NativeMenuItem Header="32x32" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="32" />
+                            <NativeMenuItem Header="48x48" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="48" />
+                            <NativeMenuItem Header="64x64" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="64" />
+                            <NativeMenuItem Header="96x96" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="96" />
+                            <NativeMenuItem Header="128x128" Command="{Binding SetHelperCheckerboardOptionClicked}" CommandParameter="128" />
+                        </NativeMenu>
+                    </NativeMenuItem>
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="Image">
