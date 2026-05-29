@@ -11,6 +11,7 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="30"
         Loaded="Control_OnLoaded"
+        Closing="Window_OnClosing"
         Title="Powerplant">
     <NativeMenu.Menu>
         <NativeMenu>

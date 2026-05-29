@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Powerplant.Core;
 using Powerplant.Core.Effects;
+using Powerplant.Core.Platforms;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
 
@@ -18,11 +19,12 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        PlatformManager.Init();
         FileFormatManager.Init();
         AppDirectoryManager.Init();
         RecentFilesManager.Init();
         EffectsManager.Init();
-        
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow();

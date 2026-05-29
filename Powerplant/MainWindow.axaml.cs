@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -16,6 +17,7 @@ using Avalonia.Platform.Storage;
 using Powerplant.Core;
 using Powerplant.Core.Commands;
 using Powerplant.Core.Effects;
+using Powerplant.Core.Platforms;
 using Powerplant.Core.Tools;
 using Powerplant.FileFormats;
 using Powerplant.Windows;
@@ -51,7 +53,7 @@ public partial class MainWindow : Window
         ];
 
         DataContext = new MainWindowCommands(this);
-        
+
         Viewport.OnPrimaryColorChanged += ViewportOnPrimaryColorChanged;
         Viewport.OnSecondaryColorChanged += ViewportOnSecondaryColorChanged;
         Viewport.OnBitmapChanged += ViewportOnBitmapChanged;
@@ -79,7 +81,7 @@ public partial class MainWindow : Window
     {
         if (OperatingSystem.IsMacOS())
         {
-            LeftTitlebarOffsetPanel.Width = 70;
+            LeftTitlebarOffsetPanel.Width = 80;
         }
 
         if (OperatingSystem.IsWindows())
@@ -203,7 +205,7 @@ public partial class MainWindow : Window
 
         Title += $" ({Viewport.Bitmap.Width}x{Viewport.Bitmap.Height}) - Powerplant";
         TitleText.Text = Title;
-        
+
         TextureSizeDetailsText.Text = $"w: {Viewport.Bitmap.Width}; y: {Viewport.Bitmap.Height}";
     }
 
@@ -254,11 +256,23 @@ public partial class MainWindow : Window
     private void SetModified(bool modified)
     {
         _isFileModified = modified;
+        PlatformManager.Current.SetModifiedFlagOnWindow(this, modified);
+
         UpdateTextureDetails();
     }
 
-    private void OpenFile(string path)
+    private async void OpenFile(string path)
     {
+        if (_isFileModified)
+        {
+            if (!await PlatformManager.Current.ShowConfirmDialog("Unsaved changes",
+                    "You have unsaved changes. If you continue, you will loose progress ! Continue anyway ?",
+                    "Continue and loose progress", "Cancel"))
+            {
+                return;
+            }
+        }
+
         Viewport.LoadTexture(path);
         RecentFilesManager.Add(path);
 
@@ -476,6 +490,31 @@ public partial class MainWindow : Window
         Viewport.SetSecondaryColor(primaryColor);
     }
 
+    private async void Window_OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        if (!_isFileModified) return;
+        e.Cancel = true;
+        
+        await ShowFileModifiedDialogAsync();
+
+        _isFileModified = false;
+        Close();
+    }
+
+    async Task<bool> ShowFileModifiedDialogAsync()
+    {
+        bool result = await PlatformManager.Current.ShowConfirmDialog("Save changes ?",
+            "You have unsaved changes. Save before exiting ?", "Save", "Discard changes");
+
+        if (result && DataContext is MainWindowCommands cmds)
+        {
+            if (_currentFilename != null) cmds.MenuSaveTextureOptionClicked();
+            else cmds.MenuSaveTextureAsOptionClicked();
+        }
+
+        return result;
+    }
+
     public class MainWindowCommands
     {
         private MainWindow _win;
@@ -489,6 +528,9 @@ public partial class MainWindow : Window
         {
             Vector2 size = await new NewTextureWindow().ShowDialog<Vector2>(_win);
             if (size.X == 0 || size.Y == 0) return;
+            
+            if (_win._isFileModified)
+                await _win.ShowFileModifiedDialogAsync();
 
             _win.Viewport.CreateTexture((int)size.X, (int)size.Y);
         }
@@ -497,10 +539,11 @@ public partial class MainWindow : Window
         {
             List<FilePickerFileType> fileTypes = FileFormatManager.BuildFilePickerFileList();
 
-            IReadOnlyList<IStorageFile> fileList = await _win.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
-            {
-                FileTypeFilter = fileTypes
-            });
+            IReadOnlyList<IStorageFile> fileList = await _win.StorageProvider.OpenFilePickerAsync(
+                new FilePickerOpenOptions()
+                {
+                    FileTypeFilter = fileTypes
+                });
 
             if (fileList.Count != 1) return;
             IStorageFile file = fileList.First();
@@ -533,8 +576,9 @@ public partial class MainWindow : Window
 
         public async void ResizeImageOptionClicked()
         {
-            ResizeImageResult? result = await new ResizeImageWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
-                .ShowDialog<ResizeImageResult?>(_win);
+            ResizeImageResult? result =
+                await new ResizeImageWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
+                    .ShowDialog<ResizeImageResult?>(_win);
             if (result == null) return;
 
             _win.Viewport.RunCommand(new ResizeImageCommand(result.Width, result.Height, result.InterpolationMode));
@@ -542,8 +586,9 @@ public partial class MainWindow : Window
 
         public async void ResizeViewportOptionClicked()
         {
-            ResizeViewportResult? result = await new ResizeViewportWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
-                .ShowDialog<ResizeViewportResult?>(_win);
+            ResizeViewportResult? result =
+                await new ResizeViewportWindow(_win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height)
+                    .ShowDialog<ResizeViewportResult?>(_win);
             if (result == null) return;
 
             _win.Viewport.RunCommand(new ResizeViewportCommand(result.Width, result.Height, result.Anchor));
@@ -551,7 +596,8 @@ public partial class MainWindow : Window
 
         public void SelectAllOptionClicked()
         {
-            _win.Viewport.SetSelection(PixelSelection.Rectangle(0, 0, _win.Viewport.Bitmap.Width, _win.Viewport.Bitmap.Height));
+            _win.Viewport.SetSelection(PixelSelection.Rectangle(0, 0, _win.Viewport.Bitmap.Width,
+                _win.Viewport.Bitmap.Height));
         }
 
         public async void OpenRecentMenuOptionClicked()

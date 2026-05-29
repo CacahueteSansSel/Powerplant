@@ -541,7 +541,12 @@ public class ViewportControl : Control
                     new Point(_offset.X + _bitmap.Width * Zoom, py));
             }
 
-            if (_bitmapCursorPos != null)
+            bool cursorPosInBounds = _bitmapCursorPos != null
+                                     && _bitmapCursorPos.Value.X >= 0 && _bitmapCursorPos.Value.Y >= 0
+                                     && _bitmapCursorPos.Value.X < _bitmap.Width
+                                     && _bitmapCursorPos.Value.Y < _bitmap.Height;
+
+            if (_bitmapCursorPos != null && cursorPosInBounds)
             {
                 Rect selectionRect = new Rect(InvertTransformCoordX(_bitmapCursorPos.Value.X),
                     InvertTransformCoordY(_bitmapCursorPos.Value.Y), Zoom, Zoom);

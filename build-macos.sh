@@ -5,7 +5,7 @@ BUILD_DIR="Powerplant/bin/Release/net10.0/osx-arm64/publish"
 APP_DIR="output/$APP_NAME.app"
 
 cd $APP_NAME
-dotnet publish -c Release -r osx-arm64 --self-contained true
+dotnet publish -c Release -f net10.0 -r osx-arm64 --self-contained true
 cd ..
 
 mkdir -p "$APP_DIR/Contents/MacOS"
@@ -14,7 +14,7 @@ cp -R "$BUILD_DIR/"* "$APP_DIR/Contents/MacOS/"
 
 iconutil -c icns Resources/Icon.iconset
 
-cp Resources/Info.plist "$APP_DIR/Contents/Info.plist"
+cp "$APP_NAME/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp Resources/Icon.icns "$APP_DIR/Contents/Resources/Icon.icns"
 
 chmod +x "$APP_DIR/Contents/MacOS/Powerplant"
