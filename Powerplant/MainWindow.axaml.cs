@@ -119,6 +119,12 @@ public partial class MainWindow : Window
 
     private void BuildWindowMenu()
     {
+        if (OperatingSystem.IsMacOS())
+        {
+            WindowMenu.IsVisible = false;
+            return;
+        }
+        
         NativeMenu? nativeMenu = NativeMenu.GetMenu(this);
         WindowMenu.Items.Clear();
 
