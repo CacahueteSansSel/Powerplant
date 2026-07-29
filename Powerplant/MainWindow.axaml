@@ -75,6 +75,7 @@
                 <NativeMenu>
                     <NativeMenuItem Header="Pure Black" Command="{Binding PureBlackEffectOptionClicked}" />
                     <NativeMenuItem Header="Outline" Command="{Binding OutlineEffectOptionClicked}" />
+                    <NativeMenuItem Header="Invert Colors" Command="{Binding InvertColorsEffectOptionClicked}" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>

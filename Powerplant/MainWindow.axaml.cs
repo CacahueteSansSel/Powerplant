@@ -629,6 +629,11 @@ public partial class MainWindow : Window
             _win.Viewport.RunCommand(new EffectRunner<PureBlackEffect>(_win.Viewport).RunEffectCommand);
         }
 
+        public void InvertColorsEffectOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<InvertColorsEffect>(_win.Viewport).RunEffectCommand);
+        }
+
         public void OutlineEffectOptionClicked()
         {
             new OutlineWindow(_win.Viewport).Show(_win);
