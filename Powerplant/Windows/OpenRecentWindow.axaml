@@ -2,15 +2,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:windows="clr-namespace:Powerplant.Windows"
              mc:Ignorable="d" Width="400" Height="500" Title="Open Recent"
              CanMaximize="False"
              x:Class="Powerplant.Windows.OpenRecentWindow">
     <DockPanel Margin="10">
-        <TextBlock Classes="title" DockPanel.Dock="Top" Margin="0 0 0 10">Open Recent</TextBlock>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Margin="0 0 0 10" Spacing="5">
+            <TextBlock Classes="title">Open Recent</TextBlock>
+            <TextBox x:Name="SearchTextBox" PlaceholderText="Search..." TextChanged="SearchTextBox_OnTextChanged"></TextBox>
+        </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0 10 0 0">
-            <Button Click="CancelButtonClicked">Cancel</Button>
+            <Button Click="CancelButtonClicked" HotKey="Escape">Cancel</Button>
             <Button Click="OpenButtonClicked" IsDefault="True" Classes="primary">Open</Button>
         </StackPanel>
-        <ListBox x:Name="RecentFilesListBox" SelectionMode="Single" SelectionChanged="RecentFilesListBox_OnSelectionChanged"></ListBox>
+        <ListBox x:Name="RecentFilesListBox" SelectionMode="Single" SelectionChanged="RecentFilesListBox_OnSelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="windows:OpenRecentWindow+RecentFile">
+                    <DockPanel>
+                        <Image Source="{Binding Thumbnail}" RenderOptions.BitmapInterpolationMode="None" Width="60" Height="60" Margin="0 0 10 0"></Image>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontWeight="Bold" Text="{Binding Filename}"></TextBlock>
+                            <TextBlock Opacity="0.3" FontSize="11" Text="{Binding FullPath}" TextWrapping="Wrap"></TextBlock>
+                        </StackPanel>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </Window>
