@@ -530,6 +530,7 @@ public partial class MainWindow : Window
             if (_win._isFileModified)
                 await _win.ShowFileModifiedDialogAsync();
 
+            _win._currentFilename = null;
             _win.Viewport.CreateTexture((int)size.X, (int)size.Y);
         }
 

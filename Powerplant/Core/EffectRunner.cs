@@ -9,7 +9,7 @@ public class EffectRunner<T> where T : Effect, new()
     private ViewportBitmap _originalBitmapCopy;
     private ViewportControl _viewport;
 
-    public Command RunEffectCommand => new((T)_effect, _originalBitmapCopy);
+    public Command RunEffectCommand => new((T)_effect, _originalBitmapCopy, _viewport.Selection);
     public T Effect => (T)_effect;
 
     public EffectRunner(ViewportControl viewport)
@@ -24,7 +24,7 @@ public class EffectRunner<T> where T : Effect, new()
     {
         ViewportBitmap newBitmap = _originalBitmapCopy.Copy();
         
-        if (!_effect.Apply(_originalBitmapCopy, newBitmap)) 
+        if (!_effect.Apply(_originalBitmapCopy, newBitmap, _viewport.Selection)) 
             return false;
         
         _viewport.SetBitmap(newBitmap);
@@ -41,17 +41,19 @@ public class EffectRunner<T> where T : Effect, new()
     {
         private T _effect;
         private ViewportBitmap _oldBitmap;
+        private PixelSelection _area;
 
-        public Command(T effect, ViewportBitmap oldBitmap)
+        public Command(T effect, ViewportBitmap oldBitmap, PixelSelection area)
         {
             _oldBitmap = oldBitmap;
             _effect = effect;
+            _area = area;
         }
         
         public override void Run()
         {
             ViewportBitmap newBitmap = _oldBitmap.Copy();
-            if (!_effect.Apply(_oldBitmap, newBitmap)) return;
+            if (!_effect.Apply(_oldBitmap, newBitmap, _area)) return;
             
             Viewport.SetBitmap(newBitmap);
         }

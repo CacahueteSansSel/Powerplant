@@ -10,25 +10,27 @@ public class OutlineEffect : Effect
     public int Size { get; set; } = 1;
     public PwColor Color { get; set; } = PwColor.Black;
 
-    public override bool Apply(ViewportBitmap referenceBitmap, ViewportBitmap targetBitmap)
+    public override bool Apply(ViewportBitmap referenceBitmap, ViewportBitmap targetBitmap, PixelSelection area)
     {
         ViewportBitmap bitmap = referenceBitmap;
         
         for (int i = 0; i < Size; i++)
         {
-            DoOutline(bitmap, targetBitmap, i == Size-1);
+            DoOutline(bitmap, targetBitmap, i == Size-1, area);
             bitmap = targetBitmap.Copy();
         }
 
         return true;
     }
 
-    void DoOutline(ViewportBitmap referenceBitmap, ViewportBitmap targetBitmap, bool mid)
+    void DoOutline(ViewportBitmap referenceBitmap, ViewportBitmap targetBitmap, bool mid, PixelSelection area)
     {
         for (int y = 0; y < referenceBitmap.Height; y++)
         {
             for (int x = 0; x < referenceBitmap.Width; x++)
             {
+                if (!area.IsEmpty && !area.Contains(x, y))
+                    continue;
                 if (referenceBitmap.Get(x, y).A == 0)
                     continue;
 
@@ -40,6 +42,8 @@ public class OutlineEffect : Effect
                     int ny = y + _oy[i];
 
                     if (nx < 0 || ny < 0 || nx >= referenceBitmap.Width || ny >= referenceBitmap.Height)
+                        continue;
+                    if (!area.IsEmpty && !area.Contains(nx, ny))
                         continue;
 
                     if (referenceBitmap.Get(nx, ny).A == 0 && targetBitmap.Get(nx, ny).A < 128)

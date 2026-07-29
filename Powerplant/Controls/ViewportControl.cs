@@ -95,8 +95,6 @@ public class ViewportControl : Control
         UndoRedoStack = new UndoRedoStack(this);
 
         RegisterEvents();
-
-        _fixedCheckerboardTileSize = new Vector2(16, 16);
     }
 
     public void SetFixedCheckerboardTileSize(Vector2? tileSize)
