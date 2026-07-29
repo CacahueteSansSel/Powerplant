@@ -710,5 +710,25 @@ public partial class MainWindow : Window
         {
             _win.Viewport.SetFixedCheckerboardTileSize(new Vector2(size, size));
         }
+
+        public void RotateOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<RotateP90Effect>(_win.Viewport).RunEffectCommand);
+        }
+
+        public void RotateM90OptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<RotateM90Effect>(_win.Viewport).RunEffectCommand);
+        }
+
+        public void InvertHorizontalOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<InvertXEffect>(_win.Viewport).RunEffectCommand);
+        }
+
+        public void InvertVerticalOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<InvertYEffect>(_win.Viewport).RunEffectCommand);
+        }
     }
 }

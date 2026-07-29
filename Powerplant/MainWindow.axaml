@@ -76,6 +76,11 @@
                     <NativeMenuItem Header="Pure Black" Command="{Binding PureBlackEffectOptionClicked}" />
                     <NativeMenuItem Header="Outline" Command="{Binding OutlineEffectOptionClicked}" />
                     <NativeMenuItem Header="Invert Colors" Command="{Binding InvertColorsEffectOptionClicked}" />
+                    <NativeMenuItemSeparator/>
+                    <NativeMenuItem Header="Rotate +90°" Command="{Binding RotateOptionClicked}" />
+                    <NativeMenuItem Header="Rotate -90°" Command="{Binding RotateM90OptionClicked}" />
+                    <NativeMenuItem Header="Invert Horizontal (X)" Command="{Binding InvertHorizontalOptionClicked}" />
+                    <NativeMenuItem Header="Invert Vertical (Y)" Command="{Binding InvertVerticalOptionClicked}" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>
