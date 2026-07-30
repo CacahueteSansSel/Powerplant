@@ -99,7 +99,7 @@
     <Style Selector="Button">
         <Setter Property="CornerRadius" Value="6"></Setter>
         <Setter Property="Background" Value="#22000000"></Setter>
-        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/MirandaSans-Regular.ttf#Miranda Sans"></Setter>
     </Style>
     
     <Style Selector="Button:pressed">
@@ -113,17 +113,17 @@
     </Style>
     
     <Style Selector="TextBlock">
-        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/MirandaSans-Regular.ttf#Miranda Sans"></Setter>
     </Style>
     
     <Style Selector="TextBlock.title">
         <Setter Property="FontSize" Value="20"></Setter>
-        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansHeadline-Regular.ttf#Stack Sans Headline Regular"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/MirandaSans-Regular.ttf#Miranda Sans"></Setter>
     </Style>
     
     <Style Selector="NumericUpDown">
         <Setter Property="CornerRadius" Value="6"></Setter>
-        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/StackSansText-Light.ttf#Stack Sans Text Light"></Setter>
+        <Setter Property="FontFamily" Value="avares://Powerplant/Resources/fonts/MirandaSans-Regular.ttf#Miranda Sans"></Setter>
         <Setter Property="BorderBrush" Value="#FFCCCCCC"></Setter>
     </Style>
 </Styles>

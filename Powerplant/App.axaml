@@ -23,10 +23,10 @@
              
     <Application.Resources>
         <FontFamily x:Key="MainFont">
-            avares://Powerplant/Resources/fonts/StackSansHeadline-Regular#StackSansHeadline
+            avares://Powerplant/Resources/fonts/MirandaSans-Regular#MirandaSans
         </FontFamily>
         <FontFamily x:Key="MainFontBold">
-            avares://Powerplant/Resources/fonts/StackSansHeadline-Bold#StackSansHeadline
+            avares://Powerplant/Resources/fonts/MirandaSans-Bold#MirandaSans
         </FontFamily>
     </Application.Resources>
              
