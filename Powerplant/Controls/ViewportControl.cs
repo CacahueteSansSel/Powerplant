@@ -361,6 +361,62 @@ public class ViewportControl : Control
                 case Key.Back:
                     ClearSelectionOnImage(true);
                     break;
+                case Key.Left:
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    {
+                        PixelSelection offsetSelection = Selection.Copy();
+                        offsetSelection.Offset(new Vector2(-1, 0));
+                        
+                        RunCommand(new SelectionCommand(offsetSelection, SelectionMode.Set));
+                    }
+                    else
+                    {
+                        RunCommand(new MovePixelsCommand(Selection.Pixels, new Vector2(-1, 0)));
+                    }
+                    
+                    break;
+                case Key.Right:
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    {
+                        PixelSelection offsetSelection = Selection.Copy();
+                        offsetSelection.Offset(new Vector2(1, 0));
+                        
+                        RunCommand(new SelectionCommand(offsetSelection, SelectionMode.Set));
+                    }
+                    else
+                    {
+                        RunCommand(new MovePixelsCommand(Selection.Pixels, new Vector2(1, 0)));
+                    }
+                    
+                    break;
+                case Key.Up:
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    {
+                        PixelSelection offsetSelection = Selection.Copy();
+                        offsetSelection.Offset(new Vector2(0, -1));
+                        
+                        RunCommand(new SelectionCommand(offsetSelection, SelectionMode.Set));
+                    }
+                    else
+                    {
+                        RunCommand(new MovePixelsCommand(Selection.Pixels, new Vector2(0, -1)));
+                    }
+                    
+                    break;
+                case Key.Down:
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    {
+                        PixelSelection offsetSelection = Selection.Copy();
+                        offsetSelection.Offset(new Vector2(0, 1));
+                        
+                        RunCommand(new SelectionCommand(offsetSelection, SelectionMode.Set));
+                    }
+                    else
+                    {
+                        RunCommand(new MovePixelsCommand(Selection.Pixels, new Vector2(0, 1)));
+                    }
+                    
+                    break;
             }
         }
     }
