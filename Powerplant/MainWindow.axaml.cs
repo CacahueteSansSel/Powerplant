@@ -640,6 +640,16 @@ public partial class MainWindow : Window
             _win.Viewport.RunCommand(new EffectRunner<InvertColorsEffect>(_win.Viewport).RunEffectCommand);
         }
 
+        public void BlackAndWhiteOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<BlackAndWhiteEffect>(_win.Viewport).RunEffectCommand);
+        }
+
+        public void SepiaOptionClicked()
+        {
+            _win.Viewport.RunCommand(new EffectRunner<SepiaEffect>(_win.Viewport).RunEffectCommand);
+        }
+
         public void OutlineEffectOptionClicked()
         {
             new OutlineWindow(_win.Viewport).Show(_win);

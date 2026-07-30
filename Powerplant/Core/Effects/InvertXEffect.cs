@@ -15,7 +15,7 @@ public class InvertXEffect : Effect
                 if (!area.IsEmpty && !area.Contains(x, y)) continue;
                 
                 PwColor refColor = referenceBitmap.Get(x, y);
-                targetBitmap.Set((int)(bounds.X + bounds.Width - x - 1), y, refColor);
+                targetBitmap.Set((int)(bounds.X*2 + bounds.Width - x - 1), y, refColor);
             }
         }
 

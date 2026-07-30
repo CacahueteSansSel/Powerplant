@@ -39,8 +39,8 @@
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Select All" Gesture="Meta+A" Command="{Binding SelectAllOptionClicked}" />
                     <NativeMenuItemSeparator />
-                    <NativeMenuItem Header="Resize Image" Gesture="Meta+R" Command="{Binding ResizeImageOptionClicked}" />
-                    <NativeMenuItem Header="Resize Viewport" Gesture="Meta+Shift+R" Command="{Binding ResizeViewportOptionClicked}" />
+                    <NativeMenuItem Header="Resize Image..." Gesture="Meta+R" Command="{Binding ResizeImageOptionClicked}" />
+                    <NativeMenuItem Header="Resize Viewport..." Gesture="Meta+Shift+R" Command="{Binding ResizeViewportOptionClicked}" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="View">
@@ -65,8 +65,8 @@
             </NativeMenuItem>
             <NativeMenuItem Header="Image">
                 <NativeMenu>
-                    <NativeMenuItem Header="Vertical Flip" Command="{Binding VerticalFlipOptionClicked}" />
-                    <NativeMenuItem Header="Horizontal Flip" Command="{Binding HorizontalFlipOptionClicked}"/>
+                    <NativeMenuItem Header="Flip entire image vertically (Y)" Command="{Binding VerticalFlipOptionClicked}" />
+                    <NativeMenuItem Header="Flip entire image horizontally (X)" Command="{Binding HorizontalFlipOptionClicked}"/>
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Resize to Selection" Command="{Binding ResizeToSelectionOptionClicked}" />
                 </NativeMenu>
@@ -74,13 +74,16 @@
             <NativeMenuItem Header="Effects">
                 <NativeMenu>
                     <NativeMenuItem Header="Pure Black" Command="{Binding PureBlackEffectOptionClicked}" />
-                    <NativeMenuItem Header="Outline" Command="{Binding OutlineEffectOptionClicked}" />
+                    <NativeMenuItem Header="Outline..." Command="{Binding OutlineEffectOptionClicked}" />
+                    <NativeMenuItemSeparator/>
+                    <NativeMenuItem Header="Black &amp; White" Command="{Binding BlackAndWhiteOptionClicked}" />
+                    <NativeMenuItem Header="Sepia" Command="{Binding SepiaOptionClicked}" />
                     <NativeMenuItem Header="Invert Colors" Command="{Binding InvertColorsEffectOptionClicked}" />
                     <NativeMenuItemSeparator/>
                     <NativeMenuItem Header="Rotate +90°" Command="{Binding RotateOptionClicked}" />
                     <NativeMenuItem Header="Rotate -90°" Command="{Binding RotateM90OptionClicked}" />
-                    <NativeMenuItem Header="Invert Horizontal (X)" Command="{Binding InvertHorizontalOptionClicked}" />
-                    <NativeMenuItem Header="Invert Vertical (Y)" Command="{Binding InvertVerticalOptionClicked}" />
+                    <NativeMenuItem Header="Vertical Flip (Y)" Command="{Binding InvertVerticalOptionClicked}" />
+                    <NativeMenuItem Header="Horizontal Flip (X)" Command="{Binding InvertHorizontalOptionClicked}" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>
