@@ -82,6 +82,8 @@
       <AvaloniaResource Include="Resources\fonts\MirandaSans-SemiBold.ttf" />
       <None Remove="Resources\fonts\MirandaSans-SemiBoldItalic.ttf" />
       <AvaloniaResource Include="Resources\fonts\MirandaSans-SemiBoldItalic.ttf" />
+      <None Remove="Resources\cursors\color_picker.png" />
+      <AvaloniaResource Include="Resources\cursors\color_picker.png" />
     </ItemGroup>
 
     <ItemGroup>

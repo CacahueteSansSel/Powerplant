@@ -24,6 +24,7 @@ public partial class App : Application
         AppDirectoryManager.Init();
         RecentFilesManager.Init();
         EffectsManager.Init();
+        PwCursors.Init();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

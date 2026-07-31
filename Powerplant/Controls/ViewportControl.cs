@@ -246,8 +246,12 @@ public class ViewportControl : Control
 
     public void SetTool(ViewportTool? tool)
     {
+        Tool?.Deactivate();
+
         Tool = tool;
         Tool?.Viewport = this;
+        
+        Tool?.Activate();
         
         OnToolChanged?.Invoke(this, tool);
         

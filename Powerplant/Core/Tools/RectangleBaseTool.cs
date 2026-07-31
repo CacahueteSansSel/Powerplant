@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.Media;
 
 namespace Powerplant.Core.Tools;
@@ -14,7 +15,9 @@ public abstract class RectangleBaseTool : ViewportTool
     private bool _isDrawing;
 
     protected bool SettingToolTextEnabled { get; set; } = true;
-    
+
+    public override Cursor? Cursor => PwCursors.RectDraw;
+
     public override void UsePrimary(int cursorX, int cursorY)
     {
         

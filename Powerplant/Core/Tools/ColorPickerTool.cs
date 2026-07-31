@@ -8,6 +8,7 @@ public class ColorPickerTool : ViewportTool
 {
     public override string Name => "Color Picker";
     public override Key? Key => Avalonia.Input.Key.K;
+    public override Cursor? Cursor => PwCursors.ColorPicker;
 
     public override void UsePrimary(int cursorX, int cursorY)
     {

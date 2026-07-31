@@ -13,6 +13,7 @@ public abstract class ViewportTool
     public virtual bool SupportsHold => true;
     public virtual Control? ToolSettingsControl => null;
     public virtual Key? Key => null;
+    public virtual Cursor? Cursor => null;
     
     public ViewportControl Viewport { get; internal set; }
     
@@ -26,4 +27,16 @@ public abstract class ViewportTool
     public virtual void OnPointerMove(int cursorX, int cursorY) {}
 
     public virtual void Render(DrawingContext context) {}
+
+    public virtual void Deactivate()
+    {
+        if (Cursor != null)
+            MainWindow.Instance.Cursor = PwCursors.Default;
+    }
+
+    public virtual void Activate()
+    {
+        if (Cursor != null)
+            MainWindow.Instance.Cursor = Cursor;
+    }
 }

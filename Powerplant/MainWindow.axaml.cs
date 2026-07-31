@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
@@ -13,6 +14,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Powerplant.Core;
 using Powerplant.Core.Commands;
@@ -29,6 +31,8 @@ namespace Powerplant;
 
 public partial class MainWindow : Window
 {
+    public static MainWindow Instance { get; private set; }
+    
     private bool _disableEvents = false;
     private string? _currentFilename;
     private bool _isFileModified = false;
@@ -38,6 +42,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        Instance = this;
 
         _tools =
         [
