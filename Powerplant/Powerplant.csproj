@@ -84,6 +84,14 @@
       <AvaloniaResource Include="Resources\fonts\MirandaSans-SemiBoldItalic.ttf" />
       <None Remove="Resources\cursors\color_picker.png" />
       <AvaloniaResource Include="Resources\cursors\color_picker.png" />
+      <None Remove="Resources\cursors\eraser.png" />
+      <AvaloniaResource Include="Resources\cursors\eraser.png" />
+      <None Remove="Resources\cursors\pencil.png" />
+      <AvaloniaResource Include="Resources\cursors\pencil.png" />
+      <None Remove="Resources\cursors\bucket.png" />
+      <AvaloniaResource Include="Resources\cursors\bucket.png" />
+      <None Remove="Resources\cursors\wand.png" />
+      <AvaloniaResource Include="Resources\cursors\wand.png" />
     </ItemGroup>
 
     <ItemGroup>

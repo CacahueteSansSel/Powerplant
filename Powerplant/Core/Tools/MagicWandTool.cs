@@ -13,7 +13,8 @@ public class MagicWandTool : ViewportTool
 {
     public override string Name => "Magic Wand Selection";
     public override Key? Key => Avalonia.Input.Key.W;
-    
+    public override Cursor? Cursor => PwCursors.MagicWand;
+
     public override void UsePrimary(int cursorX, int cursorY)
     {
         MagicWand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY));

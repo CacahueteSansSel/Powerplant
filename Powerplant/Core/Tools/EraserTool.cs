@@ -8,7 +8,8 @@ public class EraserTool : ViewportTool
 {
     public override string Name => "Eraser";
     public override Key? Key => Avalonia.Input.Key.E;
-    
+    public override Cursor? Cursor => PwCursors.Eraser;
+
     public override void UsePrimary(int cursorX, int cursorY)
     {
         if (Bitmap.Get(cursorX, cursorY).A == 0)

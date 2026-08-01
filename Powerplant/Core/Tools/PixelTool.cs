@@ -9,6 +9,7 @@ public class PixelTool : ViewportTool
 {
     public override string Name => "Pencil";
     public override Key? Key => Avalonia.Input.Key.P;
+    public override Cursor? Cursor => PwCursors.Pencil;
 
     public override void UsePrimary(int cursorX, int cursorY)
     {
