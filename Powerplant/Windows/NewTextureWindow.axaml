@@ -15,16 +15,56 @@
             <Button Click="CancelButtonClicked">Cancel</Button>
             <Button Click="CreateTextureButtonClicked" IsDefault="True" Classes="primary">Create texture</Button>
         </StackPanel>
-        <StackPanel Spacing="10">
-            <TextBlock Classes="title" Margin="0 0 0 10">Create a new texture</TextBlock>
-            <DockPanel>
-                <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="200" Value="{Binding Width}"></NumericUpDown>
-                <TextBlock VerticalAlignment="Center">Width</TextBlock>
-            </DockPanel>
-            <DockPanel>
-                <NumericUpDown DockPanel.Dock="Right" Width="200" Value="{Binding Height}"></NumericUpDown>
-                <TextBlock VerticalAlignment="Center">Height</TextBlock>
-            </DockPanel>
-        </StackPanel>
+        <DockPanel>
+            <StackPanel Spacing="10" DockPanel.Dock="Top">
+                <TextBlock Classes="title" Margin="0 0 0 10">Create a new texture</TextBlock>
+                <DockPanel>
+                    <NumericUpDown x:Name="WidthBox" DockPanel.Dock="Right" Width="200" Value="{Binding Width}"></NumericUpDown>
+                    <TextBlock VerticalAlignment="Center">Width</TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <NumericUpDown x:Name="HeightBox" DockPanel.Dock="Right" Width="200" Value="{Binding Height}"></NumericUpDown>
+                    <TextBlock VerticalAlignment="Center">Height</TextBlock>
+                </DockPanel>
+            </StackPanel>
+            <WrapPanel Margin="0 10 0 5" ItemSpacing="5" LineSpacing="5">
+                <Button x:Name="TextureSizePresetButton16" Click="TextureSizePresetButton16_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="12" Height="12"></Border>
+                        <TextBlock>16x16</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TextureSizePresetButton32" Click="TextureSizePresetButton32_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="12" Height="12"></Border>
+                        <TextBlock>32x32</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TextureSizePresetButton64" Click="TextureSizePresetButton64_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="12" Height="12"></Border>
+                        <TextBlock>64x64</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TextureSizePresetButton128" Click="TextureSizePresetButton128_OnClick_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="12" Height="12"></Border>
+                        <TextBlock>128x128</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TextureSizePresetButton256x170" Click="TextureSizePresetButton256x170_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="16" Height="12"></Border>
+                        <TextBlock>256x170</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="TextureSizePresetButton512x340" Click="TextureSizePresetButton512x340_OnClick">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Border BorderBrush="Black" BorderThickness="1" Width="16" Height="12"></Border>
+                        <TextBlock>512x340</TextBlock>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+        </DockPanel>
     </DockPanel>
 </Window>
