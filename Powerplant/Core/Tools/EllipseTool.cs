@@ -79,7 +79,7 @@ public class EllipseTool : RectangleBaseTool
     protected override void Apply(int x, int y, int width, int height)
     {
         HashSet<(int x, int y)> ellipse = GenerateEllipse(x, y, width, height, !Settings.IsFilled, Settings.Thickness);
-        Viewport.RunCommand(new PixelsCommand(ellipse, Viewport.PrimaryColor));
+        Viewport.RunCommand(new PixelsCommand(ellipse, Viewport.PrimaryColor, true));
     }
 
     protected override void RenderPreview(DrawingContext context, Rect previewRect)

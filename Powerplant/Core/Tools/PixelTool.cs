@@ -1,6 +1,7 @@
 using Avalonia.Input;
 using Powerplant.Core.Commands;
 using Powerplant.Core.UndoRedo;
+using Powerplant.Utilities;
 
 namespace Powerplant.Core.Tools;
 
@@ -8,15 +9,16 @@ public class PixelTool : ViewportTool
 {
     public override string Name => "Pencil";
     public override Key? Key => Avalonia.Input.Key.P;
-    
+
     public override void UsePrimary(int cursorX, int cursorY)
     {
         if (Bitmap.Get(cursorX, cursorY) == Viewport.PrimaryColor)
             return;
         if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
             return;
-        
-        Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.PrimaryColor));
+
+        Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY),
+            Viewport.PrimaryColor));
     }
 
     public override void UseSecondary(int cursorX, int cursorY)
@@ -25,8 +27,9 @@ public class PixelTool : ViewportTool
             return;
         if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(cursorX, cursorY))
             return;
-        
-        Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY), Viewport.SecondaryColor));
+
+        Viewport.RunCommand(new PixelToolCommand(cursorX, cursorY, Bitmap.Get(cursorX, cursorY),
+            Viewport.SecondaryColor));
     }
 
     class PixelToolCommand : Command
@@ -45,12 +48,12 @@ public class PixelTool : ViewportTool
 
         public override void Run()
         {
-            Bitmap.Set(_x, _y, _newColor);
+            Bitmap.Set(_x, _y, _newColor, true);
         }
 
         public override void Undo()
         {
-            Bitmap.Set(_x, _y, _oldColor);
+            Bitmap.Set(_x, _y, _oldColor, false);
         }
     }
 }

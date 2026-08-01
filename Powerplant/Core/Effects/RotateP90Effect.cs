@@ -15,7 +15,7 @@ public class RotateP90Effect : Effect
                 if (!area.IsEmpty && !area.Contains(x, y)) continue;
                 
                 PwColor refColor = referenceBitmap.Get(x, y);
-                targetBitmap.Set(referenceBitmap.Height - 1 - y, x, refColor);
+                targetBitmap.Set(referenceBitmap.Height - 1 - y, x, refColor, false);
             }
         }
 

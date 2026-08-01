@@ -43,7 +43,7 @@ public abstract class ImageSharpFileFormat : FileFormatBase
             for (int x = 0; x < bitmap.Width; x++)
             {
                 Rgba32 color = img[x, y];
-                bitmap.Set(x, y, new PwColor(color.R, color.G, color.B, color.A));
+                bitmap.Set(x, y, new PwColor(color.R, color.G, color.B, color.A), false);
             }
         }
         

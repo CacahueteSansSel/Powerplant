@@ -53,7 +53,7 @@ public class ViewportBitmap
         {
             for (int x = 0; x < source.Width; x++)
             {
-                Set(destX + x, destY + y, source.Get(x, y));
+                Set(destX + x, destY + y, source.Get(x, y), false);
             }
         }
     }
@@ -82,7 +82,7 @@ public class ViewportBitmap
         {
             for (int px = 0; px < width; px++)
             {
-                cutBitmap.Set(px, py, Get(x + px, y + py));
+                cutBitmap.Set(px, py, Get(x + px, y + py), false);
             }
         }
 
@@ -102,10 +102,18 @@ public class ViewportBitmap
         return _buffer[y * Width + x];
     }
 
-    public void Set(int x, int y, PwColor color)
+    public void Set(int x, int y, PwColor color, bool alpha)
     {
         if (x < 0 || y < 0 || x >= Width || y >= Height)
             return;
+
+        if (color.A < 255 && alpha)
+        {
+            PwColor oldColor = Get(x, y);
+            _buffer[y * Width + x] = PwColor.AlphaPremultiply(oldColor, color);
+            
+            return;
+        }
         
         _buffer[y * Width + x] = color;
     }
@@ -172,7 +180,7 @@ public class ViewportBitmap
 
             for (int y = 0; y < Height; y++)
             {
-                Set(targetX, y, pixelsBackup[y * Width + x]);
+                Set(targetX, y, pixelsBackup[y * Width + x], false);
             }
         }
     }

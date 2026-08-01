@@ -47,7 +47,7 @@ public class OutlineEffect : Effect
                         continue;
 
                     if (referenceBitmap.Get(nx, ny).A == 0 && targetBitmap.Get(nx, ny).A < 128)
-                        targetBitmap.Set(nx, ny, isMid ? Color with {A = 64} : Color);
+                        targetBitmap.Set(nx, ny, isMid ? Color with {A = 64} : Color, true);
                 }
             }
         }

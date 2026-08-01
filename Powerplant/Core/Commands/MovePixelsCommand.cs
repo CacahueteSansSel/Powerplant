@@ -29,11 +29,11 @@ public class MovePixelsCommand : Command
         foreach (Vector2 pixel in _pixels)
         {
             colors.Add(pixel, Bitmap.Get((int)pixel.X, (int)pixel.Y));
-            Bitmap.Set((int)pixel.X, (int)pixel.Y, PwColor.Transparent);
+            Bitmap.Set((int)pixel.X, (int)pixel.Y, PwColor.Transparent, false);
         }
             
         foreach (KeyValuePair<Vector2, PwColor> kv in colors)
-            Bitmap.Set((int)(kv.Key.X + _delta.X), (int)(kv.Key.Y + _delta.Y), kv.Value);
+            Bitmap.Set((int)(kv.Key.X + _delta.X), (int)(kv.Key.Y + _delta.Y), kv.Value, false);
 
         PixelSelection offsetSelection = Viewport.Selection.Copy();
         offsetSelection.Offset(_delta);

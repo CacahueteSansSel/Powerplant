@@ -37,7 +37,7 @@ public class BitmapCommand : Command
                     pixels[y * _bitmap.PixelSize.Width * 4 + x * 4 + 2],
                     pixels[y * _bitmap.PixelSize.Width * 4 + x * 4 + 3]);
                 
-                Bitmap.Set((int)(x + _offset.X), (int)(y + _offset.Y), color);
+                Bitmap.Set((int)(x + _offset.X), (int)(y + _offset.Y), color, true);
             }
         }
     }

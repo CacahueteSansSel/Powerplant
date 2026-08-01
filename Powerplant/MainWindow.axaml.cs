@@ -705,7 +705,7 @@ public partial class MainWindow : Window
             if (bitmap == null) return;
 
             _win.Clipboard?.SetBitmapAsync(bitmap.Bitmap);
-            _win.Viewport.RunCommand(new PixelsCommand(_win.Viewport.Selection.Pixels, PwColor.Transparent));
+            _win.Viewport.RunCommand(new PixelsCommand(_win.Viewport.Selection.Pixels, PwColor.Transparent, false));
             _win.Viewport.ClearSelection();
         }
 

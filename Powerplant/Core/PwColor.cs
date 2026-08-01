@@ -13,11 +13,29 @@ public struct PwColor : IEquatable<PwColor>
     public static PwColor Red => new(255, 0, 0);
     public static PwColor Green => new(0, 255, 0);
     public static PwColor Blue => new(0, 0, 255);
+
+    public static PwColor AlphaPremultiply(PwColor backgroundColor, PwColor color)
+    {
+        float alpha = color.An;
+        float invAlpha = 1f - alpha;
+
+        byte r = (byte)(color.R * alpha + backgroundColor.R * invAlpha);
+        byte g = (byte)(color.G * alpha + backgroundColor.G * invAlpha);
+        byte b = (byte)(color.B * alpha + backgroundColor.B * invAlpha);
+        byte a = (byte)(color.A + backgroundColor.A * invAlpha);
+
+        return new PwColor(r, g, b, a);
+    }
     
     public byte R;
     public byte G;
     public byte B;
     public byte A;
+
+    public float Rn => (float)R / byte.MaxValue;
+    public float Gn => (float)G / byte.MaxValue;
+    public float Bn => (float)B / byte.MaxValue;
+    public float An => (float)A / byte.MaxValue;
 
     public PwColor(string hex)
     {

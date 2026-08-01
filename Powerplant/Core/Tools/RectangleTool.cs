@@ -91,7 +91,7 @@ public class RectangleTool : RectangleBaseTool
                         if (rx >= _x + _outlineSize && rx < _x + _width - _outlineSize &&
                             ry >= _y + _outlineSize && ry < _y + _height - _outlineSize) continue;
                         
-                        Bitmap.Set(rx, ry, _color);
+                        Bitmap.Set(rx, ry, _color, true);
                     }
                 }
                 
@@ -105,7 +105,7 @@ public class RectangleTool : RectangleBaseTool
                     if (!Viewport.Selection.IsEmpty && !Viewport.Selection.Contains(rx, ry))
                         continue;
                     
-                    Bitmap.Set(rx, ry, _color);
+                    Bitmap.Set(rx, ry, _color, true);
                 }
             }
         }

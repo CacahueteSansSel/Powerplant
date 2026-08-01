@@ -59,6 +59,6 @@ public class FloodFillTool : ViewportTool
             stack.Push((x, y + 1));
         }
         
-        Viewport.RunCommand(new PixelsCommand(finalPixels, replacement));
+        Viewport.RunCommand(new PixelsCommand(finalPixels, replacement, false));
     }
 }

@@ -43,12 +43,12 @@ public class EraserTool : ViewportTool
 
         public override void Run()
         {
-            Bitmap.Set(_x, _y, PwColor.Transparent);
+            Bitmap.Set(_x, _y, PwColor.Transparent, false);
         }
 
         public override void Undo()
         {
-            Bitmap.Set(_x, _y, _oldColor);
+            Bitmap.Set(_x, _y, _oldColor, false);
         }
     }
 }

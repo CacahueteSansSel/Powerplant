@@ -11,7 +11,7 @@ public abstract class PixelEffect : Effect
             foreach (Vector2 px in area.Pixels)
             {
                 targetBitmap.Set((int)px.X, (int)px.Y, 
-                    Process((int)px.X, (int)px.Y, referenceBitmap, targetBitmap, area));
+                    Process((int)px.X, (int)px.Y, referenceBitmap, targetBitmap, area), true);
             }
 
             return true;
@@ -21,7 +21,7 @@ public abstract class PixelEffect : Effect
         {
             for (int x = 0; x < referenceBitmap.Width; x++)
             {
-                targetBitmap.Set(x, y, Process(x, y, referenceBitmap, targetBitmap, area));
+                targetBitmap.Set(x, y, Process(x, y, referenceBitmap, targetBitmap, area), true);
             }
         }
 

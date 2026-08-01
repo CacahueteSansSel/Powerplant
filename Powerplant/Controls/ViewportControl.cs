@@ -148,7 +148,7 @@ public class ViewportControl : Control
         foreach (Vector2 pixel in Selection.Pixels)
         {
             bitmap.Set((int)(pixel.X - Selection.Bounds.X), (int)(pixel.Y - Selection.Bounds.Y), 
-                Bitmap.Get((int)pixel.X, (int)pixel.Y));
+                Bitmap.Get((int)pixel.X, (int)pixel.Y), false);
         }
         bitmap.Sync();
 
@@ -427,7 +427,7 @@ public class ViewportControl : Control
 
     private void ClearSelectionOnImage(bool clearSelection = false)
     {
-        RunCommand(new PixelsCommand(Selection.Pixels, PwColor.Transparent));
+        RunCommand(new PixelsCommand(Selection.Pixels, PwColor.Transparent, false));
         if (clearSelection) ClearSelection();
     }
 
