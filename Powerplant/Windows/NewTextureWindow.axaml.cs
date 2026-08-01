@@ -49,7 +49,7 @@ public partial class NewTextureWindow : Window
         Close(new Vector2(64, 64));
     }
 
-    private void TextureSizePresetButton128_OnClick_OnClick(object? sender, RoutedEventArgs e)
+    private void TextureSizePresetButton128_OnClick(object? sender, RoutedEventArgs e)
     {
         Close(new Vector2(128, 128));
     }
