@@ -108,6 +108,7 @@ public partial class MainWindow : Window
         RectSelectTool.IsChecked = tool is SelectionRectangleTool;
         MoveSelectionTool.IsChecked = tool is MoveSelectionTool;
         MagicWandTool.IsChecked = tool is MagicWandTool;
+        MulticolorPixelTool.IsChecked = tool is MulticolorPixelTool;
     }
 
     private void SetupTitleBarOffsets()
@@ -746,5 +747,10 @@ public partial class MainWindow : Window
         {
             _win.Viewport.RunCommand(new EffectRunner<InvertYEffect>(_win.Viewport).RunEffectCommand);
         }
+    }
+
+    private void MulticolorPixelTool_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Viewport.SetTool(new MulticolorPixelTool());
     }
 }

@@ -31,12 +31,12 @@ public abstract class ViewportTool
     public virtual void Deactivate()
     {
         if (Cursor != null)
-            MainWindow.Instance.Cursor = PwCursors.Default;
+            Viewport?.Cursor = PwCursors.Default;
     }
 
     public virtual void Activate()
     {
         if (Cursor != null)
-            MainWindow.Instance.Cursor = Cursor;
+            Viewport?.Cursor = Cursor;
     }
 }

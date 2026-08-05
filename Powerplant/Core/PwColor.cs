@@ -26,6 +26,28 @@ public struct PwColor : IEquatable<PwColor>
 
         return new PwColor(r, g, b, a);
     }
+
+    public static PwColor FromHsv(float hue, float saturation, float value)
+    {
+        int hi = (int)(hue / 60) % 6;
+        float f = hue / 60 - (int)(hue / 60);
+
+        value *= 255;
+        byte v = (byte)value;
+        byte p = (byte)(value * (1 - saturation));
+        byte q = (byte)(value * (1 - f * saturation));
+        byte t = (byte)(value * (1 - (1 - f) * saturation));
+
+        return hi switch
+        {
+            0 => new PwColor(v, t, p),
+            1 => new PwColor(q, v, p),
+            2 => new PwColor(p, v, t),
+            3 => new PwColor(p, q, v),
+            4 => new PwColor(t, p, v),
+            _ => new PwColor(v, p, q),
+        };
+    }
     
     public byte R;
     public byte G;

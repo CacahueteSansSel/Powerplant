@@ -190,6 +190,12 @@
                                      Width="20"
                                      Height="20" />
                             </ToggleButton>
+                            <ToggleButton x:Name="MulticolorPixelTool" Width="30" Height="30" ToolTip.Tip="Multicolor Pencil"
+                                          Click="MulticolorPixelTool_OnClick">
+                                <Svg Path="/Resources/icons/pencil.svg"
+                                     Width="20"
+                                     Height="20" />
+                            </ToggleButton>
                         </StackPanel>
                     </StackPanel>
                 </Border>
