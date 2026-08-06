@@ -723,8 +723,11 @@ public partial class MainWindow : Window
             _win.Viewport.SetFixedCheckerboardTileSize(null);
         }
 
-        public void SetHelperCheckerboardOptionClicked(int size)
+        public void SetHelperCheckerboardOptionClicked(string inputSize)
         {
+            if (!int.TryParse(inputSize, out int size))
+                return;
+            
             _win.Viewport.SetFixedCheckerboardTileSize(new Vector2(size, size));
         }
 

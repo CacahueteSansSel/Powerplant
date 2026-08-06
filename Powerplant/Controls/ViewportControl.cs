@@ -284,14 +284,17 @@ public class ViewportControl : Control
         Center();
     }
 
-    public void SetBitmap(ViewportBitmap bitmap)
+    public void SetBitmap(ViewportBitmap bitmap, bool forceRecenter = false)
     {
+        bool needRecenter = _bitmap == null || bitmap.Width != _bitmap.Width || bitmap.Height != _bitmap.Height;
+        
         _bitmap = bitmap;
         _bitmap.Sync();
         
         OnBitmapChanged?.Invoke(this, _bitmap);
         
-        Center();
+        if (needRecenter || forceRecenter)
+            Center();
         
         OnModification?.Invoke();
     }
@@ -585,7 +588,7 @@ public class ViewportControl : Control
 
         if (_fixedCheckerboardTileSize != null)
         {
-            _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, _fixedCheckerboardTileSize.Value.X * 2f * Zoom, _fixedCheckerboardTileSize.Value.Y * 2f * Zoom, RelativeUnit.Absolute);
+            _backgroundBrush.DestinationRect = new RelativeRect(-bounds.X, -bounds.Y, _fixedCheckerboardTileSize.Value.X * 2.0 * Zoom, _fixedCheckerboardTileSize.Value.Y * 2.0 * Zoom, RelativeUnit.Absolute);
         }
         else
         {
