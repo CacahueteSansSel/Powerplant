@@ -588,7 +588,7 @@ public class ViewportControl : Control
     {
         (float h, float s, float v) = PrimaryColor.ToHsv();
 
-        h += 0.5f;
+        h += 10f;
         if (h > 360) h -= 360;
 
         SetPrimaryColor(PwColor.FromHsv(h, s, v));
@@ -598,7 +598,7 @@ public class ViewportControl : Control
     {
         (float h, float s, float v) = PrimaryColor.ToHsv();
 
-        h -= 0.5f;
+        h -= 10f;
         if (h < 0) h += 360;
 
         SetPrimaryColor(PwColor.FromHsv(h, s, v));
