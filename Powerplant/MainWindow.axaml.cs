@@ -264,16 +264,12 @@ public partial class MainWindow : Window
 
         _disableEvents = true;
 
-        ColorSpinR.Value = (float)e.R / byte.MaxValue;
         ColorSpinR.Color = avColor;
         ColorTextR.Text = e.R.ToString();
-        ColorSpinG.Value = (float)e.G / byte.MaxValue;
         ColorSpinG.Color = avColor;
         ColorTextG.Text = e.G.ToString();
-        ColorSpinB.Value = (float)e.B / byte.MaxValue;
         ColorSpinB.Color = avColor;
         ColorTextB.Text = e.B.ToString();
-        ColorSpinA.Value = (float)e.A / byte.MaxValue;
         ColorSpinA.Color = avColor;
         ColorTextA.Text = e.A.ToString();
 

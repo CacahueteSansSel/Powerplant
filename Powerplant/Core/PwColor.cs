@@ -101,6 +101,39 @@ public struct PwColor : IEquatable<PwColor>
 
     public string ToHexString()
         => A == 255 ? $"{R:X2}{G:X2}{B:X2}" : $"{A:X2}{R:X2}{G:X2}{B:X2}";
+    
+    
+    public (float H, float S, float V) ToHsv()
+    {
+        float red = R / 255.0f;
+        float green = G / 255.0f;
+        float blue = B / 255.0f;
+
+        float max = Math.Max(red, Math.Max(green, blue));
+        float min = Math.Min(red, Math.Min(green, blue));
+        float delta = max - min;
+
+        float h = 0;
+
+        if (delta > 0)
+        {
+            if (max == red)
+                h = 60 * ((green - blue) / delta);
+            else if (max == green)
+                h = 60 * ((blue - red) / delta + 2);
+            else
+                h = 60 * ((red - green) / delta + 4);
+        }
+
+        if (h < 0)
+            h += 360;
+
+        float s = max == 0 ? 0 : delta / max;
+        float v = max;
+
+        return (h, s, v);
+    }
+
 
     public static bool operator ==(PwColor left, PwColor right)
     {

@@ -560,6 +560,14 @@ public class ViewportControl : Control
 
     private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
+        {
+            if (e.Delta.Y < 0) DecrementColorHue();
+            else if (e.Delta.Y > 0) IncrementColorHue();
+            
+            return;
+        }
+        
         Point cursorPos = e.GetPosition(this);
         
         float oldZoom = Zoom;
@@ -574,6 +582,26 @@ public class ViewportControl : Control
         _offset.Y = (float)(cursorPos.Y - oldOffsetY * Zoom);
         
         InvalidateVisual();
+    }
+
+    private void IncrementColorHue()
+    {
+        (float h, float s, float v) = PrimaryColor.ToHsv();
+
+        h += 0.5f;
+        if (h > 360) h -= 360;
+
+        SetPrimaryColor(PwColor.FromHsv(h, s, v));
+    }
+
+    private void DecrementColorHue()
+    {
+        (float h, float s, float v) = PrimaryColor.ToHsv();
+
+        h -= 0.5f;
+        if (h < 0) h += 360;
+
+        SetPrimaryColor(PwColor.FromHsv(h, s, v));
     }
 
     public override void Render(DrawingContext context)
