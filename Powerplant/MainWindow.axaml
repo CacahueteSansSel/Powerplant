@@ -5,7 +5,7 @@
         xmlns:controls="clr-namespace:Powerplant.Controls"
         xmlns:powerplant="clr-namespace:Powerplant"
         xmlns:toolsSettings="clr-namespace:Powerplant.Controls.ToolsSettings"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
         x:Class="Powerplant.MainWindow"
         x:DataType="powerplant:MainWindow+MainWindowCommands"
         ExtendClientAreaToDecorationsHint="True"
@@ -229,8 +229,10 @@
                             <TabItem Header="RGBA" FontSize="15">
                                 <StackPanel Orientation="Vertical" Spacing="4">
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextR"
+                                        <controls:Spinner x:Name="ColorSpinnerR" Spinned="ColorSpinnerR_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextR" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextR_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">R</TextBlock>
@@ -239,8 +241,10 @@
                                         </ColorSlider>
                                     </DockPanel>
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextG"
+                                        <controls:Spinner x:Name="ColorSpinnerG" Spinned="ColorSpinnerG_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextG" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextG_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">G</TextBlock>
@@ -249,8 +253,10 @@
                                         </ColorSlider>
                                     </DockPanel>
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextB"
+                                        <controls:Spinner x:Name="ColorSpinnerB" Spinned="ColorSpinnerB_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextB" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextB_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">B</TextBlock>
@@ -259,8 +265,10 @@
                                         </ColorSlider>
                                     </DockPanel>
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextA"
+                                        <controls:Spinner x:Name="ColorSpinnerA" Spinned="ColorSpinnerA_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextA" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextA_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">A</TextBlock>
@@ -273,8 +281,10 @@
                             <TabItem Header="HSV" FontSize="15">
                                 <StackPanel Orientation="Vertical" Spacing="4">
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextH"
+                                        <controls:Spinner x:Name="ColorSpinnerH" Spinned="ColorSpinnerH_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextH" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextH_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">H</TextBlock>
@@ -283,8 +293,10 @@
                                         </ColorSlider>
                                     </DockPanel>
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextS"
+                                        <controls:Spinner x:Name="ColorSpinnerS" Spinned="ColorSpinnerS_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextS" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextS_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">S</TextBlock>
@@ -293,8 +305,10 @@
                                         </ColorSlider>
                                     </DockPanel>
                                     <DockPanel>
-                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextV"
+                                        <controls:Spinner x:Name="ColorSpinnerV" Spinned="ColorSpinnerV_OnSpinned" DockPanel.Dock="Right"></controls:Spinner>
+                                        <TextBox DockPanel.Dock="Right" x:Name="ColorTextV" Padding="0" Height="24" MinHeight="0"
                                                  TextChanged="ColorTextV_OnTextChanged" Margin="10 0 0 0" Width="50"
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                                  MinWidth="0">
                                         </TextBox>
                                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="0 0 10 0">V</TextBlock>

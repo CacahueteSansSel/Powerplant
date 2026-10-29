@@ -92,6 +92,10 @@
       <AvaloniaResource Include="Resources\cursors\bucket.png" />
       <None Remove="Resources\cursors\wand.png" />
       <AvaloniaResource Include="Resources\cursors\wand.png" />
+      <None Remove="Resources\icons\plus.svg" />
+      <AvaloniaResource Include="Resources\icons\plus.svg" />
+      <None Remove="Resources\icons\minus.svg" />
+      <AvaloniaResource Include="Resources\icons\minus.svg" />
     </ItemGroup>
 
     <ItemGroup>

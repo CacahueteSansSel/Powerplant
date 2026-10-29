@@ -752,4 +752,74 @@ public partial class MainWindow : Window
     {
         Viewport.SetTool(new MulticolorPixelTool());
     }
+
+    private void ColorSpinnerR_OnSpinned(int delta)
+    {
+        PwColor color = Viewport.PrimaryColor;
+
+        if (delta < 0)
+            Viewport.SetPrimaryColor(color with {R = (byte)(color.R - 10 < 0 ? 0 : color.R - 10)});
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(color with {R = (byte)(color.R + 10 > 255 ? 255 : color.R + 10)});
+    }
+
+    private void ColorSpinnerG_OnSpinned(int delta)
+    {
+        PwColor color = Viewport.PrimaryColor;
+
+        if (delta < 0)
+            Viewport.SetPrimaryColor(color with {G = (byte)(color.G - 10 < 0 ? 0 : color.G - 10)});
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(color with {G = (byte)(color.G + 10 > 255 ? 255 : color.G + 10)});
+    }
+
+    private void ColorSpinnerB_OnSpinned(int delta)
+    {
+        PwColor color = Viewport.PrimaryColor;
+
+        if (delta < 0)
+            Viewport.SetPrimaryColor(color with {B = (byte)(color.B - 10 < 0 ? 0 : color.B - 10)});
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(color with {B = (byte)(color.B + 10 > 255 ? 255 : color.B + 10)});
+    }
+
+    private void ColorSpinnerA_OnSpinned(int delta)
+    {
+        PwColor color = Viewport.PrimaryColor;
+
+        if (delta < 0)
+            Viewport.SetPrimaryColor(color with {A = (byte)(color.A - 10 < 0 ? 0 : color.A - 10)});
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(color with {A = (byte)(color.A + 10 > 255 ? 255 : color.A + 10)});
+    }
+
+    private void ColorSpinnerH_OnSpinned(int delta)
+    {
+        (float h, float s, float v) = Viewport.PrimaryColor.ToHsv();
+        
+        if (delta < 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h <= 0 ? 0 : h - 10, s, v));
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h >= 360 ? 0 : h + 10, s, v));
+    }
+
+    private void ColorSpinnerS_OnSpinned(int delta)
+    {
+        (float h, float s, float v) = Viewport.PrimaryColor.ToHsv();
+        
+        if (delta < 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h, s <= 0.1f ? 0 : s - 0.1f, v));
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h, s >= 0.9f ? 1f : s + 0.1f, v));
+    }
+
+    private void ColorSpinnerV_OnSpinned(int delta)
+    {
+        (float h, float s, float v) = Viewport.PrimaryColor.ToHsv();
+        
+        if (delta < 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h, s, v <= 0.1f ? 0 : v - 0.1f));
+        else if (delta > 0)
+            Viewport.SetPrimaryColor(PwColor.FromHsv(h, s, v >= 0.9f ? 1f : v + 0.1f));
+    }
 }
