@@ -16,6 +16,7 @@ public static class FileFormatManager
         _fileFormats.Add(new PngFileFormat());
         _fileFormats.Add(new QoiFileFormat());
         _fileFormats.Add(new WebPFileFormat());
+        _fileFormats.Add(new JpegFileFormat());
     }
 
     public static FileFormatBase? GetByExtension(string extension)

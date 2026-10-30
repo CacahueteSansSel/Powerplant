@@ -1,20 +1,13 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Png.Chunks;
-using SixLabors.ImageSharp.Formats.Webp;
-using SixLabors.ImageSharp.PixelFormats;
+using ImageMagick;
 
 namespace Powerplant.FileFormats.ImageSharp;
 
-public class WebPFileFormat : ImageSharpFileFormat
+public class WebPFileFormat : MagickFileFormat
 {
+    public override MagickFormat ImageFormat => MagickFormat.WebP;
+    
     public WebPFileFormat() : base("WebP (*.webp)", ["webp"])
     {
         
-    }
-
-    protected override void SaveInternal(Image<Rgba32> image, string filename)
-    {
-        image.SaveAsWebp(filename);
     }
 }
